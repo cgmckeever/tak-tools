@@ -35,3 +35,5 @@ TAKUSER_PASS=nopass #$(pwgen -cvy1 25)
 sudo adduser --disabled-password --gecos GECOS $TAKUSER
 sudo usermod -aG sudo $TAKUSER
 sudo usermod -aG docker $TAKUSER
+
+
