@@ -14,3 +14,6 @@ TAKADMIN_PASS=$(pwgen -cvy1 25)
 PG_PASS=$(pwgen -cvy1 25)
 
 DEFAULT_NIC=$(route | grep default | awk '{print $8}')
+read -p "Which Network Interface [${DEFAULT_NIC}]? " NIC
+NIC=${NIC:-$EDFAULT_NIC}
+

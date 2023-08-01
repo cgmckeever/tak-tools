@@ -36,4 +36,4 @@ sudo adduser --disabled-password --gecos GECOS $TAKUSER
 sudo usermod -aG sudo $TAKUSER
 sudo usermod -aG docker $TAKUSER
 
-
+sudo -H -u tak bash -c 'git config --global safe.directory /opt/tak-tools'
