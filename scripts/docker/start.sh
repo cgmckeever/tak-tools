@@ -43,9 +43,7 @@ IP=$(ip addr show $NIC | grep -m 1 "inet " | awk '{print $2}' | cut -d "/" -f1)
 #
 cp ${TEMPLATE_DIR}/CoreConfig-${VERSION}.xml.tmpl ${WORK_DIR}/CoreConfig.xml
 sed -i "s/PG_PASS/${PG_PASS}/" ${WORK_DIR}/CoreConfig.xml
-echo 1
 sed -i "s/HOSTIP/${IP}/g" ${WORK_DIR}/CoreConfig.xml
-echo 2
 
 # Replaces takserver.jks with $IP.jks
 #sed -i "s/takserver.jks/$IP.jks/g" tak/CoreConfig.xml
@@ -78,4 +76,4 @@ CITY=$CITY
 ORGANIZATIONAL_UNIT=$ORGANIZATIONAL_UNIT
 EOF
 
-docker compose --file ${SCRIPT_DIR}/docker/compose.yml --force-recreate -d
+docker compose --file ${SCRIPT_DIR}/docker/compose.yml up --force-recreate -d
