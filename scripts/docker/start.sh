@@ -22,9 +22,9 @@ rm -rf $WORK_DIR
 mkdir -p $WORK_DIR
 
 unzip /tmp/takserver*.zip -d ${WORK_DIR}/; \
-mv tak-server/tak* ${WORK_DIR}/release;
+mv ${WORK_DIR}/tak* ${WORK_DIR}/release;
 chown -R $USER:$USER ${WORK_DIR}
-VERSION=cat ${WORK_DIR}/release/tak/version.txt | sed 's/\(.*\)-.*/\1/'
+VERSION=$(cat ${WORK_DIR}/release/tak/version.txt | sed 's/\(.*\)-.*/\1/')
 
 TAKADMIN=tak-admin
 TAKADMIN_PASS=$(pwgen -cvy1 25)
