@@ -53,7 +53,7 @@ sed -i "s/HOSTIP/${IP}/g" ${WORK_DIR}/CoreConfig.xml
 # By default TAK server allocates memory based upon the *total* on a machine.
 # Allocate memory based upon the available memory so this still scales
 #
-sed -i "s/MemTotal/MemFree/g" tak/setenv.sh
+sed -i "s/MemTotal/MemFree/g" ${WORK_DIR}/release/tak/setenv.sh
 
 ## Set variables for generating CA and client certs
 #

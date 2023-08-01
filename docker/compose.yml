@@ -20,7 +20,7 @@ services:
       context: /home/tak/tak-server
       dockerfile: ./release/docker/Dockerfile.takserver
     env_file:
-      - .env
+      - ./release/.env
     volumes:
       - "./release/tak:/opt/tak:z"
     ports:
