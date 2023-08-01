@@ -7,7 +7,8 @@ sudo apt -y update
 sudo apt -y install \
     git
 
-https://github.com/cgmckeever/tak-tools.git; \
-cd tak-tools
+git clone https://github.com/cgmckeever/tak-tools.git
+
+tak-tools/docker-start.sh
 
 ```

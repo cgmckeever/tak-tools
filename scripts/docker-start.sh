@@ -30,6 +30,7 @@ sudo curl -L "https://github.com/docker/compose/releases/download/v2.10.2/docker
 sudo chmod +x /usr/local/bin/docker-compose
 
 TAKUSER=tak
+TAKUSER_PASS=nopass #$(pwgen -cvy1 25)
 
 sudo adduser --disabled-password --gecos GECOS $TAKUSER
 sudo usermod -aG sudo $TAKUSER
