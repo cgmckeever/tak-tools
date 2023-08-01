@@ -12,7 +12,7 @@ color success 92m
 color warning 93m
 color danger 91m
 
-SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
+SCRIPT_DIR=$(parent dir $(dirname "${BASH_SOURCE[0]}"))
 #SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 echo "Script directory: $SCRIPT_DIR"
 
