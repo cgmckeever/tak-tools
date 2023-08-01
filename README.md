@@ -9,6 +9,6 @@ sudo apt -y install \
 
 git clone https://github.com/cgmckeever/tak-tools.git
 
-tak-tools/docker-start.sh
+tak-tools/docker/prereq.sh
 
 ```
