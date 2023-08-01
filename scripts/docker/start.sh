@@ -34,7 +34,7 @@ PG_PASS=$(pwgen -cvy1 25)
 echo; echo
 DEFAULT_NIC=$(route | grep default | awk '{print $8}')
 read -p "Which Network Interface [${DEFAULT_NIC}]? " NIC
-NIC=${NIC:-$DEFAULT_NIC}
+NIC=${NIC:-${DEFAULT_NIC}}
 
 IP=$(ip addr show $NIC | grep -m 1 "inet " | awk '{print $2}' | cut -d "/" -f1)
 
@@ -43,7 +43,9 @@ IP=$(ip addr show $NIC | grep -m 1 "inet " | awk '{print $2}' | cut -d "/" -f1)
 #
 cp ${TEMPLATE_DIR}/CoreConfig-${VERSION}.xml.tmpl ${WORK_DIR}/CoreConfig.xml
 sed -i "s/PG_PASS/${PG_PASS}/" ${WORK_DIR}/CoreConfig.xml
+echo 1
 sed -i "s/HOSTIP/${IP}/g" ${WORK_DIR}/CoreConfig.xml
+echo 2
 
 # Replaces takserver.jks with $IP.jks
 #sed -i "s/takserver.jks/$IP.jks/g" tak/CoreConfig.xml
