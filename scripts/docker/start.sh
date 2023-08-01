@@ -76,4 +76,4 @@ CITY=$CITY
 ORGANIZATIONAL_UNIT=$ORGANIZATIONAL_UNIT
 EOF
 
-docker compose --file ${SCRIPT_DIR}/docker/compose.yml up --force-recreate -d
+docker compose --file ${TOOLS_DIR}/docker/compose.yml up --force-recreate -d
