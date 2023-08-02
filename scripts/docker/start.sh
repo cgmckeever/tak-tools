@@ -87,12 +87,10 @@ sed -i "s/__ORGANIZATION/${ORGANIZATION}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__CAPASS/${CAPASS}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__TAK_ALIAS/${TAK_ALIAS}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__SSL_CERT_INFO//g" ${TAK_DIR}/CoreConfig.xml
-
 sed -i "s/__TRUSTSTORE/${INTERMEDIARY_CA}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__SIGNING_KEY/${INTERMEDIARY_CA}-signing/g" ${TAK_DIR}/CoreConfig.xml
-sed -i "s/CRL/${__INTERMEDIARY_CA}/g" $CONFIGFILE
+sed -i "s/__CRL/${__INTERMEDIARY_CA}/g" ${TAK_DIR}/CoreConfig.xml
 
-truststore-root.jks
 
 # Better memory allocation:
 # By default TAK server allocates memory based upon the *total* on a machine.
