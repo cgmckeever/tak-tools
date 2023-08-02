@@ -8,10 +8,10 @@
         <input _name="stdssl" protocol="tls" port="8089"/>
         <connector port="8443" _name="https"/>
         <connector port="8444" useFederationTruststore="true" _name="fed_https"/>
-        <connector port="8446" clientAuth="false" _name="cert_https"/>
+        <connector port="8446" clientAuth="false" _name="cert_https" __SSL_CERT/>
         <announce/>
     </network>
-    <auth x509groups="true" x509addAnonymous="false">
+    <auth x509groups="true" x509addAnonymous="false" x509useGroupCache="true" x509checkRevocation="true">
         <File location="UserAuthenticationFile.xml"/>
     </auth>
     <submission ignoreStaleMessages="false" validateXml="false"/>
@@ -65,14 +65,21 @@
                 <nameEntry name="OU" value="__ORGANIZATIONAL_UNIT"/>
             </nameEntries>
         </certificateConfig>
+        <TAKServerCAConfig keystore="JKS" keystoreFile="/opt/tak/certs/files/__SIGNING_KEY.jks" keystorePass="__CAPASS" validityDays="30" signatureAlg="SHA256WithRSA"/>
+        <!--
         <TAKServerCAConfig keystore="JKS" keystoreFile="/opt/tak/certs/files/__TAK_ALIAS.jks" keystorePass="__CAPASS" validityDays="30" signatureAlg="SHA256WithRSA"/>
+        -->
     </certificateSigning>
     <security>
+        <tls keystore="JKS" keystoreFile="/opt/tak/certs/files/__TAK_ALIAS.jks" keystorePass="__CAPASS" truststore="JKS" truststoreFile="/opt/tak/certs/files/truststore-__TRUSTSTORE.jks" truststorePass="__CAPASS" context="TLSv1.2" keymanager="SunX509"/>
+        <crl _name="TAKServer CA" crlFile="opt/tak/certs/files/__CRL.crl"/>
+        <!--
         <tls keystore="JKS" keystoreFile="/opt/tak/certs/files/__TAK_ALIAS.jks" keystorePass="__CAPASS" truststore="JKS" truststoreFile="/opt/tak/certs/files/truststore-root.jks" truststorePass="__CAPASS" context="TLSv1.2" keymanager="SunX509"/>
+        -->
     </security>
     <federation missionFederationDisruptionToleranceRecencySeconds="43200">
         <federation-server webBaseUrl="https://__HOSTIP:8443/Marti">
-            <tls keystore="JKS" keystoreFile="/opt/tak/certs/files/__TAK_ALIAS.jks" keystorePass="__CAPASS" truststore="JKS" truststoreFile="certs/files/fed-truststore.jks" truststorePass="__CAPASS" keymanager="SunX509"/>
+            <tls keystore="JKS" keystoreFile="/opt/tak/certs/files/__TAK_ALIAS.jks" keystorePass="__CAPASS" truststore="JKS" truststoreFile="/opt/tak/certs/files/fed-truststore.jks" truststorePass="__CAPASS" keymanager="SunX509"/>
             <v1Tls tlsVersion="TLSv1.2"/>
             <v1Tls tlsVersion="TLSv1.3"/>
         </federation-server>

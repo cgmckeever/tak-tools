@@ -13,9 +13,7 @@ color warning 93m
 color danger 91m
 
 CAPASS="atakatak"
-#DOCKER_SUBNET="172.26.0.0/16"
 DOCKER_SUBNET="172.20.0.0/24"
-#DOCKER_SUBNET="172.0.0.0/8"
 
 WORK_DIR=~/tak-server
 RELEASE_DIR="${WORK_DIR}/release"
@@ -88,6 +86,13 @@ sed -i "s/__ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" ${TAK_DIR}/CoreConfig.
 sed -i "s/__ORGANIZATION/${ORGANIZATION}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__CAPASS/${CAPASS}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__TAK_ALIAS/${TAK_ALIAS}/g" ${TAK_DIR}/CoreConfig.xml
+sed -i "s/__SSL_CERT_INFO//g" ${TAK_DIR}/CoreConfig.xml
+
+sed -i "s/__TRUSTSTORE/${INTERMEDIARY_CA}/g" ${TAK_DIR}/CoreConfig.xml
+sed -i "s/__SIGNING_KEY/${INTERMEDIARY_CA}-signing/g" ${TAK_DIR}/CoreConfig.xml
+sed -i "s/CRL/${__INTERMEDIARY_CA}/g" $CONFIGFILE
+
+truststore-root.jks
 
 # Better memory allocation:
 # By default TAK server allocates memory based upon the *total* on a machine.
