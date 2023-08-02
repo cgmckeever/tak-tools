@@ -16,7 +16,7 @@ echo "Requesting a new certificate..."
 echo ""
 read -p "What is your email? [Needed for Letsencrypt Alerts] : " EMAIL
 
-if certbot certonly --standalone -d $FQDN -m $EMAIL --agree-tos --non-interactive; then
+if sudo certbot certonly --standalone -d $FQDN -m $EMAIL --agree-tos --non-interactive; then
   echo "Certificate obtained successfully!"
   echo $FQDN > letsencrypt.txt
 else
