@@ -31,9 +31,9 @@ chown -R $USER:$USER ${WORK_DIR}
 VERSION=$(cat ${TAK_DIR}/version.txt | sed 's/\(.*\)-.*-.*/\1/')
 
 TAKADMIN=tak-admin
-TAKADMIN_PASS=$(pwgen -cvy1 -r "<>" 25)
+TAKADMIN_PASS=$(pwgen -cvy1 -r "<>\"" 25)
 
-PG_PASS=$(pwgen -cvy1 -r "<>" 25)
+PG_PASS=$(pwgen -cvy1 -r "<>\"" 25)
 
 echo; echo
 HOSTNAME=${HOSTNAME//\./-}
@@ -103,6 +103,7 @@ ORGANIZATIONAL_UNIT=$ORGANIZATIONAL_UNIT
 CAPASS=$CAPASS
 TAK_ALIAS=$TAK_ALIAS
 NIC=$NIC
+INTERMEDIARY_CA=$INTERMEDIARY_CA
 EOF
 
 cp ${TOOLS_DIR}/docker/compose.yml ${RELEASE_DIR}/
@@ -143,7 +144,7 @@ printf $info "Certificates and *CERT DATA PACKAGES* are in tak/certs/files \n\n"
 printf $info "Execute into running container 'docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash' \n\n"
 
 printf $danger "---------PASSWORDS----------------\n\n"
-printf $danger "Tak Admin user name: $TAKADMIN\n"
-printf $danger "Tak Admin password: $TAKADMIN_PASS\n"
-printf $danger "PostgreSQL password: $PG_PASS\n\n"
+printf $danger "Tak Admin user      : $TAKADMIN\n"
+printf $danger "Tak Admin password  : $TAKADMIN_PASS\n"
+printf $danger "PostgreSQL password : $PG_PASS\n\n"
 printf $danger "---------PASSWORDS----------------\n\n"
