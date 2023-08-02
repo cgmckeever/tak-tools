@@ -109,6 +109,7 @@ if [[ -f ~/letsencrypt.txt ]]; then
         -srcstoretype PKCS12
 
     sudo keytool -import \
+        -noprompt \
         -alias bundle \
         -trustcacerts \
         -deststorepass ${CAPASS} \
