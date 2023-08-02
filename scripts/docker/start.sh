@@ -37,7 +37,7 @@ PG_PASS=$(pwgen -cvy1 -r "<>'\`\"" 25)
 
 echo; echo
 HOSTNAME=${HOSTNAME//\./-}
-read -p "What is the alias of this Tak Server [${HOSTNAME}]? " TAK_ALIAS
+read -p "Alias of this Tak Server: Default [${HOSTNAME}]? " TAK_ALIAS
 TAK_ALIAS=${TAK_ALIAS:-$HOSTNAME}
 
 INTERMEDIARY_CA=${TAK_ALIAS}-Intermediate-CA
@@ -46,7 +46,7 @@ echo; echo
 ip link show
 echo; echo
 DEFAULT_NIC=$(route | grep default | awk '{print $8}')
-read -p "Which Network Interface [${DEFAULT_NIC}]? " NIC
+read -p "Which Network Interface? Default [${DEFAULT_NIC}]? " NIC
 NIC=${NIC:-${DEFAULT_NIC}}
 
 IP=$(ip addr show $NIC | grep -m 1 "inet " | awk '{print $2}' | cut -d "/" -f1)
@@ -61,16 +61,16 @@ sudo ufw route allow from 172.20.0.0/16 to 172.20.0.0/16
 ## Set variables for generating CA and client certs
 #
 printf $warning "SSL setup. Hit enter (x4) to accept the defaults:\n"
-read -p "State (for cert generation). Default [state] :" STATE
+read -p "State (for cert generation). Default [state] : " STATE
 export STATE=${STATE:-state}
 
-read -p "City (for cert generation). Default [city]:" CITY
+read -p "City (for cert generation). Default [city]: " CITY
 export CITY=${CITY:-city}
 
-read -p "Organization Name (for cert generation) [TAK]:" ORGANIZATION
+read -p "Organization Name (for cert generation) Default [TAK]: " ORGANIZATION
 export ORGANIZATION=${ORGANIZATION:-TAK}
 
-read -p "Organizational Unit (for cert generation). Default [${ORGANIZATION}]:" ORGANIZATIONAL_UNIT
+read -p "Organizational Unit (for cert generation). Default [${ORGANIZATION}]: " ORGANIZATIONAL_UNIT
 export ORGANIZATIONAL_UNIT=${ORGANIZATIONAL_UNIT:-${ORGANIZATION}}
 
 ## CoreConfig
@@ -110,12 +110,15 @@ EOF
 cp ${TOOLS_DIR}/docker/compose.yml ${RELEASE_DIR}/
 docker compose -f ${RELEASE_DIR}/compose.yml up --force-recreate -d
 
+exit
+
 ## Certs
 #
 sleep 20
 
 while true;do
     printf $warning "------------CERTIFICATE GENERATION--------------\n"
+    rm -rf ${TAK_DIR}/certs/files/*
 
     docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd /opt/tak/certs && ./makeRootCa.sh --ca-name ${TAK_ALIAS}-CA"
     if [ $? -eq 0 ];then
