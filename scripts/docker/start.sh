@@ -88,7 +88,7 @@ sed -i "s/__PG_PASS/${PG_PASS}/" ${TAK_DIR}/CoreConfig.xml
 
 SSL_CERT_INFO=""
 cat ~/letsencrypt.txt
-if [[ -f "~/letsencrypt.txt" ]]; then
+if [[ -f ~/letsencrypt.txt ]]; then
     FQDN=$(cat ~/letsencrypt.txt)
     CERT_NAME=le-${FQDN//\./-}
     LE_DIR="/etc/letsencrypt/live/$FQDN"
