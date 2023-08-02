@@ -22,7 +22,7 @@ SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
 TOOLS_DIR=$(dirname $(dirname $SCRIPT_DIR))
 TEMPLATE_DIR="${TOOLS_DIR}/templates"
 
-rm -rf $WORK_DIR
+sudo rm -rf $WORK_DIR
 mkdir -p $WORK_DIR
 
 unzip /tmp/takserver*.zip -d ${WORK_DIR}/
