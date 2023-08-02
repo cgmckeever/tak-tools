@@ -34,6 +34,11 @@ TAKADMIN_PASS=$(pwgen -cvy1 25)
 PG_PASS=$(pwgen -cvy1 25)
 
 echo; echo
+HOSTNAME=${HOSTNAME//\./-}
+read -p "What is the alias of this Tak Server [${HOSTNAME}]? " TAK_ALIAS
+TAK_ALIAS=${TAK_ALIAS:-$HOSTNAME}
+
+echo; echo
 DEFAULT_NIC=$(route | grep default | awk '{print $8}')
 read -p "Which Network Interface [${DEFAULT_NIC}]? " NIC
 NIC=${NIC:-${DEFAULT_NIC}}
@@ -78,6 +83,18 @@ CITY=$CITY
 ORGANIZATIONAL_UNIT=$ORGANIZATIONAL_UNIT
 EOF
 
-
 cp ${TOOLS_DIR}/docker/compose.yml ${RELEASE_DIR}/
 docker compose --file ${RELEASE_DIR}/compose.yml up --force-recreate -d
+
+## Certs
+#
+INTERMEDIARY_CA=${TAK_ALIAS}-Intermediate-CA
+
+docker compose exec tak-server bash -c "cd /opt/tak/certs && ./makeRootCa.sh --ca-name ${TAK_ALIAS}-CA"
+docker compose exec tak-server bash -c "cd /opt/tak/certs && ./makeCert.sh ca ${INTERMEDIARY_CA}"
+docker compose exec tak-server bash -c "cd /opt/tak/certs && ./makeCert.sh server ${TAK_ALIAS}"
+docker compose exec tak-server bash -c "cd /opt/tak/certs && ./makeCert.sh client ${TAKADMIN}"
+docker compose exec tak-server bash -c "useradd $USER && chown -R $USER:$USER /opt/tak/certs/"
+docker compose stop tak-server
+
+
