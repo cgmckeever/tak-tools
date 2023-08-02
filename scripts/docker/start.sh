@@ -86,7 +86,7 @@ sed -i "s/__TAK_ALIAS/${TAK_ALIAS}/g" ${TAK_DIR}/CoreConfig.xml
 # Replaces takserver.jks with $IP.jks
 #sed -i "s/takserver.jks/$IP.jks/g" tak/CoreConfig.xml
 
-exit
+
 # Better memory allocation:
 # By default TAK server allocates memory based upon the *total* on a machine.
 # Allocate memory based upon the available memory so this still scales
