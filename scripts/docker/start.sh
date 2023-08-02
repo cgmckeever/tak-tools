@@ -204,6 +204,8 @@ printf $warning "\n\n------------ Create Admin User --------------\n\n"
 printf $info "You may see several JAVA warnings. This is expected.\n\n"
 
 while true; do
+    printf $info "\n------------ Creating --------------\n"
+
     docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar ${TAK_PATH}/utils/UserManager.jar usermod -A -p \"${TAKADMIN_PASS}\" ${TAKADMIN}"
     if [ $? -eq 0 ];then
         docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar ${TAK_PATH}/utils/UserManager.jar certmod -A ${CERT_PATH}/files/${TAKADMIN}.pem"
@@ -234,7 +236,7 @@ echo "Tak Admin password  : $TAKADMIN_PASS" >> ${INFO}
 echo "PostgreSQL password : $PG_PASS" >> ${INFO}
 echo >> ${INFO}
 echo "---------PASSWORDS----------------" >> ${INFO}
-printf $danger $(cat ${INFO})
+printf $danger "$(cat ${INFO})"
 
 printf $warning "\nMAKE A NOTE OF YOUR PASSWORDS. THEY WON'T BE SHOWN AGAIN.\n\n
 "
