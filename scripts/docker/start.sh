@@ -51,14 +51,12 @@ NIC=${NIC:-${DEFAULT_NIC}}
 
 IP=$(ip addr show $NIC | grep -m 1 "inet " | awk '{print $2}' | cut -d "/" -f1)
 
-#sudo ufw allow proto tcp from ${IP}/24 to any port 5432
-#sudo ufw allow 5432
-sudo ufw route allow from 172.20.0.0/16 to 172.20.0.0/16
 sudo ufw allow proto tcp from ${IP}/24 to any port 8089
 sudo ufw allow proto tcp from ${IP}/24 to any port 8443
 sudo ufw allow proto tcp from ${IP}/24 to any port 8446
 sudo ufw allow proto tcp from ${IP}/24 to any port 9000
 sudo ufw allow proto tcp from ${IP}/24 to any port 9001
+sudo ufw route allow from 172.20.0.0/16 to 172.20.0.0/16
 
 ## Set variables for generating CA and client certs
 #
@@ -127,9 +125,15 @@ while true;do
             if [ $? -eq 0 ];then
                 docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd /opt/tak/certs && ./makeCert.sh client ${TAKADMIN}"
                 if [ $? -eq 0 ];then
-                    docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER /opt/tak/certs/"
-                    docker compose -f ${RELEASE_DIR}/compose.yml stop tak-server
-                    break
+                    docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar /opt/tak/utils/UserManager.jar usermod -A -p \"${TAKADMIN_PASS}\" ${TAKADMIN}"
+                    if [ $? -eq 0 ];then
+                        docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar /opt/tak/utils/UserManager.jar certmod -A /opt/tak/certs/files/${TAKADMIN}.pem"
+                        if [ $? -eq 0 ];then
+                            docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER /opt/tak/certs/"
+                            docker compose -f ${RELEASE_DIR}/compose.yml stop tak-server
+                            break
+                        fi
+                    fi
                 fi
             fi
         fi
