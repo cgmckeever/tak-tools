@@ -19,6 +19,7 @@ git clone https://github.com/cgmckeever/tak-tools.git /opt/tak-tools
 - Install docker and docker-compose
 - Enables UFW [Firewall]
 - Will create a `tak` service user
+    - *Remember* the displayed password; or `passwd tak` to change it
 
 ## Setup
 
