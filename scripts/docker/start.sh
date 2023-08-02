@@ -58,6 +58,7 @@ sudo ufw allow proto tcp from ${IP}/24 to any port 8446
 sudo ufw allow proto tcp from ${IP}/24 to any port 9000
 sudo ufw allow proto tcp from ${IP}/24 to any port 9001
 sudo ufw allow proto tcp from ${DOCKER_SUBNET} to any port 5432
+sudo ufw route allow from ${DOCKER_SUBNET} to ${DOCKER_SUBNET}
 
 ## Set variables for generating CA and client certs
 #
