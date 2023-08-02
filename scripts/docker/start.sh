@@ -13,7 +13,9 @@ color warning 93m
 color danger 91m
 
 CAPASS="atakatak"
-DOCKER_SUBNET="172.0.0.0/8"
+DOCKER_SUBNET="172.10.0.0/16"
+#DOCKER_SUBNET="172.17.0.0/8"
+#DOCKER_SUBNET="172.0.0.0/8"
 
 WORK_DIR=~/tak-server
 RELEASE_DIR="${WORK_DIR}/release"
