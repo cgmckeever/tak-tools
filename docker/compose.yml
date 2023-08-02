@@ -13,7 +13,7 @@ services:
         aliases:
           - tak-database
     ports:
-      - 5432:5432
+      - "5432:5432"
     restart: always
   tak-server:
     build:

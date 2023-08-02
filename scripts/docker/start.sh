@@ -51,7 +51,8 @@ NIC=${NIC:-${DEFAULT_NIC}}
 
 IP=$(ip addr show $NIC | grep -m 1 "inet " | awk '{print $2}' | cut -d "/" -f1)
 
-sudo ufw allow proto tcp from ${IP}/24 to any port 5432
+#sudo ufw allow proto tcp from ${IP}/24 to any port 5432
+sudo ufw allow 5432
 sudo ufw allow proto tcp from ${IP}/24 to any port 8089
 sudo ufw allow proto tcp from ${IP}/24 to any port 8443
 sudo ufw allow proto tcp from ${IP}/24 to any port 8446
