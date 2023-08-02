@@ -91,17 +91,18 @@ if [[ -f "${WORK_DIR}/letsencrypt.txt" ]]; then
     FQDN=$(cat letsencrypt.txt)
     CERT_NAME=le-${FQDN//\./-}
     LE_DIR="/etc/letsencrypt/live/$FQDN"
+    mkdir -p ${CERT_DIR}/files
 
     sudo openssl pkcs12 -export \
         -in ${LE_DIR}/fullchain.pem \
         -inkey ${LE_DIR}/privkey.pem \
         -name ${CERT_NAME} \
         -out ${CERT_DIR}/files/${CERT_NAME}.p12 \
-        -passout pass:$CAPASS
+        -passout pass:${CAPASS}
 
     sudo keytool -importkeystore \
-        -deststorepass $CAPASS \
-        -srcstorepass $CAPASS \
+        -deststorepass ${CAPASS} \
+        -srcstorepass ${CAPASS} \
         -destkeystore ${CERT_DIR}/files/${CERT_NAME}.jks \
         -srckeystore ${CERT_DIR}/files/${CERT_NAME}.p12 \
         -srcstoretype PKCS12
@@ -109,8 +110,8 @@ if [[ -f "${WORK_DIR}/letsencrypt.txt" ]]; then
     sudo keytool -import \
         -alias bundle \
         -trustcacerts \
-        -deststorepass $CAPASS \
-        -srcstorepass $CAPASS \
+        -deststorepass ${CAPASS} \
+        -srcstorepass ${CAPASS} \
         -file ${LE_DIR}/fullchain.pem \
         -keystore ${CERT_DIR}/files/${CERT_NAME}.jks
 
@@ -118,6 +119,8 @@ if [[ -f "${WORK_DIR}/letsencrypt.txt" ]]; then
 
     SSL_CERT_INFO='keystore="JKS" keystoreFile="${CERT_DIR}/files/${CERT_NAME}.jks" keystorePass="__CAPASS" truststore="JKS" truststoreFile="${CERT_DIR}/files/truststore-__TRUSTSTORE.jks" truststorePass="__CAPASS"'
 fi
+
+exit
 
 sed -i "s/__SSL_CERT_INFO/${SSL_CERT_INFO}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__CAPASS/${CAPASS}/g" ${TAK_DIR}/CoreConfig.xml
