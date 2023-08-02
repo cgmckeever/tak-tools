@@ -226,7 +226,7 @@ docker compose -f ${RELEASE_DIR}/compose.yml start tak-server
 printf $info "Certificates and *CERT DATA PACKAGES* are in tak/certs/files \n\n"
 printf $warning "\n\nImport the ${CERT_PATH}/files/$TAKADMIN.p12 certificate to your browser as per the README\n\n"
 
-printf $success "Login at https://$URL:8443 with your admin account. No need to run the /setup step as this has been done.\n"
+printf $success "Login at https://$URL:8443 with your admin account. No need to run the /setup step as this has been done.\n\n"
 
 INFO=${RELEASE_DIR}/info.txt
 echo "---------PASSWORDS----------------" > ${INFO}
