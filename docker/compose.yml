@@ -41,7 +41,6 @@ services:
     depends_on:
       - tak-db
     restart: always
+
 volumes:
   db_data:
-networks:
-  tak:
