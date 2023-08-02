@@ -87,7 +87,6 @@ sed -i "s/__HOSTIP/${IP}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__PG_PASS/${PG_PASS}/" ${TAK_DIR}/CoreConfig.xml
 
 SSL_CERT_INFO=""
-cat ${WORK_DIR}/letsencrypt.txt
 if [[ -f "~/letsencrypt.txt" ]]; then
     FQDN=$(cat ~/letsencrypt.txt)
     CERT_NAME=le-${FQDN//\./-}
