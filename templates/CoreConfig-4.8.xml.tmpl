@@ -8,7 +8,7 @@
         <input _name="stdssl" protocol="tls" port="8089"/>
         <connector port="8443" _name="https"/>
         <connector port="8444" useFederationTruststore="true" _name="fed_https"/>
-        <connector port="8446" clientAuth="false" _name="cert_https" __SSL_CERT/>
+        <connector port="8446" clientAuth="false" _name="cert_https" __SSL_CERT_INFO/>
         <announce/>
     </network>
     <auth x509groups="true" x509addAnonymous="false" x509useGroupCache="true" x509checkRevocation="true">
