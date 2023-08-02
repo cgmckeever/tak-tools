@@ -110,8 +110,6 @@ EOF
 cp ${TOOLS_DIR}/docker/compose.yml ${RELEASE_DIR}/
 docker compose -f ${RELEASE_DIR}/compose.yml up --force-recreate -d
 
-exit
-
 ## Certs
 #
 sleep 20
@@ -128,6 +126,7 @@ while true;do
             if [ $? -eq 0 ];then
                 docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd /opt/tak/certs && ./makeCert.sh client ${TAKADMIN}"
                 if [ $? -eq 0 ];then
+                    sleep 15
                     docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar /opt/tak/utils/UserManager.jar usermod -A -p \"${TAKADMIN_PASS}\" ${TAKADMIN}"
                     if [ $? -eq 0 ];then
                         docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar /opt/tak/utils/UserManager.jar certmod -A /opt/tak/certs/files/${TAKADMIN}.pem"
