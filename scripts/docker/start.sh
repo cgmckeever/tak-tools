@@ -116,6 +116,7 @@ sleep 20
 
 while true;do
     printf $warning "------------CERTIFICATE GENERATION--------------\n"
+    docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER /opt/tak/certs/"
     rm -rf ${TAK_DIR}/certs/files/*
 
     docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd /opt/tak/certs && ./makeRootCa.sh --ca-name ${TAK_ALIAS}-CA"
