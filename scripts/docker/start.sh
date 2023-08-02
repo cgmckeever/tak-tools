@@ -43,11 +43,17 @@ TAK_ALIAS=${TAK_ALIAS:-$HOSTNAME}
 INTERMEDIARY_CA=${TAK_ALIAS}-Intermediate-CA
 
 echo; echo
+ip link show
+echo; echo
 DEFAULT_NIC=$(route | grep default | awk '{print $8}')
 read -p "Which Network Interface [${DEFAULT_NIC}]? " NIC
 NIC=${NIC:-${DEFAULT_NIC}}
 
 IP=$(ip addr show $NIC | grep -m 1 "inet " | awk '{print $2}' | cut -d "/" -f1)
+
+sudo ufw allow proto tcp from ${IP}/24 to any port 8089
+sudo ufw allow proto tcp from ${IP}/24 to any port 8443
+sudo ufw allow proto tcp from ${IP}/24 to any port 8446
 
 ## Set variables for generating CA and client certs
 #
@@ -69,8 +75,8 @@ export ORGANIZATIONAL_UNIT=${ORGANIZATIONAL_UNIT:-${ORGANIZATION}}
 cp ${TEMPLATE_DIR}/CoreConfig-${VERSION}.xml.tmpl ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__PG_PASS/${PG_PASS}/" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__HOSTIP/${IP}/g" ${TAK_DIR}/CoreConfig.xml
-sed -i "s/__ORGANIZATION/${ORGANIZATION}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" ${TAK_DIR}/CoreConfig.xml
+sed -i "s/__ORGANIZATION/${ORGANIZATION}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__CAPASS/${CAPASS}/g" ${TAK_DIR}/CoreConfig.xml
 
 # Replaces takserver.jks with $IP.jks
@@ -100,7 +106,7 @@ docker compose -f ${RELEASE_DIR}/compose.yml up --force-recreate -d
 
 ## Certs
 #
-sleep 30
+sleep 20
 
 while true;do
     printf $warning "------------CERTIFICATE GENERATION--------------\n"
@@ -120,7 +126,7 @@ while true;do
             fi
         fi
     fi
-    sleep 15
+    sleep 10
 done
 
 docker compose -f ${RELEASE_DIR}/compose.yml start tak-server

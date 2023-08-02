@@ -14,6 +14,11 @@ sudo apt -y install \
     wget \
     zip
 
+# Firewall Rules
+#
+sudo ufw enable
+sudo ufw status
+
 # Docker
 #
 sudo apt -y install apt-transport-https ca-certificates curl software-properties-common
