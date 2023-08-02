@@ -116,8 +116,6 @@ sleep 20
 
 while true;do
     printf $warning "------------CERTIFICATE GENERATION--------------\n"
-    docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER /opt/tak/certs/"
-    rm -rf ${TAK_DIR}/certs/files/*
 
     docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd /opt/tak/certs && ./makeRootCa.sh --ca-name ${TAK_ALIAS}-CA"
     if [ $? -eq 0 ];then
@@ -127,16 +125,7 @@ while true;do
             if [ $? -eq 0 ];then
                 docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd /opt/tak/certs && ./makeCert.sh client ${TAKADMIN}"
                 if [ $? -eq 0 ];then
-                    sleep 15
-                    docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar /opt/tak/utils/UserManager.jar usermod -A -p \"${TAKADMIN_PASS}\" ${TAKADMIN}"
-                    if [ $? -eq 0 ];then
-                        docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar /opt/tak/utils/UserManager.jar certmod -A /opt/tak/certs/files/${TAKADMIN}.pem"
-                        if [ $? -eq 0 ];then
-                            docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER /opt/tak/certs/"
-                            docker compose -f ${RELEASE_DIR}/compose.yml stop tak-server
-                            break
-                        fi
-                    fi
+                    break
                 fi
             fi
         fi
@@ -144,6 +133,19 @@ while true;do
     sleep 10
 done
 
+while true; do
+    sleep 15
+    docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar /opt/tak/utils/UserManager.jar usermod -A -p \"${TAKADMIN_PASS}\" ${TAKADMIN}"
+    if [ $? -eq 0 ];then
+        docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar /opt/tak/utils/UserManager.jar certmod -A /opt/tak/certs/files/${TAKADMIN}.pem"
+        if [ $? -eq 0 ];then
+            break
+        fi
+    fi
+done
+
+docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER /opt/tak/certs/"
+docker compose -f ${RELEASE_DIR}/compose.yml stop tak-server
 docker compose -f ${RELEASE_DIR}/compose.yml start tak-server
 
 
