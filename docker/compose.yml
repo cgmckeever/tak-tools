@@ -1,5 +1,12 @@
 version: "3.3"
 
+networks:
+  taknet:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.20.0.0/24"
+
 services:
   tak-db:
     build:
@@ -9,7 +16,7 @@ services:
       - "db_data:/var/lib/postgresql/data:z"
       - "./tak:/opt/tak:z"
     networks:
-      tak:
+      taknet:
         aliases:
           - tak-database
     ports:
@@ -30,7 +37,7 @@ services:
       - "9000:9000"
       - "9001:9001"
     networks:
-      tak:
+      taknet:
     depends_on:
       - tak-db
     restart: always
