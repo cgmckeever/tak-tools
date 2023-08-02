@@ -116,12 +116,10 @@ if [[ -f ~/letsencrypt.txt ]]; then
         -file ${LE_DIR}/fullchain.pem \
         -keystore ${CERT_DIR}/files/${CERT_NAME}.jks
 
-    sudo update-alternatives --set java /usr/lib/jvm/java-11-openjdk-amd64/bin/java
-
-    SSL_CERT_INFO='keystore="JKS" keystoreFile="${CERT_DIR}/files/${CERT_NAME}.jks" keystorePass="__CAPASS" truststore="JKS" truststoreFile="${CERT_DIR}/files/truststore-__TRUSTSTORE.jks" truststorePass="__CAPASS"'
+    SSL_CERT_INFO="keystore=\"JKS\" keystoreFile=\"${CERT_DIR}/files/${CERT_NAME}.jks\" keystorePass=\"__CAPASS\" truststore=\"JKS\" truststoreFile=\"${CERT_DIR}/files/truststore-__TRUSTSTORE.jks\" truststorePass=\"__CAPASS\""
 fi
 
-sed -i "s/__SSL_CERT_INFO/${SSL_CERT_INFO}/g" ${TAK_DIR}/CoreConfig.xml
+sed -i "s#__SSL_CERT_INFO#${SSL_CERT_INFO}#g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__CAPASS/${CAPASS}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__ORGANIZATION/${ORGANIZATION}/g" ${TAK_DIR}/CoreConfig.xml
