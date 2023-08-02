@@ -29,6 +29,8 @@ TEMPLATE_DIR="${TOOLS_DIR}/templates"
 TAK_PATH="/opt/tak"
 CERT_PATH="${TAK_PATH}/certs"
 
+printf $warning "\n\n------------ Unpacking Docker Release ------------\n\n"
+
 unzip /tmp/takserver*.zip -d ${WORK_DIR}/
 mv ${WORK_DIR}/tak* ${RELEASE_DIR}/
 chown -R $USER:$USER ${WORK_DIR}
@@ -74,9 +76,10 @@ printf $info "\nAllow Docker 5432 [postgres]\n"
 sudo ufw allow proto tcp from ${DOCKER_SUBNET} to any port 5432
 sudo ufw route allow from ${DOCKER_SUBNET} to ${DOCKER_SUBNET}
 
+printf $warning "\n\n------------ SSL setup. Hit enter (x4) to accept the defaults ------------\n\n"
 ## Set variables for generating CA and client certs
 #
-printf $warning "\n\n------------ SSL setup. Hit enter (x4) to accept the defaults ------------\n\n"
+
 read -p "State (for cert generation). Default [state] : " STATE
 export STATE=${STATE:-state}
 
@@ -96,7 +99,6 @@ printf $warning "\n\n------------ Updating CoreConfig.xml ------------\n\n"
 cp ${TEMPLATE_DIR}/CoreConfig-${VERSION}.xml.tmpl ${TAK_DIR}/CoreConfig.xml
 
 SSL_CERT_INFO=""
-cat ~/letsencrypt.txt
 if [[ -f ~/letsencrypt.txt ]]; then
     printf $info "\nUsing LetsEncrypt Certificate\n"
     FQDN=$(cat ~/letsencrypt.txt)
@@ -151,9 +153,11 @@ sed -i "s/__PG_PASS/${PG_PASS}/" ${TAK_DIR}/CoreConfig.xml
 #
 sed -i "s/MemTotal/MemFree/g" ${TAK_DIR}/setenv.sh
 
+
+printf $warning "\n\n------------ Creating ENV variable file ------------\n\n"
 # Writes variables to a .env file for docker-compose
 #
-printf $warning "\n\n------------ Creating ENV variable file ------------\n\n"
+
 cat << EOF > ${RELEASE_DIR}/.env
 STATE=$STATE
 CITY=$CITY
@@ -166,13 +170,16 @@ NIC=$NIC
 INTERMEDIARY_CA=$INTERMEDIARY_CA
 EOF
 
+printf $warning "\n\n------------ Building Docker Containers ------------\n\n"
 cp ${TOOLS_DIR}/docker/compose.yml ${RELEASE_DIR}/
 docker compose -f ${RELEASE_DIR}/compose.yml up --force-recreate -d
 
+printf $warning "\n\n------------ Certificate Generation --------------\n\n"
+printf $info "If prompted to replace certificate, enter YES\n"
 ## Certs
 #
 while true;do
-    printf $warning "\n\n------------ Certificate Generation --------------\n\n"
+    printf $info "\n------------ Generating --------------\n"
 
     docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeRootCa.sh --ca-name ${TAK_ALIAS}-CA"
     if [ $? -eq 0 ];then
@@ -225,9 +232,9 @@ echo >> ${INFO}
 echo "Tak Admin user      : $TAKADMIN" >> ${INFO}
 echo "Tak Admin password  : $TAKADMIN_PASS" >> ${INFO}
 echo "PostgreSQL password : $PG_PASS" >> ${INFO}
-echo "---------PASSWORDS----------------" >> ${INFO}
 echo >> ${INFO}
-printf $(cat ${INFO})
+echo "---------PASSWORDS----------------" >> ${INFO}
+printf $danger $(cat ${INFO})
 
 printf $warning "\nMAKE A NOTE OF YOUR PASSWORDS. THEY WON'T BE SHOWN AGAIN.\n\n
 "
