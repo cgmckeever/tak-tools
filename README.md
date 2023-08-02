@@ -1,6 +1,8 @@
 # Tak Tools
 
-# Prereq
+# Docker
+
+## Prereq
 
 ```
 sudo apt -y update
@@ -18,7 +20,7 @@ git clone https://github.com/cgmckeever/tak-tools.git /opt/tak-tools
 - Enables UFW [Firewall]
 - Will create a `tak` service user
 
-# Setup
+## Setup
 
 ```
 su - tak
@@ -26,7 +28,7 @@ su - tak
 
 ```
 
-# LetsEncrypt [optional]
+## LetsEncrypt [optional]
 
 ```
 su - tak
