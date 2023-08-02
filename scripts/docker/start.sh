@@ -13,6 +13,7 @@ color warning 93m
 color danger 91m
 
 CAPASS="atakatak"
+DOCKER_SUBNET="172.17.0.0/16"
 
 WORK_DIR=~/tak-server
 RELEASE_DIR="${WORK_DIR}/release"
@@ -56,7 +57,7 @@ sudo ufw allow proto tcp from ${IP}/24 to any port 8443
 sudo ufw allow proto tcp from ${IP}/24 to any port 8446
 sudo ufw allow proto tcp from ${IP}/24 to any port 9000
 sudo ufw allow proto tcp from ${IP}/24 to any port 9001
-sudo ufw route allow from 172.0.0.0/24 to 172.0.0.0/24
+sudo ufw allow proto tcp from ${DOCKER_SUBNET} to any port 5432
 
 ## Set variables for generating CA and client certs
 #
@@ -82,10 +83,6 @@ sed -i "s/__ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" ${TAK_DIR}/CoreConfig.
 sed -i "s/__ORGANIZATION/${ORGANIZATION}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__CAPASS/${CAPASS}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__TAK_ALIAS/${TAK_ALIAS}/g" ${TAK_DIR}/CoreConfig.xml
-
-# Replaces takserver.jks with $IP.jks
-#sed -i "s/takserver.jks/$IP.jks/g" tak/CoreConfig.xml
-
 
 # Better memory allocation:
 # By default TAK server allocates memory based upon the *total* on a machine.
