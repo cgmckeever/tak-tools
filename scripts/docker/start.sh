@@ -84,17 +84,33 @@ ORGANIZATIONAL_UNIT=$ORGANIZATIONAL_UNIT
 EOF
 
 cp ${TOOLS_DIR}/docker/compose.yml ${RELEASE_DIR}/
-docker compose --file ${RELEASE_DIR}/compose.yml up --force-recreate -d
+docker compose -f ${RELEASE_DIR}/compose.yml up --force-recreate -d
 
 ## Certs
 #
 INTERMEDIARY_CA=${TAK_ALIAS}-Intermediate-CA
 
-docker compose exec tak-server bash -c "cd /opt/tak/certs && ./makeRootCa.sh --ca-name ${TAK_ALIAS}-CA"
-docker compose exec tak-server bash -c "cd /opt/tak/certs && ./makeCert.sh ca ${INTERMEDIARY_CA}"
-docker compose exec tak-server bash -c "cd /opt/tak/certs && ./makeCert.sh server ${TAK_ALIAS}"
-docker compose exec tak-server bash -c "cd /opt/tak/certs && ./makeCert.sh client ${TAKADMIN}"
-docker compose exec tak-server bash -c "useradd $USER && chown -R $USER:$USER /opt/tak/certs/"
-docker compose stop tak-server
+sleep 30
+
+while true;do
+    printf $warning "------------CERTIFICATE GENERATION--------------\n"
+
+    docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd /opt/tak/certs && ./makeRootCa.sh --ca-name ${TAK_ALIAS}-CA"
+    if [ $? -eq 0 ];then
+        docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd /opt/tak/certs && ./makeCert.sh ca ${INTERMEDIARY_CA}"
+        if [ $? -eq 0 ];then
+            docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd /opt/tak/certs && ./makeCert.sh server ${TAK_ALIAS}"
+            if [ $? -eq 0 ];then
+                docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd /opt/tak/certs && ./makeCert.sh client ${TAKADMIN}"
+                if [ $? -eq 0 ];then
+                    docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER /opt/tak/certs/"
+                    docker compose -f ${RELEASE_DIR}/compose.yml stop tak-server
+                    break
+                fi
+            fi
+        fi
+    fi
+    sleep 15
+done
 
 
