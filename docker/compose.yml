@@ -1,7 +1,7 @@
 version: "3.3"
 
 services:
-  db:
+  tak-db:
     build:
       context: .
       dockerfile: ./docker/Dockerfile.takserver-db
@@ -15,7 +15,7 @@ services:
     ports:
       - 5432:5432
     restart: always
-  tak:
+  tak-server:
     build:
       context: .
       dockerfile: ./docker/Dockerfile.takserver
