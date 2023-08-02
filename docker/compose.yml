@@ -30,7 +30,7 @@ services:
     networks:
       tak:
     depends_on:
-      - db
+      - tak-db
     restart: always
 volumes:
   db_data:
