@@ -28,6 +28,9 @@ mv ${WORK_DIR}/tak* ${RELEASE_DIR}
 chown -R $USER:$USER ${WORK_DIR}
 VERSION=$(cat ${TAK_DIR}/version.txt | sed 's/\(.*\)-.*-.*/\1/')
 
+echo $VERSION
+exit
+
 TAKADMIN=tak-admin
 TAKADMIN_PASS=$(pwgen -cvy1 25)
 
