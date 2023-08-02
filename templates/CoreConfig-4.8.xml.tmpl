@@ -72,7 +72,7 @@
     </security>
     <federation missionFederationDisruptionToleranceRecencySeconds="43200">
         <federation-server webBaseUrl="https://__HOSTIP:8443/Marti">
-            <tls keystore="JKS" keystoreFile="/opt/tak/certs/files/TAK_ALIAS.jks" keystorePass="__CAPASS" truststore="JKS" truststoreFile="certs/files/fed-truststore.jks" truststorePass="__CAPASS" keymanager="SunX509"/>
+            <tls keystore="JKS" keystoreFile="/opt/tak/certs/files/__TAK_ALIAS.jks" keystorePass="__CAPASS" truststore="JKS" truststoreFile="certs/files/fed-truststore.jks" truststorePass="__CAPASS" keymanager="SunX509"/>
             <v1Tls tlsVersion="TLSv1.2"/>
             <v1Tls tlsVersion="TLSv1.3"/>
         </federation-server>
