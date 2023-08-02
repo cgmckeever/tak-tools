@@ -55,6 +55,7 @@ read -p "Which Network Interface? Default [${DEFAULT_NIC}]? " NIC
 NIC=${NIC:-${DEFAULT_NIC}}
 
 IP=$(ip addr show $NIC | grep -m 1 "inet " | awk '{print $2}' | cut -d "/" -f1)
+URL=$IP
 
 sudo ufw allow proto tcp from ${IP}/24 to any port 8089
 sudo ufw allow proto tcp from ${IP}/24 to any port 8443
@@ -82,14 +83,12 @@ export ORGANIZATIONAL_UNIT=${ORGANIZATIONAL_UNIT:-${ORGANIZATION}}
 ## CoreConfig
 #
 cp ${TEMPLATE_DIR}/CoreConfig-${VERSION}.xml.tmpl ${TAK_DIR}/CoreConfig.xml
-sed -i "s/__TAK_ALIAS/${TAK_ALIAS}/g" ${TAK_DIR}/CoreConfig.xml
-sed -i "s/__HOSTIP/${IP}/g" ${TAK_DIR}/CoreConfig.xml
-sed -i "s/__PG_PASS/${PG_PASS}/" ${TAK_DIR}/CoreConfig.xml
 
 SSL_CERT_INFO=""
 cat ~/letsencrypt.txt
 if [[ -f ~/letsencrypt.txt ]]; then
     FQDN=$(cat ~/letsencrypt.txt)
+    URL=$FQDN
     CERT_NAME=le-${FQDN//\./-}
     LE_DIR="/etc/letsencrypt/live/$FQDN"
     mkdir -p ${CERT_DIR}/files
@@ -130,14 +129,15 @@ SIGNING_KEY=${INTERMEDIARY_CA}-signing
 sed -i "s/__SIGNING_KEY/${SIGNING_KEY}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__CRL/${__INTERMEDIARY_CA}/g" ${TAK_DIR}/CoreConfig.xml
 
-exit
+sed -i "s/__TAK_ALIAS/${TAK_ALIAS}/g" ${TAK_DIR}/CoreConfig.xml
+sed -i "s/__HOSTIP/${URL}/g" ${TAK_DIR}/CoreConfig.xml
+sed -i "s/__PG_PASS/${PG_PASS}/" ${TAK_DIR}/CoreConfig.xml
 
 # Better memory allocation:
 # By default TAK server allocates memory based upon the *total* on a machine.
 # Allocate memory based upon the available memory so this still scales
 #
 sed -i "s/MemTotal/MemFree/g" ${TAK_DIR}/setenv.sh
-
 
 # Writes variables to a .env file for docker-compose
 #
@@ -196,7 +196,7 @@ docker compose -f ${RELEASE_DIR}/compose.yml start tak-server
 
 
 printf $warning "\n\nImport the $TAKADMIN.p12 certificate from this folder to your browser as per the README.md file\n"
-printf $success "Login at https://$IP:8443 with your admin account. No need to run the /setup step as this has been done.\n"
+printf $success "Login at https://$URL:8443 with your admin account. No need to run the /setup step as this has been done.\n"
 printf $info "Certificates and *CERT DATA PACKAGES* are in tak/certs/files \n\n"
 
 printf $info "Execute into running container 'docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash' \n\n"
