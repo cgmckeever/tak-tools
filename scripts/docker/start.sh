@@ -56,7 +56,7 @@ sudo ufw allow proto tcp from ${IP}/24 to any port 8443
 sudo ufw allow proto tcp from ${IP}/24 to any port 8446
 sudo ufw allow proto tcp from ${IP}/24 to any port 9000
 sudo ufw allow proto tcp from ${IP}/24 to any port 9001
-sudo ufw route allow from 172.20.0.0/16 to 172.20.0.0/16
+sudo ufw route allow from 172.0.0.0/24 to 172.0.0.0/24
 
 ## Set variables for generating CA and client certs
 #
