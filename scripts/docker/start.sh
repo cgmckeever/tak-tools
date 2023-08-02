@@ -51,9 +51,12 @@ NIC=${NIC:-${DEFAULT_NIC}}
 
 IP=$(ip addr show $NIC | grep -m 1 "inet " | awk '{print $2}' | cut -d "/" -f1)
 
+sudo ufw allow proto tcp from ${IP}/24 to any port 5432
 sudo ufw allow proto tcp from ${IP}/24 to any port 8089
 sudo ufw allow proto tcp from ${IP}/24 to any port 8443
 sudo ufw allow proto tcp from ${IP}/24 to any port 8446
+sudo ufw allow proto tcp from ${IP}/24 to any port 9000
+sudo ufw allow proto tcp from ${IP}/24 to any port 9001
 
 ## Set variables for generating CA and client certs
 #
@@ -95,6 +98,7 @@ sed -i "s/MemTotal/MemFree/g" ${TAK_DIR}/setenv.sh
 cat << EOF > ${RELEASE_DIR}/.env
 STATE=$STATE
 CITY=$CITY
+ORGANIZATION=$ORGANIZATION
 ORGANIZATIONAL_UNIT=$ORGANIZATIONAL_UNIT
 CAPASS=$CAPASS
 TAK_ALIAS=$TAK_ALIAS
@@ -136,7 +140,7 @@ printf $warning "\n\nImport the $TAKADMIN.p12 certificate from this folder to yo
 printf $success "Login at https://$IP:8443 with your admin account. No need to run the /setup step as this has been done.\n"
 printf $info "Certificates and *CERT DATA PACKAGES* are in tak/certs/files \n\n"
 
-printf $info "Execute into running container `docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash` \n\n"
+printf $info "Execute into running container 'docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash' \n\n"
 
 printf $danger "---------PASSWORDS----------------\n\n"
 printf $danger "Tak Admin user name: $TAKADMIN\n"
