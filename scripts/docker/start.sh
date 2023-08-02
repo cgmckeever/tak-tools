@@ -13,7 +13,7 @@ color warning 93m
 color danger 91m
 
 CAPASS="atakatak"
-DOCKER_SUBNET="172.17.0.0/16"
+DOCKER_SUBNET="172.0.0.0/24"
 
 WORK_DIR=~/tak-server
 RELEASE_DIR="${WORK_DIR}/release"
@@ -132,7 +132,7 @@ while true;do
 done
 
 while true; do
-    sleep 15
+    sleep 25
     docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar /opt/tak/utils/UserManager.jar usermod -A -p \"${TAKADMIN_PASS}\" ${TAKADMIN}"
     if [ $? -eq 0 ];then
         docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar /opt/tak/utils/UserManager.jar certmod -A /opt/tak/certs/files/${TAKADMIN}.pem"
