@@ -51,7 +51,7 @@ IP=$(ip addr show $NIC | grep -m 1 "inet " | awk '{print $2}' | cut -d "/" -f1)
 
 ## Set variables for generating CA and client certs
 #
-printf $warning "SSL setup. Hit enter (x3) to accept the defaults:\n"
+printf $warning "SSL setup. Hit enter (x4) to accept the defaults:\n"
 read -p "State (for cert generation). Default [state] :" STATE
 export STATE=${STATE:-state}
 
@@ -84,8 +84,6 @@ sed -i "s/__CAPASS/${CAPASS}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/MemTotal/MemFree/g" ${TAK_DIR}/setenv.sh
 
 
-
-
 # Writes variables to a .env file for docker-compose
 #
 cat << EOF > ${RELEASE_DIR}/.env
@@ -93,6 +91,8 @@ STATE=$STATE
 CITY=$CITY
 ORGANIZATIONAL_UNIT=$ORGANIZATIONAL_UNIT
 CAPASS=$CAPASS
+TAK_ALIAS=$TAK_ALIAS
+NIC=$NIC
 EOF
 
 cp ${TOOLS_DIR}/docker/compose.yml ${RELEASE_DIR}/
@@ -125,3 +125,13 @@ done
 
 docker compose -f ${RELEASE_DIR}/compose.yml start tak-server
 
+
+printf $warning "\n\nImport the $TAKADMIN.p12 certificate from this folder to your browser as per the README.md file\n"
+printf $success "Login at https://$IP:8443 with your admin account. No need to run the /setup step as this has been done.\n"
+printf $info "Certificates and *CERT DATA PACKAGES* are in tak/certs/files \n\n"
+
+printf $danger "---------PASSWORDS----------------\n\n"
+printf $danger "Tak Admin user name: $TAKADMIN\n"
+printf $danger "Tak Admin password: $TAKADMIN_PASS\n"
+printf $danger "PostgreSQL password: $PG_PASS\n\n"
+printf $danger "---------PASSWORDS----------------\n\n"
