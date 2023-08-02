@@ -13,8 +13,8 @@ color warning 93m
 color danger 91m
 
 CAPASS="atakatak"
-DOCKER_SUBNET="172.26.0.0/16"
-#DOCKER_SUBNET="172.17.0.0/8"
+#DOCKER_SUBNET="172.26.0.0/16"
+DOCKER_SUBNET="172.17.0.0/8"
 #DOCKER_SUBNET="172.0.0.0/8"
 
 WORK_DIR=~/tak-server
@@ -33,10 +33,12 @@ mv ${WORK_DIR}/tak* ${RELEASE_DIR}/
 chown -R $USER:$USER ${WORK_DIR}
 VERSION=$(cat ${TAK_DIR}/version.txt | sed 's/\(.*\)-.*-.*/\1/')
 
-TAKADMIN=tak-admin
-TAKADMIN_PASS=$(pwgen -cvy1 -r "<>'\`\"" 25)
+PASS_OMIT="<>'\`\""
 
-PG_PASS=$(pwgen -cvy1 -r "<>'\`\"" 25)
+TAKADMIN=tak-admin
+TAKADMIN_PASS=$(pwgen -cvy1 -r ${PASS_OMIT} 25)
+
+PG_PASS=$(pwgen -cvy1 -r ${PASS_OMIT} 25)
 
 echo; echo
 HOSTNAME=${HOSTNAME//\./-}
