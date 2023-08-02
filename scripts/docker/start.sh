@@ -31,9 +31,9 @@ chown -R $USER:$USER ${WORK_DIR}
 VERSION=$(cat ${TAK_DIR}/version.txt | sed 's/\(.*\)-.*-.*/\1/')
 
 TAKADMIN=tak-admin
-TAKADMIN_PASS=$(pwgen -cvy1 -r "<>\"" 25)
+TAKADMIN_PASS=$(pwgen -cvy1 -r "<>'\`\"" 25)
 
-PG_PASS=$(pwgen -cvy1 -r "<>\"" 25)
+PG_PASS=$(pwgen -cvy1 -r "<>'\`\"" 25)
 
 echo; echo
 HOSTNAME=${HOSTNAME//\./-}
@@ -52,7 +52,8 @@ NIC=${NIC:-${DEFAULT_NIC}}
 IP=$(ip addr show $NIC | grep -m 1 "inet " | awk '{print $2}' | cut -d "/" -f1)
 
 #sudo ufw allow proto tcp from ${IP}/24 to any port 5432
-sudo ufw allow 5432
+#sudo ufw allow 5432
+sudo ufw route allow from 172.20.0.0/16 to 172.20.0.0/16
 sudo ufw allow proto tcp from ${IP}/24 to any port 8089
 sudo ufw allow proto tcp from ${IP}/24 to any port 8443
 sudo ufw allow proto tcp from ${IP}/24 to any port 8446
