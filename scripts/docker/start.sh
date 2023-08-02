@@ -1,22 +1,23 @@
 #!/bin/bash
 
-## TODO: Separate script?
-#
 color() {
     STARTCOLOR="\e[$2";
     ENDCOLOR="\e[0m";
     export "$1"="$STARTCOLOR%b$ENDCOLOR"
 }
-color info 96m
-color success 92m
-color warning 93m
-color danger 91m
+color info 96m      # cyan
+color success 92m   # green
+color warning 93m   # yellow
+color danger 91m    # red
 
 CAPASS="atakatak"
 CERTPASS="atakatak"
 DOCKER_SUBNET="172.20.0.0/24"
 
 WORK_DIR=~/tak-server
+sudo rm -rf $WORK_DIR
+mkdir -p $WORK_DIR
+
 RELEASE_DIR="${WORK_DIR}/release"
 TAK_DIR="${RELEASE_DIR}/tak"
 CERT_DIR="${TAK_DIR}/certs"
@@ -27,9 +28,6 @@ TEMPLATE_DIR="${TOOLS_DIR}/templates"
 
 TAK_PATH="/opt/tak"
 CERT_PATH="${TAK_PATH}/certs"
-
-sudo rm -rf $WORK_DIR
-mkdir -p $WORK_DIR
 
 unzip /tmp/takserver*.zip -d ${WORK_DIR}/
 mv ${WORK_DIR}/tak* ${RELEASE_DIR}/
@@ -60,17 +58,25 @@ NIC=${NIC:-${DEFAULT_NIC}}
 IP=$(ip addr show $NIC | grep -m 1 "inet " | awk '{print $2}' | cut -d "/" -f1)
 URL=$IP
 
+printf $warning "\n\n------------ Updating UFW Firewall Rules ------------\n\n"
+
+printf $info "\nAllow 8089v [API]\n"
 sudo ufw allow proto tcp from ${IP}/24 to any port 8089
+printf $info "\nAllow 8443 [certificate auth]\n"
 sudo ufw allow proto tcp from ${IP}/24 to any port 8443
+printf $info "\nAllow 8446 [user/pass auth]\n"
 sudo ufw allow proto tcp from ${IP}/24 to any port 8446
+printf $info "\nAllow 9000 [federation]\n"
 sudo ufw allow proto tcp from ${IP}/24 to any port 9000
+printf $info "\nAllow 9001 [federation]\n"
 sudo ufw allow proto tcp from ${IP}/24 to any port 9001
+printf $info "\nAllow Docker 5432 [postgres]\n"
 sudo ufw allow proto tcp from ${DOCKER_SUBNET} to any port 5432
 sudo ufw route allow from ${DOCKER_SUBNET} to ${DOCKER_SUBNET}
 
 ## Set variables for generating CA and client certs
 #
-printf $warning "SSL setup. Hit enter (x4) to accept the defaults:\n"
+printf $warning "\n\n------------ SSL setup. Hit enter (x4) to accept the defaults ------------\n\n"
 read -p "State (for cert generation). Default [state] : " STATE
 export STATE=${STATE:-state}
 
@@ -85,11 +91,14 @@ export ORGANIZATIONAL_UNIT=${ORGANIZATIONAL_UNIT:-${ORGANIZATION}}
 
 ## CoreConfig
 #
+printf $warning "\n\n------------ Updating CoreConfig.xml ------------\n\n"
+
 cp ${TEMPLATE_DIR}/CoreConfig-${VERSION}.xml.tmpl ${TAK_DIR}/CoreConfig.xml
 
 SSL_CERT_INFO=""
 cat ~/letsencrypt.txt
 if [[ -f ~/letsencrypt.txt ]]; then
+    printf $info "\nUsing LetsEncrypt Certificate\n"
     FQDN=$(cat ~/letsencrypt.txt)
     URL=$FQDN
     CERT_NAME=le-${FQDN//\./-}
@@ -144,6 +153,7 @@ sed -i "s/MemTotal/MemFree/g" ${TAK_DIR}/setenv.sh
 
 # Writes variables to a .env file for docker-compose
 #
+printf $warning "\n\n------------ Creating ENV variable file ------------\n\n"
 cat << EOF > ${RELEASE_DIR}/.env
 STATE=$STATE
 CITY=$CITY
@@ -162,7 +172,7 @@ docker compose -f ${RELEASE_DIR}/compose.yml up --force-recreate -d
 ## Certs
 #
 while true;do
-    printf $warning "------------CERTIFICATE GENERATION--------------\n"
+    printf $warning "\n\n------------ Certificate Generation --------------\n\n"
 
     docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeRootCa.sh --ca-name ${TAK_ALIAS}-CA"
     if [ $? -eq 0 ];then
@@ -180,7 +190,11 @@ while true;do
     sleep 10
 done
 
-sleep 30
+printf $warning "\n\n------------ Waiting for Server to start --------------\n\n"
+sleep 45
+
+printf $warning "\n\n------------ Create Admin User --------------\n\n"
+printf $info "You may see several JAVA warnings. This is expected.\n\n"
 
 while true; do
     docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar ${TAK_PATH}/utils/UserManager.jar usermod -A -p \"${TAKADMIN_PASS}\" ${TAKADMIN}"
@@ -193,19 +207,31 @@ while true; do
     sleep 10
 done
 
+printf $warning "\n\n------------ Configuration Complete. Restarting --------------\n\n"
+
 docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER ${CERT_PATH}/"
 docker compose -f ${RELEASE_DIR}/compose.yml stop tak-server
 docker compose -f ${RELEASE_DIR}/compose.yml start tak-server
 
 
-printf $warning "\n\nImport the $TAKADMIN.p12 certificate from this folder to your browser as per the README.md file\n"
-printf $success "Login at https://$URL:8443 with your admin account. No need to run the /setup step as this has been done.\n"
 printf $info "Certificates and *CERT DATA PACKAGES* are in tak/certs/files \n\n"
+printf $warning "\n\nImport the ${CERT_PATH}/files/$TAKADMIN.p12 certificate to your browser as per the README\n\n"
 
+printf $success "Login at https://$URL:8443 with your admin account. No need to run the /setup step as this has been done.\n"
+
+INFO=${RELEASE_DIR}/info.txt
+echo "---------PASSWORDS----------------" > ${INFO}
+echo >> ${INFO}
+echo "Tak Admin user      : $TAKADMIN" >> ${INFO}
+echo "Tak Admin password  : $TAKADMIN_PASS" >> ${INFO}
+echo "PostgreSQL password : $PG_PASS" >> ${INFO}
+echo "---------PASSWORDS----------------" >> ${INFO}
+echo >> ${INFO}
+printf $(cat ${INFO})
+
+printf $warning "\nMAKE A NOTE OF YOUR PASSWORDS. THEY WON'T BE SHOWN AGAIN.\n\n
+"
+printf $warning "You have a database listening on TCP 5432 which requires a login. You should still block this port with a firewall\n\n"
+
+printf $info "Docker containers should automatically start with the Docker service from now on.\n"
 printf $info "Execute into running container 'docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash' \n\n"
-
-printf $danger "---------PASSWORDS----------------\n\n"
-printf $danger "Tak Admin user      : $TAKADMIN\n"
-printf $danger "Tak Admin password  : $TAKADMIN_PASS\n"
-printf $danger "PostgreSQL password : $PG_PASS\n\n"
-printf $danger "---------PASSWORDS----------------\n\n"
