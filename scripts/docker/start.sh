@@ -133,15 +133,17 @@ while true;do
     sleep 10
 done
 
+sleep 30
+
 while true; do
-    sleep 25
-    docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c 'java -jar /opt/tak/utils/UserManager.jar usermod -A -p "${TAKADMIN_PASS}" ${TAKADMIN}'
+    docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar /opt/tak/utils/UserManager.jar usermod -A -p \"${TAKADMIN_PASS}\" ${TAKADMIN}"
     if [ $? -eq 0 ];then
         docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar /opt/tak/utils/UserManager.jar certmod -A /opt/tak/certs/files/${TAKADMIN}.pem"
         if [ $? -eq 0 ];then
             break
         fi
     fi
+    sleep 10
 done
 
 docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER /opt/tak/certs/"
