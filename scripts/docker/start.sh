@@ -31,9 +31,9 @@ chown -R $USER:$USER ${WORK_DIR}
 VERSION=$(cat ${TAK_DIR}/version.txt | sed 's/\(.*\)-.*-.*/\1/')
 
 TAKADMIN=tak-admin
-TAKADMIN_PASS=$(pwgen -cvy1 25)
+TAKADMIN_PASS=$(pwgen -cvy1 -r "<>" 25)
 
-PG_PASS=$(pwgen -cvy1 25)
+PG_PASS=$(pwgen -cvy1 -r "<>" 25)
 
 echo; echo
 HOSTNAME=${HOSTNAME//\./-}
@@ -135,6 +135,8 @@ docker compose -f ${RELEASE_DIR}/compose.yml start tak-server
 printf $warning "\n\nImport the $TAKADMIN.p12 certificate from this folder to your browser as per the README.md file\n"
 printf $success "Login at https://$IP:8443 with your admin account. No need to run the /setup step as this has been done.\n"
 printf $info "Certificates and *CERT DATA PACKAGES* are in tak/certs/files \n\n"
+
+printf $info "Execute into running container `docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash` \n\n"
 
 printf $danger "---------PASSWORDS----------------\n\n"
 printf $danger "Tak Admin user name: $TAKADMIN\n"
