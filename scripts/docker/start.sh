@@ -13,7 +13,7 @@ color warning 93m
 color danger 91m
 
 CAPASS="atakatak"
-DOCKER_SUBNET="172.10.0.0/16"
+DOCKER_SUBNET="172.26.0.0/16"
 #DOCKER_SUBNET="172.17.0.0/8"
 #DOCKER_SUBNET="172.0.0.0/8"
 
@@ -80,7 +80,9 @@ export ORGANIZATIONAL_UNIT=${ORGANIZATIONAL_UNIT:-${ORGANIZATION}}
 ## CoreConfig
 #
 cp ${TEMPLATE_DIR}/CoreConfig-${VERSION}.xml.tmpl ${TAK_DIR}/CoreConfig.xml
+echo "1"
 sed -i "s/__PG_PASS/${PG_PASS}/" ${TAK_DIR}/CoreConfig.xml
+echo ${PG_PASS}
 sed -i "s/__HOSTIP/${IP}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__ORGANIZATION/${ORGANIZATION}/g" ${TAK_DIR}/CoreConfig.xml
@@ -91,6 +93,7 @@ sed -i "s/__TAK_ALIAS/${TAK_ALIAS}/g" ${TAK_DIR}/CoreConfig.xml
 # By default TAK server allocates memory based upon the *total* on a machine.
 # Allocate memory based upon the available memory so this still scales
 #
+echo "2"
 sed -i "s/MemTotal/MemFree/g" ${TAK_DIR}/setenv.sh
 
 

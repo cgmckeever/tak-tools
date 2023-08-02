@@ -10,7 +10,6 @@ services:
       - "./tak:/opt/tak:z"
     networks:
       tak:
-        ipv4_address: "172.10.0.1"
         aliases:
           - tak-database
     ports:
@@ -32,7 +31,6 @@ services:
       - "9001:9001"
     networks:
       tak:
-        ipv4_address: "172.10.0.2"
     depends_on:
       - tak-db
     restart: always
