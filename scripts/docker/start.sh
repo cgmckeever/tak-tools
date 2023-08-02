@@ -24,7 +24,7 @@ rm -rf $WORK_DIR
 mkdir -p $WORK_DIR
 
 unzip /tmp/takserver*.zip -d ${WORK_DIR}/
-mv ${WORK_DIR}/tak* ${RELEASE_DIR}
+mv ${WORK_DIR}/tak* ${RELEASE_DIR}/
 chown -R $USER:$USER ${WORK_DIR}
 VERSION=$(cat ${TAK_DIR}/version.txt | sed 's/\(.*\)-.*-.*/\1/')
 
