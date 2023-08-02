@@ -13,6 +13,7 @@ color warning 93m
 color danger 91m
 
 CAPASS="atakatak"
+CERTPASS="atakatak"
 DOCKER_SUBNET="172.20.0.0/24"
 
 WORK_DIR=~/tak-server
@@ -80,17 +81,19 @@ export ORGANIZATIONAL_UNIT=${ORGANIZATIONAL_UNIT:-${ORGANIZATION}}
 ## CoreConfig
 #
 cp ${TEMPLATE_DIR}/CoreConfig-${VERSION}.xml.tmpl ${TAK_DIR}/CoreConfig.xml
-sed -i "s/__PG_PASS/${PG_PASS}/" ${TAK_DIR}/CoreConfig.xml
+sed -i "s/__TAK_ALIAS/${TAK_ALIAS}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__HOSTIP/${IP}/g" ${TAK_DIR}/CoreConfig.xml
+sed -i "s/__PG_PASS/${PG_PASS}/" ${TAK_DIR}/CoreConfig.xml
+sed -i "s/__CAPASS/${CAPASS}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__ORGANIZATION/${ORGANIZATION}/g" ${TAK_DIR}/CoreConfig.xml
-sed -i "s/__CAPASS/${CAPASS}/g" ${TAK_DIR}/CoreConfig.xml
-sed -i "s/__TAK_ALIAS/${TAK_ALIAS}/g" ${TAK_DIR}/CoreConfig.xml
-sed -i "s/__SSL_CERT_INFO//g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__TRUSTSTORE/${INTERMEDIARY_CA}/g" ${TAK_DIR}/CoreConfig.xml
-sed -i "s/__SIGNING_KEY/${INTERMEDIARY_CA}-signing/g" ${TAK_DIR}/CoreConfig.xml
+
+SIGNING_KEY=${INTERMEDIARY_CA}-signing
+sed -i "s/__SIGNING_KEY/${SIGNING_KEY}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__CRL/${__INTERMEDIARY_CA}/g" ${TAK_DIR}/CoreConfig.xml
 
+sed -i "s/__SSL_CERT_INFO//g" ${TAK_DIR}/CoreConfig.xml
 
 # Better memory allocation:
 # By default TAK server allocates memory based upon the *total* on a machine.
@@ -107,6 +110,7 @@ CITY=$CITY
 ORGANIZATION=$ORGANIZATION
 ORGANIZATIONAL_UNIT=$ORGANIZATIONAL_UNIT
 CAPASS=$CAPASS
+PASS=$CERTPASS
 TAK_ALIAS=$TAK_ALIAS
 NIC=$NIC
 INTERMEDIARY_CA=$INTERMEDIARY_CA
