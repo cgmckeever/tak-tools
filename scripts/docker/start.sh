@@ -25,6 +25,9 @@ SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
 TOOLS_DIR=$(dirname $(dirname $SCRIPT_DIR))
 TEMPLATE_DIR="${TOOLS_DIR}/templates"
 
+TAK_PATH="/opt/tak"
+CERT_PATH="${TAK_PATH}/certs"
+
 sudo rm -rf $WORK_DIR
 mkdir -p $WORK_DIR
 
@@ -116,7 +119,7 @@ if [[ -f ~/letsencrypt.txt ]]; then
         -file ${LE_DIR}/fullchain.pem \
         -keystore ${CERT_DIR}/files/${CERT_NAME}.jks
 
-    SSL_CERT_INFO="keystore=\"JKS\" keystoreFile=\"${CERT_DIR}/files/${CERT_NAME}.jks\" keystorePass=\"__CAPASS\" truststore=\"JKS\" truststoreFile=\"${CERT_DIR}/files/truststore-__TRUSTSTORE.jks\" truststorePass=\"__CAPASS\""
+    SSL_CERT_INFO="keystore=\"JKS\" keystoreFile=\"${CERT_PATH}/files/${CERT_NAME}.jks\" keystorePass=\"__CAPASS\" truststore=\"JKS\" truststoreFile=\"${CERT_PATH}/files/truststore-__TRUSTSTORE.jks\" truststorePass=\"__CAPASS\""
 fi
 
 sed -i "s#__SSL_CERT_INFO#${SSL_CERT_INFO}#g" ${TAK_DIR}/CoreConfig.xml
@@ -161,13 +164,13 @@ docker compose -f ${RELEASE_DIR}/compose.yml up --force-recreate -d
 while true;do
     printf $warning "------------CERTIFICATE GENERATION--------------\n"
 
-    docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd /opt/tak/certs && ./makeRootCa.sh --ca-name ${TAK_ALIAS}-CA"
+    docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeRootCa.sh --ca-name ${TAK_ALIAS}-CA"
     if [ $? -eq 0 ];then
-        docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd /opt/tak/certs && ./makeCert.sh ca ${INTERMEDIARY_CA}"
+        docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeCert.sh ca ${INTERMEDIARY_CA}"
         if [ $? -eq 0 ];then
-            docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd /opt/tak/certs && ./makeCert.sh server ${TAK_ALIAS}"
+            docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeCert.sh server ${TAK_ALIAS}"
             if [ $? -eq 0 ];then
-                docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd /opt/tak/certs && ./makeCert.sh client ${TAKADMIN}"
+                docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeCert.sh client ${TAKADMIN}"
                 if [ $? -eq 0 ];then
                     break
                 fi
@@ -180,9 +183,9 @@ done
 sleep 30
 
 while true; do
-    docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar /opt/tak/utils/UserManager.jar usermod -A -p \"${TAKADMIN_PASS}\" ${TAKADMIN}"
+    docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar ${TAK_PATH}/utils/UserManager.jar usermod -A -p \"${TAKADMIN_PASS}\" ${TAKADMIN}"
     if [ $? -eq 0 ];then
-        docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar /opt/tak/utils/UserManager.jar certmod -A /opt/tak/certs/files/${TAKADMIN}.pem"
+        docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar ${TAK_PATH}/utils/UserManager.jar certmod -A ${CERT_PATH}/files/${TAKADMIN}.pem"
         if [ $? -eq 0 ];then
             break
         fi
@@ -190,7 +193,7 @@ while true; do
     sleep 10
 done
 
-docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER /opt/tak/certs/"
+docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER ${CERT_PATH}/"
 docker compose -f ${RELEASE_DIR}/compose.yml stop tak-server
 docker compose -f ${RELEASE_DIR}/compose.yml start tak-server
 
