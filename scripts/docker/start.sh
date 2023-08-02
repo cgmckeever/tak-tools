@@ -88,8 +88,8 @@ sed -i "s/__PG_PASS/${PG_PASS}/" ${TAK_DIR}/CoreConfig.xml
 
 SSL_CERT_INFO=""
 cat ${WORK_DIR}/letsencrypt.txt
-if [[ -f "${WORK_DIR}/letsencrypt.txt" ]]; then
-    FQDN=$(cat letsencrypt.txt)
+if [[ -f "~/letsencrypt.txt" ]]; then
+    FQDN=$(cat ~/letsencrypt.txt)
     CERT_NAME=le-${FQDN//\./-}
     LE_DIR="/etc/letsencrypt/live/$FQDN"
     mkdir -p ${CERT_DIR}/files
@@ -121,8 +121,6 @@ if [[ -f "${WORK_DIR}/letsencrypt.txt" ]]; then
     SSL_CERT_INFO='keystore="JKS" keystoreFile="${CERT_DIR}/files/${CERT_NAME}.jks" keystorePass="__CAPASS" truststore="JKS" truststoreFile="${CERT_DIR}/files/truststore-__TRUSTSTORE.jks" truststorePass="__CAPASS"'
 fi
 
-exit
-
 sed -i "s/__SSL_CERT_INFO/${SSL_CERT_INFO}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__CAPASS/${CAPASS}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" ${TAK_DIR}/CoreConfig.xml
@@ -132,6 +130,8 @@ sed -i "s/__TRUSTSTORE/${INTERMEDIARY_CA}/g" ${TAK_DIR}/CoreConfig.xml
 SIGNING_KEY=${INTERMEDIARY_CA}-signing
 sed -i "s/__SIGNING_KEY/${SIGNING_KEY}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__CRL/${__INTERMEDIARY_CA}/g" ${TAK_DIR}/CoreConfig.xml
+
+exit
 
 # Better memory allocation:
 # By default TAK server allocates memory based upon the *total* on a machine.
