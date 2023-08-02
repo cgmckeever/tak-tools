@@ -114,8 +114,6 @@ docker compose -f ${RELEASE_DIR}/compose.yml up --force-recreate -d
 
 ## Certs
 #
-sleep 20
-
 while true;do
     printf $warning "------------CERTIFICATE GENERATION--------------\n"
 
