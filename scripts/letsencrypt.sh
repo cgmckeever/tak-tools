@@ -6,14 +6,15 @@ WORK_DIR=~/tak-server
 #
 sudo apt install -y certbot openjdk-16-jre-headless
 
+echo; echo
 read -p  "What is your domain name? [ex: atakhq.com or tak-public.atakhq.com] " FQDN
 NAME=${FQDN//\./-}
 
 # request inital cert
 #
-echo ""
+echo
 echo "Requesting a new certificate..."
-echo ""
+echo
 read -p "What is your email? [Needed for Letsencrypt Alerts] : " EMAIL
 
 if sudo certbot certonly --standalone -d $FQDN -m $EMAIL --agree-tos --non-interactive; then

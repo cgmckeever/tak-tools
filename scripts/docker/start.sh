@@ -19,6 +19,7 @@ DOCKER_SUBNET="172.20.0.0/24"
 WORK_DIR=~/tak-server
 RELEASE_DIR="${WORK_DIR}/release"
 TAK_DIR="${RELEASE_DIR}/tak"
+CERT_DIR="${TAK_DIR}/certs"
 
 SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
 TOOLS_DIR=$(dirname $(dirname $SCRIPT_DIR))
@@ -84,6 +85,41 @@ cp ${TEMPLATE_DIR}/CoreConfig-${VERSION}.xml.tmpl ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__TAK_ALIAS/${TAK_ALIAS}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__HOSTIP/${IP}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__PG_PASS/${PG_PASS}/" ${TAK_DIR}/CoreConfig.xml
+
+SSL_CERT_INFO=""
+if [[ -f "${WORK_DIR}/letsencrypt.txt" ]]; then
+    FQDN=$(cat letsencrypt.txt)
+    CERT_NAME=le-${FQDN//\./-}
+    LE_DIR="/etc/letsencrypt/live/$FQDN"
+
+    sudo openssl pkcs12 -export \
+        -in ${LE_DIR}/fullchain.pem \
+        -inkey ${LE_DIR}/privkey.pem \
+        -name ${CERT_NAME} \
+        -out ${CERT_DIR}/files/${CERT_NAME}.p12 \
+        -passout pass:$CAPASS
+
+    sudo keytool -importkeystore \
+        -deststorepass $CAPASS \
+        -srcstorepass $CAPASS \
+        -destkeystore ${CERT_DIR}/files/${CERT_NAME}.jks \
+        -srckeystore ${CERT_DIR}/files/${CERT_NAME}.p12 \
+        -srcstoretype PKCS12
+
+    sudo keytool -import \
+        -alias bundle \
+        -trustcacerts \
+        -deststorepass $CAPASS \
+        -srcstorepass $CAPASS \
+        -file ${LE_DIR}/fullchain.pem \
+        -keystore ${CERT_DIR}/files/${CERT_NAME}.jks
+
+    sudo update-alternatives --set java /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+
+    SSL_CERT_INFO='keystore="JKS" keystoreFile="${CERT_DIR}/files/${CERT_NAME}.jks" keystorePass="__CAPASS" truststore="JKS" truststoreFile="${CERT_DIR}/files/truststore-__TRUSTSTORE.jks" truststorePass="__CAPASS"'
+fi
+
+sed -i "s/__SSL_CERT_INFO/${SSL_CERT_INFO}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__CAPASS/${CAPASS}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__ORGANIZATION/${ORGANIZATION}/g" ${TAK_DIR}/CoreConfig.xml
@@ -92,8 +128,6 @@ sed -i "s/__TRUSTSTORE/${INTERMEDIARY_CA}/g" ${TAK_DIR}/CoreConfig.xml
 SIGNING_KEY=${INTERMEDIARY_CA}-signing
 sed -i "s/__SIGNING_KEY/${SIGNING_KEY}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__CRL/${__INTERMEDIARY_CA}/g" ${TAK_DIR}/CoreConfig.xml
-
-sed -i "s/__SSL_CERT_INFO//g" ${TAK_DIR}/CoreConfig.xml
 
 # Better memory allocation:
 # By default TAK server allocates memory based upon the *total* on a machine.
