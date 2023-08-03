@@ -33,7 +33,7 @@ CERT_PATH="${TAK_PATH}/certs"
 
 printf $warning "\n\n------------ Unpacking Docker Release ------------\n\n"
 
-unzip /tmp/takserver*.zip -d ~/
+unzip ~/release/takserver*.zip -d ~/
 mv ~/takserver* ${WORK_DIR}
 chown -R $USER:$USER ${WORK_DIR}
 VERSION=$(cat ${TAK_DIR}/version.txt | sed 's/\(.*\)-.*-.*/\1/')

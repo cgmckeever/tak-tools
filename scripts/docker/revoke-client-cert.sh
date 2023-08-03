@@ -17,7 +17,6 @@ FILE_PATH=${CERT_PATH}/files
 TAK_PATH=/opt/tak
 
 TAK_CA=$(docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "echo \$TAK_CA" | tr -d '\r')
-
 export CITY=$(docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "echo \$CITY" | tr -d '\r')
 export STATE=$(docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "echo \$STATE" | tr -d '\r')
 export ORGANIZATION=$(docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "echo \$ORGANIZATION" | tr -d '\r')
