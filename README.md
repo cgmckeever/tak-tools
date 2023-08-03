@@ -1,5 +1,10 @@
 # Tak Tools
 
+## Inspiration
+
+- https://github.com/Cloud-RF/tak-server
+- https://github.com/atakhq/tak-server-install-scripts
+
 # Docker
 
 ## Prereq
