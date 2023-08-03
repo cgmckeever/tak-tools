@@ -232,7 +232,7 @@ sed -i "s/__WORK_DIR/${WORK_DIR}/g" /etc/systemd/system/tak-server-docker.servic
 
 read -p "Do you want to configure TAK Server auto-start [y/n]?" AUTOSTART
 
-if [[ $RESTART =~ ^[Yy]$ ]];then
+if [[ $AUTOSTART =~ ^[Yy]$ ]];then
     sudo systemctl enable tak-server-docker
     printf $info "Configured TAK Server for auto-start\n\n"
 fi
