@@ -13,6 +13,13 @@ color danger 91m    # red
 CERT_PATH=~/tak-server/release/tak/certs
 FILE_PATH=${CERT_PATH}/files
 
+export CITY=$(docker compose -f tak-server/release/compose.yml exec tak-server bash -c "echo \$CITY" | tr -d '\r')
+export STATE=$(docker compose -f tak-server/release/compose.yml exec tak-server bash -c "echo \$STATE" | tr -d '\r')
+export ORGANIZATION=$(docker compose -f tak-server/release/compose.yml exec tak-server bash -c "echo \$ORGANIZATION" | tr -d '\r')
+export ORGANIZATIONAL_UNIT=$(docker compose -f tak-server/release/compose.yml exec tak-server bash -c "echo \$ORGANIZATIONAL_UNIT" | tr -d '\r')
+export CAPASS=$(docker compose -f tak-server/release/compose.yml exec tak-server bash -c "echo \$CAPASS" | tr -d '\r')
+export PASS=$(docker compose -f tak-server/release/compose.yml exec tak-server bash -c "echo \$PASS" | tr -d '\r')
+
 printf $warning "\n\n------------ Creating TAK Client Certificate ------------ \n\n"
 
 read -p "What is the username: " USERNAME
