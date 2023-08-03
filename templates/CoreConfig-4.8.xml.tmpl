@@ -5,7 +5,7 @@
         <!-- <input auth="anonymous" _name="stdudp" protocol="udp" port="8087"/> -->
         <!-- <input auth="anonymous" _name="streamtcp" protocol="stcp" port="8088"/> -->
         <!-- <connector port="8080" tls="false" _name="http_plaintext"/> -->
-        <input _name="stdssl" protocol="tls" port="8089"/>
+        <input _name="stdssl" protocol="tls" port="__TAK_COT_PORT"/>
         <connector port="8443" _name="https"/>
         <connector port="8444" useFederationTruststore="true" _name="fed_https"/>
         <connector port="8446" clientAuth="false" _name="cert_https" __SSL_CERT_INFO/>

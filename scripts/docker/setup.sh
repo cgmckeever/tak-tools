@@ -13,6 +13,7 @@ color danger 91m    # red
 CAPASS="atakatak"
 CERTPASS="atakatak"
 DOCKER_SUBNET="172.20.0.0/24"
+TAK_COT_PORT=8089
 
 WORK_DIR=~/tak-server
 sudo rm -rf $WORK_DIR
@@ -105,20 +106,20 @@ if [[ -f ~/letsencrypt.txt ]]; then
     URL=$FQDN
     CERT_NAME=le-${FQDN//\./-}
     LE_DIR="/etc/letsencrypt/live/$FQDN"
-    mkdir -p ${CERT_DIR}/files
+    mkdir -p ${CERT_DIR}/letsencrypt
 
     sudo openssl pkcs12 -export \
         -in ${LE_DIR}/fullchain.pem \
         -inkey ${LE_DIR}/privkey.pem \
         -name ${CERT_NAME} \
-        -out ${CERT_DIR}/files/${CERT_NAME}.p12 \
+        -out ${CERT_DIR}/letsencrypt/${CERT_NAME}.p12 \
         -passout pass:${CAPASS}
 
     sudo keytool -importkeystore \
         -deststorepass ${CAPASS} \
         -srcstorepass ${CAPASS} \
-        -destkeystore ${CERT_DIR}/files/${CERT_NAME}.jks \
-        -srckeystore ${CERT_DIR}/files/${CERT_NAME}.p12 \
+        -destkeystore ${CERT_DIR}/letsencrypt/${CERT_NAME}.jks \
+        -srckeystore ${CERT_DIR}/letsencrypt/${CERT_NAME}.p12 \
         -srcstoretype PKCS12
 
     sudo keytool -import \
@@ -128,16 +129,17 @@ if [[ -f ~/letsencrypt.txt ]]; then
         -deststorepass ${CAPASS} \
         -srcstorepass ${CAPASS} \
         -file ${LE_DIR}/fullchain.pem \
-        -keystore ${CERT_DIR}/files/${CERT_NAME}.jks
+        -keystore ${CERT_DIR}/letsencrypt/${CERT_NAME}.jks
 
-    SSL_CERT_INFO="keystore=\"JKS\" keystoreFile=\"${CERT_PATH}/files/${CERT_NAME}.jks\" keystorePass=\"__CAPASS\" truststore=\"JKS\" truststoreFile=\"${CERT_PATH}/files/truststore-__TRUSTSTORE.jks\" truststorePass=\"__CAPASS\""
+    SSL_CERT_INFO="keystore=\"JKS\" keystoreFile=\"${CERT_PATH}/letsencrypt/${CERT_NAME}.jks\" keystorePass=\"__CAPASS\" truststore=\"JKS\" truststoreFile=\"${CERT_PATH}/files/truststore-__TRUSTSTORE.jks\" truststorePass=\"__CAPASS\""
 fi
 
 sed -i "s#__SSL_CERT_INFO#${SSL_CERT_INFO}#g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__CAPASS/${CAPASS}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__ORGANIZATION/${ORGANIZATION}/g" ${TAK_DIR}/CoreConfig.xml
-sed -i "s/__TRUSTSTORE/${INTERMEDIARY_CA}/g" ${TAK_DIR}/CoreConfig.xml
+TRUSTSTORE=${INTERMEDIARY_CA}
+sed -i "s/__TRUSTSTORE/${TRUSTSTORE}/g" ${TAK_DIR}/CoreConfig.xml
 
 SIGNING_KEY=${INTERMEDIARY_CA}-signing
 sed -i "s/__SIGNING_KEY/${SIGNING_KEY}/g" ${TAK_DIR}/CoreConfig.xml
@@ -146,6 +148,7 @@ sed -i "s/__CRL/${__INTERMEDIARY_CA}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__TAK_ALIAS/${TAK_ALIAS}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__HOSTIP/${URL}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__PG_PASS/${PG_PASS}/" ${TAK_DIR}/CoreConfig.xml
+sed -i "s/__TAK_COT_PORT/${TAK_COT_PORT}/" ${TAK_DIR}/CoreConfig.xml
 
 # Better memory allocation:
 # By default TAK server allocates memory based upon the *total* on a machine.
@@ -167,7 +170,10 @@ CAPASS=$CAPASS
 PASS=$CERTPASS
 TAK_ALIAS=$TAK_ALIAS
 NIC=$NIC
-INTERMEDIARY_CA=$INTERMEDIARY_CA
+TRUSTSTORE=$TRUSTSTORE
+URL=$URL
+TAK_COT_PORT=$TAK_COT_PORT
+IP=$IP
 EOF
 
 printf $warning "\n\n------------ Building Docker Containers ------------\n\n"
@@ -175,7 +181,8 @@ cp ${TOOLS_DIR}/docker/compose.yml ${RELEASE_DIR}/
 docker compose -f ${RELEASE_DIR}/compose.yml up --force-recreate -d
 
 printf $warning "\n\n------------ Certificate Generation --------------\n\n"
-printf $info "If prompted to replace certificate, enter YES\n"
+printf $info "If prompted to replace certificate, enter Y\n"
+read -p "Press any key to resume setup... "
 ## Certs
 #
 while true;do
