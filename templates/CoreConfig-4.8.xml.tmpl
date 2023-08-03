@@ -71,11 +71,11 @@
         -->
     </certificateSigning>
     <security>
-        <tls keystore="JKS" keystoreFile="/opt/tak/certs/files/__TAK_ALIAS.jks" keystorePass="__CAPASS" truststore="JKS" truststoreFile="/opt/tak/certs/files/truststore-__TRUSTSTORE.jks" truststorePass="__CAPASS" context="TLSv1.2" keymanager="SunX509"/>
-        <crl _name="TAKServer CA" crlFile="opt/tak/certs/files/__CRL.crl"/>
+        <tls keystore="JKS" keystoreFile="/opt/tak/certs/files/__TAK_ALIAS.jks" keystorePass="__CAPASS" truststore="JKS" truststoreFile="/opt/tak/certs/files/truststore-__TAK_CA.jks" truststorePass="__CAPASS" context="TLSv1.2" keymanager="SunX509"/>
         <!--
         <tls keystore="JKS" keystoreFile="/opt/tak/certs/files/__TAK_ALIAS.jks" keystorePass="__CAPASS" truststore="JKS" truststoreFile="/opt/tak/certs/files/truststore-root.jks" truststorePass="__CAPASS" context="TLSv1.2" keymanager="SunX509"/>
         -->
+        <crl _name="__CRL" crlFile="/opt/tak/certs/files/__CRL.crl"/>
     </security>
     <federation missionFederationDisruptionToleranceRecencySeconds="43200">
         <federation-server webBaseUrl="https://__HOSTIP:8443/Marti">

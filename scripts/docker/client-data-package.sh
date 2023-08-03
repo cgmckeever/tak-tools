@@ -17,7 +17,7 @@ URL=$(docker compose -f tak-server/release/compose.yml exec tak-server bash -c "
 CAPASS=$(docker compose -f tak-server/release/compose.yml exec tak-server bash -c "echo \$CAPASS" | tr -d '\r')
 PASS=$(docker compose -f tak-server/release/compose.yml exec tak-server bash -c "echo \$PASS" | tr -d '\r')
 TAK_COT_PORT=$(docker compose -f tak-server/release/compose.yml exec tak-server bash -c "echo \$TAK_COT_PORT" | tr -d '\r')
-TRUSTSTORE=$(docker compose -f tak-server/release/compose.yml exec tak-server bash -c "echo \$TRUSTSTORE" | tr -d '\r')
+TAK_CA=$(docker compose -f tak-server/release/compose.yml exec tak-server bash -c "echo \$TAK_CA" | tr -d '\r')
 
 read -p "Create data package for which user: " USERNAME
 
@@ -35,7 +35,7 @@ tee ${CERT_PATH}/clients/$USERNAME/manifest.xml >/dev/null << EOF
     </Configuration>
     <Contents>
         <Content ignore="false" zipEntry="certs\server.pref"/>
-        <Content ignore="false" zipEntry="certs\\truststore-${TRUSTSTORE}.p12"/>
+        <Content ignore="false" zipEntry="certs\\truststore-${TAK_CA}.p12"/>
         <Content ignore="false" zipEntry="certs\\${USERNAME}.p12"/>
     </Contents>
 </MissionPackageManifest>

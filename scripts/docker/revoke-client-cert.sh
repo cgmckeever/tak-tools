@@ -16,6 +16,8 @@ FILE_PATH=${CERT_PATH}/files
 
 TAK_PATH=/opt/tak
 
+TAK_CA=$(docker compose -f tak-server/release/compose.yml exec tak-server bash -c "echo \$TAK_CA" | tr -d '\r')
+
 export CITY=$(docker compose -f tak-server/release/compose.yml exec tak-server bash -c "echo \$CITY" | tr -d '\r')
 export STATE=$(docker compose -f tak-server/release/compose.yml exec tak-server bash -c "echo \$STATE" | tr -d '\r')
 export ORGANIZATION=$(docker compose -f tak-server/release/compose.yml exec tak-server bash -c "echo \$ORGANIZATION" | tr -d '\r')
@@ -33,7 +35,7 @@ if [[ -f ${FILE_PATH}/${USERNAME}.p12 ]]; then
     docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar ${TAK_PATH}/utils/UserManager.jar usermod -p \"${USER_PASS}\" $USERNAME"
 
     cd ${CERT_PATH}
-    ./revokeCert.sh ${FILE_PATH}/${USERNAME} ${FILE_PATH}/ca-do-not-share ${FILE_PATH}/tak-r2unit-com-Intermediate-CA
+    ./revokeCert.sh ${FILE_PATH}/${USERNAME} ${FILE_PATH}/${TAK_CA} ${FILE_PATH}/${TAK_CA}
 
     rm -rf ${FILE_PATH}/clients/$USERNAME
 

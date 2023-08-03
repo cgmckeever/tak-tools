@@ -49,8 +49,6 @@ HOSTNAME=${HOSTNAME//\./-}
 read -p "Alias of this Tak Server: Default [${HOSTNAME}]? " TAK_ALIAS
 TAK_ALIAS=${TAK_ALIAS:-$HOSTNAME}
 
-INTERMEDIARY_CA=${TAK_ALIAS}-Intermediate-CA
-
 echo; echo
 ip link show
 echo; echo
@@ -131,24 +129,25 @@ if [[ -f ~/letsencrypt.txt ]]; then
         -file ${LE_DIR}/fullchain.pem \
         -keystore ${CERT_DIR}/letsencrypt/${CERT_NAME}.jks
 
-    SSL_CERT_INFO="keystore=\"JKS\" keystoreFile=\"${CERT_PATH}/letsencrypt/${CERT_NAME}.jks\" keystorePass=\"__CAPASS\" truststore=\"JKS\" truststoreFile=\"${CERT_PATH}/files/truststore-__TRUSTSTORE.jks\" truststorePass=\"__CAPASS\""
+    SSL_CERT_INFO="keystore=\"JKS\" keystoreFile=\"${CERT_PATH}/letsencrypt/${CERT_NAME}.jks\" keystorePass=\"__CAPASS\" truststore=\"JKS\" truststoreFile=\"${CERT_PATH}/files/truststore-__TAK_CA.jks\" truststorePass=\"__CAPASS\""
 fi
+
 
 sed -i "s#__SSL_CERT_INFO#${SSL_CERT_INFO}#g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__CAPASS/${CAPASS}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__ORGANIZATION/${ORGANIZATION}/g" ${TAK_DIR}/CoreConfig.xml
-TRUSTSTORE=${INTERMEDIARY_CA}
-sed -i "s/__TRUSTSTORE/${TRUSTSTORE}/g" ${TAK_DIR}/CoreConfig.xml
 
-SIGNING_KEY=${INTERMEDIARY_CA}-signing
+TAK_CA=${TAK_ALIAS}-Intermediary-CA-01
+SIGNING_KEY=${TAK_CA}-signing
+sed -i "s/__TAK_CA/${TAK_CA}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__SIGNING_KEY/${SIGNING_KEY}/g" ${TAK_DIR}/CoreConfig.xml
-sed -i "s/__CRL/${__INTERMEDIARY_CA}/g" ${TAK_DIR}/CoreConfig.xml
+sed -i "s/__CRL/${TAK_CA}/g" ${TAK_DIR}/CoreConfig.xml
 
 sed -i "s/__TAK_ALIAS/${TAK_ALIAS}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__HOSTIP/${URL}/g" ${TAK_DIR}/CoreConfig.xml
-sed -i "s/__PG_PASS/${PG_PASS}/" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__TAK_COT_PORT/${TAK_COT_PORT}/" ${TAK_DIR}/CoreConfig.xml
+sed -i "s/__PG_PASS/${PG_PASS}/" ${TAK_DIR}/CoreConfig.xml
 
 # Better memory allocation:
 # By default TAK server allocates memory based upon the *total* on a machine.
@@ -170,7 +169,7 @@ CAPASS=$CAPASS
 PASS=$CERTPASS
 TAK_ALIAS=$TAK_ALIAS
 NIC=$NIC
-TRUSTSTORE=$TRUSTSTORE
+TAK_CA=$TAK_CA
 URL=$URL
 TAK_COT_PORT=$TAK_COT_PORT
 IP=$IP
@@ -188,9 +187,9 @@ read -p "Press any key to resume setup... "
 while true;do
     printf $info "\n------------ Generating --------------\n"
 
-    docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeRootCa.sh --ca-name ${TAK_ALIAS}-CA"
+    docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeRootCa.sh --ca-name ${TAK_ALIAS}-ROOT-CA-01"
     if [ $? -eq 0 ];then
-        docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeCert.sh ca ${INTERMEDIARY_CA}"
+        docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeCert.sh ca ${TAK_CA}"
         if [ $? -eq 0 ];then
             docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeCert.sh server ${TAK_ALIAS}"
             if [ $? -eq 0 ];then
