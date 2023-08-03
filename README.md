@@ -40,6 +40,24 @@ su - tak
 - Port 80 *must* be exposed to the internet `sudo ufw allow 80`
 - The `setup.sh` script will find the `letsencrypt.txt` file and enable
 
+## Manually Create Client Certs
+
+```
+/opt/tak-tools/scripts/docker/create-client-cert.sh
+```
+
+- Will create aa cclient `p12` and `pem` files
+- Requires a reboot to be picked-up
+- You will need to manually create a user in the `administrative` user manager with the same name to sync groups
+
+## Create Client Data Package
+
+```
+/opt/tak-tools/scripts/docker/client-data-package.sh
+```
+
+- Will generate the Client Data Package
+
 # Firewall
 
 ```
