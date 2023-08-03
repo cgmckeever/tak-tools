@@ -17,15 +17,16 @@ printf $warning "\n\n------------ Creating TAK Client Certificate ------------ \
 
 read -p "What is the username: " USERNAME
 
-${CERT_PATH}/makeCert.sh client ${USERNAME}
+cd ${CERT_PATH}
+./makeCert.sh client ${USERNAME}
 
-printf $info "Creatied Client Certificate ${FILE_PATH}/${USERNAME}.p12\n\n"
+printf $info "Created Client Certificate ${FILE_PATH}/${USERNAME}.p12\n\n"
 
 
 printf $warning "TAK needs to restart to enable changes.\n\n"
 read -p "Restart TAK [y/n]" RESTART
 
 if [[ $RESTART =~ ^[Yy]$ ]];then
-    docker compose -f tak-server/release/compose.yml restart tak-server
+    docker compose -f ~/tak-server/release/compose.yml restart tak-server
 fi
 
