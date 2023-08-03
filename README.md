@@ -28,6 +28,17 @@ git clone https://github.com/cgmckeever/tak-tools.git /opt/tak-tools
 - Download the docker package from https://tak.gov/products/tak-server
 - transfer it to your server in the `/tmp` directory
 
+## LetsEncrypt [optional]
+
+```
+su - tak
+/opt/tak-tools/scripts/letsencrypt.sh
+```
+
+- Will prompt you for a FQDN
+- Port 80 *must* be exposed to the internet `sudo ufw allow 80` [remember to remove after]
+- The `setup.sh` script will find the `letsencrypt.txt` file and enable
+
 ## Setup
 
 ```
@@ -38,16 +49,6 @@ su - tak
 
 - Will look for the docker install package as `/tmp/takserver*.zip`
 
-## LetsEncrypt [optional]
-
-```
-su - tak
-/opt/tak-tools/scripts/letsencrypt.sh
-```
-
-- Will prompt you for a FQDN
-- Port 80 *must* be exposed to the internet `sudo ufw allow 80`
-- The `setup.sh` script will find the `letsencrypt.txt` file and enable
 
 ## Manually Create Client Certs
 
