@@ -19,7 +19,7 @@ TRUSTSTORE=$(docker compose -f tak-server/release/compose.yml exec tak-server ba
 
 read -p "Create data package for which user: " USERNAME
 
-CERT_PATH=~/tak-server/release/tak/certs/files/
+CERT_PATH=~/tak-server/release/tak/certs/files
 mkdir -p $CERT_PATH/clients/$USERNAME
 
 
