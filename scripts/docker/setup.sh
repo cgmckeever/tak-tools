@@ -228,7 +228,7 @@ docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "userad
 docker compose -f ${WORK_DIR}/docker-compose.yml restart tak-server
 
 sudo cp ${TEMPLATE_DIR}/docker.service.tmpl /etc/systemd/system/tak-server-docker.service
-sed -i "s/__WORK_DIR/${WORK_DIR}/g" /etc/systemd/system/tak-server-docker.service
+sed -i "s#__WORK_DIR#${WORK_DIR}#g" /etc/systemd/system/tak-server-docker.service
 
 read -p "Do you want to configure TAK Server auto-start [y/n]?" AUTOSTART
 
