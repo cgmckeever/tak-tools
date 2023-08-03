@@ -19,7 +19,7 @@ TRUSTSTORE=$(docker compose -f tak-server/release/compose.yml exec tak-server ba
 
 read -p "Create data package for which user: " USERNAME
 
-CERT_PATH=/opt/tak/certs/files/
+CERT_PATH=~/tak-server/release/tak/certs/files/
 mkdir -p $CERT_PATH/clients/$USERNAME
 
 
@@ -60,10 +60,10 @@ EOF
 
 cd ${CERT_PATH}/clients/${USERNAME}/
 zip -j ${USERNAME}-${TAK_ALIAS}.zip \
-    ${CERT_PATH}/${USERNAME}.p12 \
-    ${CERT_PATH}/${USERNAME}.pem \
+    ${CERT_PATH}/clients/${USERNAME}.p12 \
+    ${CERT_PATH}/clients/${USERNAME}.pem \
     ${CERT_PATH}/truststore-${TRUSTSTORE}.p12 \
     manifest.xml \
     server.pref
 
-printf $info "User Data Package Created: ${CERT_PATH}/clients/${USERNAME}/${USERNAME}-${TAK_ALIAS}.zip"
+printf $info "User Data Package Created: ${CERT_PATH}/clients/${USERNAME}/${USERNAME}-${TAK_ALIAS}.zip\n\n"
