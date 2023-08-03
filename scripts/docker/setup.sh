@@ -127,12 +127,7 @@ if [[ -f ~/letsencrypt.txt ]]; then
         -file ${LE_DIR}/fullchain.pem \
         -keystore ${CERT_DIR}/letsencrypt/${CERT_NAME}.jks
 
-    SSL_CERT_INFO="keystore=\"JKS\"
-        keystoreFile=\"${CERT_PATH}/letsencrypt/${CERT_NAME}.jks\"
-        keystorePass=\"__CAPASS\"
-        truststore=\"JKS\"
-        truststoreFile=\"${CERT_PATH}/files/truststore-__TAK_CA.jks\"
-        truststorePass=\"__CAPASS\""
+    SSL_CERT_INFO="keystore=\"JKS\" keystoreFile=\"${CERT_PATH}/letsencrypt/${CERT_NAME}.jks\" keystorePass=\"__CAPASS\" truststore=\"JKS\" truststoreFile=\"${CERT_PATH}/files/truststore-__TAK_CA.jks\" truststorePass=\"__CAPASS\""
 fi
 
 
