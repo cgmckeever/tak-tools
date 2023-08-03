@@ -14,7 +14,7 @@ color danger 91m    # red
 #
 CAPASS="atakatak"               # CA Password
 CERTPASS="atakatak"             # User Cert Password
-DOCKER_SUBNET="172.20.0.0/24"   # Docker subnet as defined in compose.yml
+DOCKER_SUBNET="172.20.0.0/24"   # Docker subnet as defined in docker-compose.yml
 TAK_COT_PORT=8089               # TAK API Port
 TAKADMIN=tak-admin              # TAK Web Admin
 WORK_DIR=~/tak-server           # Base directory; where everything kicks off
@@ -176,8 +176,8 @@ IP=$IP
 EOF
 
 printf $warning "\n\n------------ Building Docker Containers ------------\n\n"
-cp ${TOOLS_DIR}/docker/compose.yml ${WORK_DIR}/
-docker compose -f ${WORK_DIR}/compose.yml up --force-recreate -d
+cp ${TOOLS_DIR}/docker/docker-compose.yml ${WORK_DIR}/
+docker compose -f ${WORK_DIR}/docker-compose.yml up --force-recreate -d
 
 printf $warning "\n\n------------ Certificate Generation --------------\n\n"
 printf $info "If prompted to replace certificate, enter Y\n"
@@ -187,13 +187,13 @@ read -p "Press any key to resume setup... "
 while true;do
     printf $info "\n------------ Generating --------------\n"
 
-    docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeRootCa.sh --ca-name ${TAK_ALIAS}-Root-CA-01"
+    docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeRootCa.sh --ca-name ${TAK_ALIAS}-Root-CA-01"
     if [ $? -eq 0 ];then
-        docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeCert.sh ca ${TAK_CA}"
+        docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeCert.sh ca ${TAK_CA}"
         if [ $? -eq 0 ];then
-            docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeCert.sh server ${TAK_ALIAS}"
+            docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeCert.sh server ${TAK_ALIAS}"
             if [ $? -eq 0 ];then
-                docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeCert.sh client ${TAKADMIN}"
+                docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeCert.sh client ${TAKADMIN}"
                 if [ $? -eq 0 ];then
                     break
                 fi
@@ -212,9 +212,9 @@ printf $info "You may see several JAVA warnings. This is expected.\n\n"
 while true; do
     printf $info "\n------------ Creating --------------\n"
 
-    docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "java -jar ${TAK_PATH}/utils/UserManager.jar usermod -A -p \"${TAKADMIN_PASS}\" ${TAKADMIN}"
+    docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "java -jar ${TAK_PATH}/utils/UserManager.jar usermod -A -p \"${TAKADMIN_PASS}\" ${TAKADMIN}"
     if [ $? -eq 0 ];then
-        docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "java -jar ${TAK_PATH}/utils/UserManager.jar certmod -A ${CERT_PATH}/files/${TAKADMIN}.pem"
+        docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "java -jar ${TAK_PATH}/utils/UserManager.jar certmod -A ${CERT_PATH}/files/${TAKADMIN}.pem"
         if [ $? -eq 0 ];then
             break
         fi
@@ -224,9 +224,24 @@ done
 
 printf $warning "\n\n------------ Configuration Complete. Restarting --------------\n\n"
 
-docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER ${CERT_PATH}/"
-docker compose -f ${WORK_DIR}/compose.yml restart tak-server
+docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER ${CERT_PATH}/"
+docker compose -f ${WORK_DIR}/docker-compose.yml restart tak-server
 
+sudo cp ${TEMPLATE_DIR}/docker.service.tmpl /etc/systemd/system/tak-server-docker.service
+sed -i "s/__WORK_DIR/${WORK_DIR}/g" /etc/systemd/system/tak-server-docker.service
+
+read -p "Do you want to configure TAK Server auto-start [y/n]?" AUTOSTART
+
+if [[ $RESTART =~ ^[Yy]$ ]];then
+    sudo systemctl enable tak-server-docker
+    printf $info "Configured TAK Server for auto-start\n\n"
+fi
+
+#
+#
+########################## OUTPUT ##########################
+#
+#
 printf $info "Certificates and *CERT DATA PACKAGES* are in tak/certs/files \n\n"
 printf $warning "\n\nImport the ${CERT_PATH}/files/$TAKADMIN.p12 certificate to your browser as per the README\n\n"
 
@@ -247,4 +262,4 @@ printf $warning "\nMAKE A NOTE OF YOUR PASSWORDS. THEY WON'T BE SHOWN AGAIN.\n\n
 printf $warning "You have a database listening on TCP 5432 which requires a login. You should still block this port with a firewall\n\n"
 
 printf $info "Docker containers should automatically start with the Docker service from now on.\n"
-printf $info "Execute into running container 'docker compose -f ${WORKDIR}/compose.yml exec tak-server bash' \n\n"
+printf $info "Execute into running container 'docker compose -f ${WORKDIR}/docker-compose.yml exec tak-server bash' \n\n"

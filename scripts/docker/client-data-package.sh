@@ -15,12 +15,12 @@ printf $warning "\n\n------------ Creating TAK Client Data Package ------------ 
 WORK_DIR=~/tak-server
 CERT_PATH=${WORK_DIR}/tak/certs/files
 
-TAK_ALIAS=$(docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "echo \$TAK_ALIAS" | tr -d '\r')
-URL=$(docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "echo \$URL" | tr -d '\r')
-CAPASS=$(docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "echo \$CAPASS" | tr -d '\r')
-PASS=$(docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "echo \$PASS" | tr -d '\r')
-TAK_COT_PORT=$(docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "echo \$TAK_COT_PORT" | tr -d '\r')
-TAK_CA=$(docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "echo \$TAK_CA" | tr -d '\r')
+TAK_ALIAS=$(docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "echo \$TAK_ALIAS" | tr -d '\r')
+URL=$(docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "echo \$URL" | tr -d '\r')
+CAPASS=$(docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "echo \$CAPASS" | tr -d '\r')
+PASS=$(docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "echo \$PASS" | tr -d '\r')
+TAK_COT_PORT=$(docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "echo \$TAK_COT_PORT" | tr -d '\r')
+TAK_CA=$(docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "echo \$TAK_CA" | tr -d '\r')
 
 read -p "Create data package for which user: " USERNAME
 rm -rf ${CERT_PATH}/clients/${USERNAME}
