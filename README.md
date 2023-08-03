@@ -26,7 +26,7 @@ git clone https://github.com/cgmckeever/tak-tools.git /opt/tak-tools
 ### TAK Docker
 
 - Download the docker package from https://tak.gov/products/tak-server
-- transfer it to your server in the `/tmp` directory
+- transfer it to your server in the `~/release/` directory
 
 ## LetsEncrypt [optional]
 
@@ -49,6 +49,22 @@ su - tak
 
 - Will look for the docker install package as `/tmp/takserver*.zip`
 
+## Start/Stop
+
+- Start
+```
+sudo systemctl start tak-server-docker
+```
+
+- Stop
+```
+sudo systemctl stop tak-server-docker
+```
+
+- Autostart
+```
+sudo systemctl enable tak-server-docker
+```
 
 ## Manually Create Client Certs
 
@@ -67,6 +83,12 @@ su - tak
 ```
 
 - Will generate the Client Data Package
+
+## Tear down
+
+```
+/opt/tak-tools/scripts/docker/tear-down.sh
+```
 
 # Firewall
 
