@@ -60,8 +60,8 @@ EOF
 
 cd ${CERT_PATH}/clients/${USERNAME}/
 zip -j ${USERNAME}-${TAK_ALIAS}.zip \
-    ${CERT_PATH}/clients/${USERNAME}.p12 \
-    ${CERT_PATH}/clients/${USERNAME}.pem \
+    ${CERT_PATH}/${USERNAME}.p12 \
+    ${CERT_PATH}/${USERNAME}.pem \
     ${CERT_PATH}/truststore-${TRUSTSTORE}.p12 \
     manifest.xml \
     server.pref
