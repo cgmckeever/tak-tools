@@ -17,6 +17,8 @@ CERT_PATH=${WORK_DIR}/tak/certs/files
 rm -rf ${CERT_PATH}/clients/${USERNAME}
 mkdir -p ${CERT_PATH}/clients/${USERNAME}
 
+ls -la /home/tak/tak-server/tak/certs/files/clients
+
 TAK_ALIAS=$(docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "echo \$TAK_ALIAS" | tr -d '\r')
 URL=$(docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "echo \$URL" | tr -d '\r')
 CAPASS=$(docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "echo \$CAPASS" | tr -d '\r')
