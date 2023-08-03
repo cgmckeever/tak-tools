@@ -41,7 +41,7 @@ VERSION=$(cat ${TAK_DIR}/version.txt | sed 's/\(.*\)-.*-.*/\1/')
 PADS="abcdefghijklmnopqrstuvwxyz"
 PAD1=${PADS:$(( RANDOM % ${#PADS} )) : 1}
 PAD2=${PADS:$(( RANDOM % ${#PADS} )) : 1}
-PASS_OMIT="<>/\'\`\""
+PASS_OMIT="~<>/\'\`\""
 TAKADMIN_PASS=${PAD1}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD2}
 PG_PASS=${PAD2}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD1}
 
@@ -228,7 +228,7 @@ docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "userad
 docker compose -f ${WORK_DIR}/docker-compose.yml restart tak-server
 
 cp ${TEMPLATE_DIR}/docker.service.tmpl ${WORK_DIR}/tak-server-docker.service
-sed -i "s#__WORK_DIR#${WORK_DIR}#g" {WORK_DIR}/tak-server-docker.service
+sed -i "s#__WORK_DIR#${WORK_DIR}#g" ${WORK_DIR}/tak-server-docker.service
 sudo rm -rf /etc/systemd/system/tak-server-docker.service
 ln -s {WORK_DIR}/tak-server-docker.service /etc/systemd/system/tak-server-docker.service
 
