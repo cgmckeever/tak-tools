@@ -14,11 +14,6 @@ printf $warning "\n\n------------ Creating TAK Client Data Package ------------ 
 
 WORK_DIR=~/tak-server
 CERT_PATH=${WORK_DIR}/tak/certs/files
-rm -rf ${CERT_PATH}/clients/${USERNAME}
-mkdir -p ${CERT_PATH}/clients/${USERNAME}
-
-ls -la ${CERT_PATH}/clients/${USERNAME}
-ls -la /home/tak/tak-server/tak/certs/files/clients
 
 TAK_ALIAS=$(docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "echo \$TAK_ALIAS" | tr -d '\r')
 URL=$(docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "echo \$URL" | tr -d '\r')
@@ -28,6 +23,8 @@ TAK_COT_PORT=$(docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c
 TAK_CA=$(docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "echo \$TAK_CA" | tr -d '\r')
 
 read -p "Create data package for which user: " USERNAME
+rm -rf ${CERT_PATH}/clients/${USERNAME}
+mkdir -p ${CERT_PATH}/clients/${USERNAME}
 
 tee ${CERT_PATH}/clients/${USERNAME}/manifest.xml >/dev/null << EOF
 <MissionPackageManifest version="2">
