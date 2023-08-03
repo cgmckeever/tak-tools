@@ -133,7 +133,6 @@ if [[ -f ~/letsencrypt.txt ]]; then
     SSL_CERT_INFO="keystore=\"JKS\" keystoreFile=\"${CERT_PATH}/letsencrypt/${CERT_NAME}.jks\" keystorePass=\"__CAPASS\" truststore=\"JKS\" truststoreFile=\"${CERT_PATH}/files/truststore-__TAK_CA.jks\" truststorePass=\"__CAPASS\""
 fi
 
-
 sed -i "s#__SSL_CERT_INFO#${SSL_CERT_INFO}#g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__CAPASS/${CAPASS}/g" ${TAK_DIR}/CoreConfig.xml
 sed -i "s/__ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" ${TAK_DIR}/CoreConfig.xml
