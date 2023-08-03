@@ -10,7 +10,9 @@ color success 92m   # green
 color warning 93m   # yellow
 color danger 91m    # red
 
-CERT_PATH=~/tak-server/release/tak/certs
+RELEASE_DIR=~/tak-server/release
+
+CERT_PATH=${RELEASE_DIR}/tak/certs
 FILE_PATH=${CERT_PATH}/files
 
 export CITY=$(docker compose -f tak-server/release/compose.yml exec tak-server bash -c "echo \$CITY" | tr -d '\r')
@@ -27,6 +29,10 @@ read -p "What is the username: " USERNAME
 cd ${CERT_PATH}
 ./makeCert.sh client ${USERNAME}
 
+PASS_OMIT="<>/\'\`\""
+USER_PASS=$(pwgen -cvy1 -r ${PASS_OMIT} 25)
+docker compose -f ${RELEASE_DIR}//compose.yml exec tak-server bash -c "java -jar /opt/tak/utils/UserManager.jar usermod -p \"${USERPASS}\" $USERNAME"
+
 printf $info "\nCreated Client Certificate ${FILE_PATH}/${USERNAME}.p12\n\n"
 
 
@@ -34,6 +40,6 @@ printf $warning "TAK needs to restart to enable changes.\n\n"
 read -p "Restart TAK [y/n]? " RESTART
 
 if [[ $RESTART =~ ^[Yy]$ ]];then
-    docker compose -f ~/tak-server/release/compose.yml restart tak-server
+    docker compose -f ${RELEASE_DIR}/compose.yml restart tak-server
 fi
 

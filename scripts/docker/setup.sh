@@ -228,7 +228,6 @@ printf $warning "\n\n------------ Configuration Complete. Restarting -----------
 docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER ${CERT_PATH}/"
 docker compose -f ${RELEASE_DIR}/compose.yml restart tak-server
 
-
 printf $info "Certificates and *CERT DATA PACKAGES* are in tak/certs/files \n\n"
 printf $warning "\n\nImport the ${CERT_PATH}/files/$TAKADMIN.p12 certificate to your browser as per the README\n\n"
 
