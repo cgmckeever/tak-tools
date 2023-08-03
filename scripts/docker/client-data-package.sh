@@ -14,8 +14,8 @@ printf $warning "\n\n------------ Creating TAK Client Data Package ------------ 
 
 WORK_DIR=~/tak-server
 CERT_PATH=${WORK_DIR}/tak/certs/files
-rm -rf ${CERT_PATH}/clients/$USERNAME
-mkdir -p ${CERT_PATH}/clients/$USERNAME
+rm -rf ${CERT_PATH}/clients/${USERNAME}
+mkdir -p ${CERT_PATH}/clients/${USERNAME}
 
 TAK_ALIAS=$(docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "echo \$TAK_ALIAS" | tr -d '\r')
 URL=$(docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "echo \$URL" | tr -d '\r')
@@ -26,7 +26,7 @@ TAK_CA=$(docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "echo
 
 read -p "Create data package for which user: " USERNAME
 
-tee ${CERT_PATH}/files/clients/$USERNAME/manifest.xml >/dev/null << EOF
+tee ${CERT_PATH}/clients/${USERNAME}/manifest.xml >/dev/null << EOF
 <MissionPackageManifest version="2">
     <Configuration>
         <Parameter name="uid" value="bcfaa4a5-2224-4095-bbe3-fdaa22a82741"/>
@@ -42,7 +42,7 @@ tee ${CERT_PATH}/files/clients/$USERNAME/manifest.xml >/dev/null << EOF
 EOF
 
 
-tee ${CERT_PATH}/files/clients/$USERNAME/server.pref >/dev/null << EOF
+tee ${CERT_PATH}/clients/${USERNAME}/server.pref >/dev/null << EOF
 <?xml version='1.0' encoding='ASCII' standalone='yes'?>
 <preferences>
     <preference version="1" name="cot_streams">
