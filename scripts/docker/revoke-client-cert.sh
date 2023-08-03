@@ -33,7 +33,7 @@ if [[ -f ${FILE_PATH}/${USERNAME}.p12 ]]; then
     docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar ${TAK_PATH}/utils/UserManager.jar usermod -p \"${USER_PASS}\" $USERNAME"
 
     cd ${CERT_PATH}
-    ./revokeCert.sh ${FILE_PATH}/${USERNAME} ${FILE_PATH}/ca-do-not-share ${FILE_PATH}//ca
+    ./revokeCert.sh ${FILE_PATH}/${USERNAME} ${FILE_PATH}/ca-do-not-share ${FILE_PATH}/tak-r2unit-com-Intermediate-CA
 
     rm -rf ${FILE_PATH}/clients/$USERNAME
 
