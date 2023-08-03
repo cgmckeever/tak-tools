@@ -47,14 +47,14 @@ PG_PASS=${PAD2}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD1}
 
 echo; echo
 HOSTNAME=${HOSTNAME//\./-}
-read -p "Alias of this Tak Server: Default [${HOSTNAME}]? " TAK_ALIAS
+read -p "Alias of this Tak Server: Default [${HOSTNAME}] : " TAK_ALIAS
 TAK_ALIAS=${TAK_ALIAS:-$HOSTNAME}
 
 echo; echo
 ip link show
 echo; echo
 DEFAULT_NIC=$(route | grep default | awk '{print $8}')
-read -p "Which Network Interface? Default [${DEFAULT_NIC}]? " NIC
+read -p "Which Network Interface? Default [${DEFAULT_NIC}] : " NIC
 NIC=${NIC:-${DEFAULT_NIC}}
 
 IP=$(ip addr show $NIC | grep -m 1 "inet " | awk '{print $2}' | cut -d "/" -f1)
@@ -83,13 +83,13 @@ printf $warning "\n\n------------ SSL setup. Hit enter (x4) to accept the defaul
 read -p "State (for cert generation). Default [state] : " STATE
 export STATE=${STATE:-state}
 
-read -p "City (for cert generation). Default [city]: " CITY
+read -p "City (for cert generation). Default [city] : " CITY
 export CITY=${CITY:-city}
 
-read -p "Organization Name (for cert generation) Default [TAK]: " ORGANIZATION
+read -p "Organization Name (for cert generation) Default [TAK] : " ORGANIZATION
 export ORGANIZATION=${ORGANIZATION:-TAK}
 
-read -p "Organizational Unit (for cert generation). Default [${ORGANIZATION}]: " ORGANIZATIONAL_UNIT
+read -p "Organizational Unit (for cert generation). Default [${ORGANIZATION}] : " ORGANIZATIONAL_UNIT
 export ORGANIZATIONAL_UNIT=${ORGANIZATIONAL_UNIT:-${ORGANIZATION}}
 
 ## CoreConfig
@@ -232,7 +232,7 @@ sed -i "s#__WORK_DIR#${WORK_DIR}#g" {WORK_DIR}/tak-server-docker.service
 sudo rm -rf /etc/systemd/system/tak-server-docker.service
 ln -s {WORK_DIR}/tak-server-docker.service /etc/systemd/system/tak-server-docker.service
 
-read -p "Do you want to configure TAK Server auto-start [y/n]?" AUTOSTART
+read -p "Do you want to configure TAK Server auto-start [y/n]? " AUTOSTART
 
 if [[ $AUTOSTART =~ ^[Yy]$ ]];then
     sudo systemctl daemon-reload
