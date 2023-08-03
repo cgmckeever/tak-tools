@@ -27,19 +27,24 @@ printf $warning "\n\n------------ Revoking TAK Client Certificate ------------ \
 
 read -p "What is the username: " USERNAME
 
-cd ${CERT_PATH}
-./revokeCert.sh ${FILE_PATH}/${USERNAME} ${FILE_PATH}/ca-do-not-share ${FILE_PATH}//ca
+if [[ -f ${FILE_PATH}/${USERNAME}.p12 ]]; then
+    cd ${CERT_PATH}
+    ./revokeCert.sh ${FILE_PATH}/${USERNAME} ${FILE_PATH}/ca-do-not-share ${FILE_PATH}//ca
 
-PASS_OMIT="<>/\'\`\""
-USER_PASS=$(pwgen -cvy1 -r ${PASS_OMIT} 25)
-docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar ${TAK_PATH}/utils/UserManager.jar usermod -p \"${USER_PASS}\" $USERNAME"
+    PASS_OMIT="<>/\'\`\""
+    USER_PASS=$(pwgen -cvy1 -r ${PASS_OMIT} 25)
+    docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar ${TAK_PATH}/utils/UserManager.jar usermod -p \"${USER_PASS}\" $USERNAME"
 
-printf $info "\nRevoked Client Certificate ${FILE_PATH}/${USERNAME}.p12\n\n"
+    printf $info "\nRevoked Client Certificate ${FILE_PATH}/${USERNAME}.p12\n\n"
 
+    printf $warning "TAK needs to restart to enable changes.\n\n"
+    read -p "Restart TAK [y/n]? " RESTART
 
-printf $warning "TAK needs to restart to enable changes.\n\n"
-read -p "Restart TAK [y/n]? " RESTART
-
-if [[ $RESTART =~ ^[Yy]$ ]];then
-    docker compose -f ${RELEASE_DIR}/compose.yml restart tak-server
+    if [[ $RESTART =~ ^[Yy]$ ]];then
+        docker compose -f ${RELEASE_DIR}/compose.yml restart tak-server
+    fi
+else
+    printf $warning "\nClient Certificate ${FILE_PATH}/${USERNAME}.p12 not found\n\n"
 fi
+
+
