@@ -17,6 +17,7 @@ sudo apt -y install \
     git \
     net-tools \
     pwgen \
+    libxml2-utils \
     qrencode\
     ufw \
     unzip \

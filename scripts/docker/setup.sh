@@ -187,7 +187,7 @@ read -p "Press any key to resume setup... "
 while true;do
     printf $info "\n------------ Generating --------------\n"
 
-    docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeRootCa.sh --ca-name ${TAK_ALIAS}-ROOT-CA-01"
+    docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeRootCa.sh --ca-name ${TAK_ALIAS}-Root-CA-01"
     if [ $? -eq 0 ];then
         docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeCert.sh ca ${TAK_CA}"
         if [ $? -eq 0 ];then
