@@ -4,6 +4,8 @@
 
 ## Prereq
 
+### System
+
 ```
 sudo apt -y update
 sudo apt -y install \
@@ -21,6 +23,11 @@ git clone https://github.com/cgmckeever/tak-tools.git /opt/tak-tools
 - Will create a `tak` service user
     - *Remember* the displayed password; or `passwd tak` to change it
 
+### TAK Docker
+
+- Download the docker package from https://tak.gov/products/tak-server
+- transfer it to your server in the `/tmp` directory
+
 ## Setup
 
 ```
@@ -28,6 +35,8 @@ su - tak
 /opt/tak-tools/scripts/docker/setup.sh
 
 ```
+
+- Will look for the docker install package as `/tmp/takserver*.zip`
 
 ## LetsEncrypt [optional]
 
