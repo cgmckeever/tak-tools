@@ -227,8 +227,9 @@ printf $warning "\n\n------------ Configuration Complete. Restarting -----------
 docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER ${CERT_PATH}/"
 docker compose -f ${WORK_DIR}/docker-compose.yml restart tak-server
 
-sudo cp ${TEMPLATE_DIR}/docker.service.tmpl /etc/systemd/system/tak-server-docker.service
-sed -i "s#__WORK_DIR#${WORK_DIR}#g" /etc/systemd/system/tak-server-docker.service
+cp ${TEMPLATE_DIR}/docker.service.tmpl ${WORK_DIR}/tak-server-docker.service
+sed -i "s#__WORK_DIR#${WORK_DIR}#g" {WORK_DIR}/tak-server-docker.service
+ln -s {WORK_DIR}/tak-server-docker.service /etc/systemd/system/tak-server-docker.service
 
 read -p "Do you want to configure TAK Server auto-start [y/n]?" AUTOSTART
 
