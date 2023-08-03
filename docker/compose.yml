@@ -8,7 +8,7 @@ networks:
         - subnet: "172.20.0.0/24"
 
 volumes:
-  db_data:
+  tak_data:
 
 services:
   tak-db:
@@ -16,7 +16,7 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile.takserver-db
     volumes:
-      - "db_data:/var/lib/postgresql/data:z"
+      - "tak_data:/var/lib/postgresql/data:z"
       - "./tak:/opt/tak:z"
     networks:
       taknet:
