@@ -20,10 +20,8 @@ TAKADMIN=tak-admin              # TAK Web Admin
 WORK_DIR=~/tak-server           # Base directory; where everything kicks off
 
 sudo rm -rf $WORK_DIR
-mkdir -p $WORK_DIR
 
-RELEASE_DIR="${WORK_DIR}/release"
-TAK_DIR="${RELEASE_DIR}/tak"
+TAK_DIR="${WORK_DIR}/tak"
 CERT_DIR="${TAK_DIR}/certs"
 
 SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
@@ -35,8 +33,8 @@ CERT_PATH="${TAK_PATH}/certs"
 
 printf $warning "\n\n------------ Unpacking Docker Release ------------\n\n"
 
-unzip /tmp/takserver*.zip -d ${WORK_DIR}/
-mv ${WORK_DIR}/tak* ${RELEASE_DIR}/
+unzip /tmp/takserver*.zip -d ~/
+mv ~/takserver* ${WORK_DIR}
 chown -R $USER:$USER ${WORK_DIR}
 VERSION=$(cat ${TAK_DIR}/version.txt | sed 's/\(.*\)-.*-.*/\1/')
 
@@ -165,7 +163,7 @@ printf $warning "\n\n------------ Creating ENV variable file ------------\n\n"
 # Writes variables to a .env file for docker-compose
 #
 
-cat << EOF > ${RELEASE_DIR}/.env
+cat << EOF > ${WORK_DIR}/.env
 STATE=$STATE
 CITY=$CITY
 ORGANIZATION=$ORGANIZATION
@@ -181,8 +179,8 @@ IP=$IP
 EOF
 
 printf $warning "\n\n------------ Building Docker Containers ------------\n\n"
-cp ${TOOLS_DIR}/docker/compose.yml ${RELEASE_DIR}/
-docker compose -f ${RELEASE_DIR}/compose.yml up --force-recreate -d
+cp ${TOOLS_DIR}/docker/compose.yml ${WORK_DIR}/
+docker compose -f ${WORK_DIR}/compose.yml up --force-recreate -d
 
 printf $warning "\n\n------------ Certificate Generation --------------\n\n"
 printf $info "If prompted to replace certificate, enter Y\n"
@@ -192,13 +190,13 @@ read -p "Press any key to resume setup... "
 while true;do
     printf $info "\n------------ Generating --------------\n"
 
-    docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeRootCa.sh --ca-name ${TAK_ALIAS}-Root-CA-01"
+    docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeRootCa.sh --ca-name ${TAK_ALIAS}-Root-CA-01"
     if [ $? -eq 0 ];then
-        docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeCert.sh ca ${TAK_CA}"
+        docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeCert.sh ca ${TAK_CA}"
         if [ $? -eq 0 ];then
-            docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeCert.sh server ${TAK_ALIAS}"
+            docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeCert.sh server ${TAK_ALIAS}"
             if [ $? -eq 0 ];then
-                docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeCert.sh client ${TAKADMIN}"
+                docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeCert.sh client ${TAKADMIN}"
                 if [ $? -eq 0 ];then
                     break
                 fi
@@ -217,9 +215,9 @@ printf $info "You may see several JAVA warnings. This is expected.\n\n"
 while true; do
     printf $info "\n------------ Creating --------------\n"
 
-    docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar ${TAK_PATH}/utils/UserManager.jar usermod -A -p \"${TAKADMIN_PASS}\" ${TAKADMIN}"
+    docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "java -jar ${TAK_PATH}/utils/UserManager.jar usermod -A -p \"${TAKADMIN_PASS}\" ${TAKADMIN}"
     if [ $? -eq 0 ];then
-        docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar ${TAK_PATH}/utils/UserManager.jar certmod -A ${CERT_PATH}/files/${TAKADMIN}.pem"
+        docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "java -jar ${TAK_PATH}/utils/UserManager.jar certmod -A ${CERT_PATH}/files/${TAKADMIN}.pem"
         if [ $? -eq 0 ];then
             break
         fi
@@ -229,15 +227,15 @@ done
 
 printf $warning "\n\n------------ Configuration Complete. Restarting --------------\n\n"
 
-docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER ${CERT_PATH}/"
-docker compose -f ${RELEASE_DIR}/compose.yml restart tak-server
+docker compose -f ${WORK_DIR}/compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER ${CERT_PATH}/"
+docker compose -f ${WORK_DIR}/compose.yml restart tak-server
 
 printf $info "Certificates and *CERT DATA PACKAGES* are in tak/certs/files \n\n"
 printf $warning "\n\nImport the ${CERT_PATH}/files/$TAKADMIN.p12 certificate to your browser as per the README\n\n"
 
 printf $success "Login at https://$URL:8443 with your admin account. No need to run the /setup step as this has been done.\n\n"
 
-INFO=${RELEASE_DIR}/info.txt
+INFO=${WORK_DIR}/info.txt
 echo "---------PASSWORDS----------------" > ${INFO}
 echo >> ${INFO}
 echo "Tak Admin user      : $TAKADMIN" >> ${INFO}
@@ -252,4 +250,4 @@ printf $warning "\nMAKE A NOTE OF YOUR PASSWORDS. THEY WON'T BE SHOWN AGAIN.\n\n
 printf $warning "You have a database listening on TCP 5432 which requires a login. You should still block this port with a firewall\n\n"
 
 printf $info "Docker containers should automatically start with the Docker service from now on.\n"
-printf $info "Execute into running container 'docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash' \n\n"
+printf $info "Execute into running container 'docker compose -f ${WORKDIR}/compose.yml exec tak-server bash' \n\n"
