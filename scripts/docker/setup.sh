@@ -10,12 +10,15 @@ color success 92m   # green
 color warning 93m   # yellow
 color danger 91m    # red
 
-CAPASS="atakatak"
-CERTPASS="atakatak"
-DOCKER_SUBNET="172.20.0.0/24"
-TAK_COT_PORT=8089
+## TODO: Pull this out into a non-git tracked include
+#
+CAPASS="atakatak"               # CA Password
+CERTPASS="atakatak"             # User Cert Password
+DOCKER_SUBNET="172.20.0.0/24"   # Docker subnet as defined in compose.yml
+TAK_COT_PORT=8089               # TAK API Port
+TAKADMIN=tak-admin              # TAK Web Admin
+WORK_DIR=~/tak-server           # Base directory; where everything kicks off
 
-WORK_DIR=~/tak-server
 sudo rm -rf $WORK_DIR
 mkdir -p $WORK_DIR
 
@@ -38,10 +41,7 @@ chown -R $USER:$USER ${WORK_DIR}
 VERSION=$(cat ${TAK_DIR}/version.txt | sed 's/\(.*\)-.*-.*/\1/')
 
 PASS_OMIT="<>/\'\`\""
-
-TAKADMIN=tak-admin
 TAKADMIN_PASS=$(pwgen -cvy1 -r ${PASS_OMIT} 25)
-
 PG_PASS=$(pwgen -cvy1 -r ${PASS_OMIT} 25)
 
 echo; echo
@@ -129,7 +129,12 @@ if [[ -f ~/letsencrypt.txt ]]; then
         -file ${LE_DIR}/fullchain.pem \
         -keystore ${CERT_DIR}/letsencrypt/${CERT_NAME}.jks
 
-    SSL_CERT_INFO="keystore=\"JKS\" keystoreFile=\"${CERT_PATH}/letsencrypt/${CERT_NAME}.jks\" keystorePass=\"__CAPASS\" truststore=\"JKS\" truststoreFile=\"${CERT_PATH}/files/truststore-__TAK_CA.jks\" truststorePass=\"__CAPASS\""
+    SSL_CERT_INFO="keystore=\"JKS\"
+        keystoreFile=\"${CERT_PATH}/letsencrypt/${CERT_NAME}.jks\"
+        keystorePass=\"__CAPASS\"
+        truststore=\"JKS\"
+        truststoreFile=\"${CERT_PATH}/files/truststore-__TAK_CA.jks\"
+        truststorePass=\"__CAPASS\""
 fi
 
 
