@@ -11,7 +11,6 @@ color warning 93m   # yellow
 color danger 91m    # red
 
 RELEASE_DIR=~/tak-server/release
-
 CERT_PATH=${RELEASE_DIR}/tak/certs
 FILE_PATH=${CERT_PATH}/files
 
@@ -34,6 +33,9 @@ cd ${CERT_PATH}
 PASS_OMIT="<>/\'\`\""
 USER_PASS=$(pwgen -cvy1 -r ${PASS_OMIT} 25)
 docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar ${TAK_PATH}/utils/UserManager.jar usermod -p \"${USER_PASS}\" $USERNAME"
+
+# Admin Priv
+# docker compose -f ${RELEASE_DIR}/compose.yml exec tak-server bash -c "java -jar ${TAK_PATH}/utils/UserManager.jar certmod -A ${TAK_PATH}/certs/files/${USERNAME}.pem"
 
 printf $info "\nCreated Client Certificate ${FILE_PATH}/${USERNAME}.p12\n\n"
 
