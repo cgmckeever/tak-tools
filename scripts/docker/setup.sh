@@ -38,9 +38,11 @@ mv ~/takserver* ${WORK_DIR}
 chown -R $USER:$USER ${WORK_DIR}
 VERSION=$(cat ${TAK_DIR}/version.txt | sed 's/\(.*\)-.*-.*/\1/')
 
+PADS="abcdefghijklmnopqrstuvwxyz"
+${PADS:$(( RANDOM % ${#PADS} )) : 1}
 PASS_OMIT="<>/\'\`\""
-TAKADMIN_PASS=$(pwgen -cvy1 -r ${PASS_OMIT} 25)
-PG_PASS=$(pwgen -cvy1 -r ${PASS_OMIT} 25)
+TAKADMIN_PASS=${PAD}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD}
+PG_PASS=${PAD}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD}
 
 echo; echo
 HOSTNAME=${HOSTNAME//\./-}

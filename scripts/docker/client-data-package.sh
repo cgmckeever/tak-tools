@@ -53,9 +53,9 @@ tee ${CERT_PATH}/clients/$USERNAME/server.pref >/dev/null << EOF
     </preference>
     <preference version="1" name="com.atakmap.app_preferences">
         <entry key="displayServerConnectionWidget" class="class java.lang.Boolean">true</entry>
-        <entry key="caLocation" class="class java.lang.String">cert/truststore-$TRUSTSTORE.p12</entry>
-        <entry key="caPassword" class="class java.lang.String">$CAPASS</entry>
-        <entry key="clientPassword" class="class java.lang.String">$PASS</entry>
+        <entry key="caLocation" class="class java.lang.String">cert/truststore-${TAK_CA}.p12</entry>
+        <entry key="caPassword" class="class java.lang.String">${CAPASS}</entry>
+        <entry key="clientPassword" class="class java.lang.String">${PASS}</entry>
         <entry key="certificateLocation" class="class java.lang.String">cert/${USERNAME}.p12</entry>
     </preference>
 </preferences>
@@ -65,7 +65,7 @@ cd ${CERT_PATH}/clients/${USERNAME}/
 zip -j ${USERNAME}-${TAK_ALIAS}.zip \
     ${CERT_PATH}/${USERNAME}.p12 \
     ${CERT_PATH}/${USERNAME}.pem \
-    ${CERT_PATH}/truststore-${TRUSTSTORE}.p12 \
+    ${CERT_PATH}/truststore-${TAK_CA}.p12 \
     manifest.xml \
     server.pref
 
