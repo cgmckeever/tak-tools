@@ -16,10 +16,10 @@ case $(lsb_release -r -s) in
     ;;
 esac
 
-APT_DOCKER=docker-ce
+DOCKER=docker-ce
 arch=$(dpkg --print-architecture)
 if [[ "$arch" == "arm64" ]];then
-    APT_DOCKER=docker.io
+    DOCKER=docker.io
 fi
 
 sudo apt -y update
@@ -52,7 +52,7 @@ sudo apt -y install apt-transport-https ca-certificates curl software-properties
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 sudo apt-cache policy docker-ce
-sudo apt -y install $APT_DOCKER
+sudo apt -y install $DOCKER
 echo '{ "iptables" : false }' >> /etc/docker/daemon.json
 
 sudo systemctl restart docker
@@ -62,7 +62,7 @@ sudo curl -L "https://github.com/docker/compose/releases/download/v2.10.2/docker
 sudo chmod +x /usr/local/bin/docker-compose
 
 
-printf $info "\n\nYou can install TAK with any user that has 'sudo'\n\n"
+printf $info "\n\nYou can install TAK with any user that has 'sudo' and can run 'docker' without sudo\n\n"
 read -p "Do you want to make a TAK service user [y/n]? "
 
 if [[ $AUTOSTART =~ ^[Yy]$ ]];then

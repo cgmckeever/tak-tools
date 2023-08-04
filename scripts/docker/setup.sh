@@ -37,6 +37,8 @@ URL=$IP
 
 printf $warning "\n\n------------ Updating UFW Firewall Rules ------------\n\n"
 
+printf $info "\nAllow 22 [SSH]\n"
+sudo ufw allow OpenSSH;
 printf $info "\nAllow 8089 [API]\n"
 sudo ufw allow proto tcp from ${IP}/24 to any port 8089
 printf $info "\nAllow 8443 [certificate auth]\n"
