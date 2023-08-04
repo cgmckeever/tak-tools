@@ -14,8 +14,6 @@ WORK_DIR=~/tak-server
 CERT_PATH=${WORK_DIR}/tak/certs
 FILE_PATH=${CERT_PATH}/files
 
-TAK_PATH=/opt/tak
-
 TAK_CA=$(docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "echo \$TAK_CA" | tr -d '\r')
 export CITY=$(docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "echo \$CITY" | tr -d '\r')
 export STATE=$(docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "echo \$STATE" | tr -d '\r')
@@ -31,7 +29,7 @@ read -p "What is the username: " USERNAME
 if [[ -f ${FILE_PATH}/${USERNAME}.p12 ]]; then
     PASS_OMIT="<>/\'\`\""
     USER_PASS=$(pwgen -cvy1 -r ${PASS_OMIT} 25)
-    docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "java -jar ${TAK_PATH}/utils/UserManager.jar usermod -p \"${USER_PASS}\" $USERNAME"
+    docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "java -jar \${TAK_PATH}/utils/UserManager.jar usermod -p \"${USER_PASS}\" $USERNAME"
 
     cd ${CERT_PATH}
     ./revokeCert.sh ${FILE_PATH}/${USERNAME} ${FILE_PATH}/${TAK_CA} ${FILE_PATH}/${TAK_CA}

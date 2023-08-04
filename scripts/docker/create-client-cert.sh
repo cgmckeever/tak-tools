@@ -14,8 +14,6 @@ WORK_DIR=~/tak-server
 CERT_PATH=${WORK_DIR}/tak/certs
 FILE_PATH=${CERT_PATH}/files
 
-TAK_PATH=/opt/tak
-
 export CITY=$(docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "echo \$CITY" | tr -d '\r')
 export STATE=$(docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "echo \$STATE" | tr -d '\r')
 export ORGANIZATION=$(docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "echo \$ORGANIZATION" | tr -d '\r')
@@ -32,10 +30,10 @@ cd ${CERT_PATH}
 
 PASS_OMIT="<>/\'\`\""
 USER_PASS=$(pwgen -cvy1 -r ${PASS_OMIT} 25)
-docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "java -jar ${TAK_PATH}/utils/UserManager.jar usermod -p \"${USER_PASS}\" $USERNAME"
+docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "java -jar \${TAK_PATH}/utils/UserManager.jar usermod -p \"${USER_PASS}\" $USERNAME"
 
 # Admin Priv
-# docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "java -jar ${TAK_PATH}/utils/UserManager.jar certmod -A ${TAK_PATH}/certs/files/${USERNAME}.pem"
+# docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "java -jar \${TAK_PATH}/utils/UserManager.jar certmod -A \${TAK_PATH}/certs/files/${USERNAME}.pem"
 
 printf $info "\nCreated Client Certificate ${FILE_PATH}/${USERNAME}.p12\n\n"
 

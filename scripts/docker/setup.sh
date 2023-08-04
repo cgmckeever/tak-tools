@@ -1,42 +1,19 @@
 #!/bin/bash
 
-color() {
-    STARTCOLOR="\e[$2";
-    ENDCOLOR="\e[0m";
-    export "$1"="$STARTCOLOR%b$ENDCOLOR"
-}
-color info 96m      # cyan
-color success 92m   # green
-color warning 93m   # yellow
-color danger 91m    # red
+SCRIPT_PATH=$(dirname "${BASH_SOURCE[0]}")
+source ${SCRIPT_PATH}/scripts/shared.inc.sh
+source ${SCRIPT_PATH}/config.inc.sh
 
-## TODO: Pull this out into a non-git tracked include
-#
-CAPASS="atakatak"               # CA Password
-CERTPASS="atakatak"             # User Cert Password
-DOCKER_SUBNET="172.20.0.0/24"   # Docker subnet as defined in docker-compose.yml
-TAK_COT_PORT=8089               # TAK API Port
-TAKADMIN=tak-admin              # TAK Web Admin
-WORK_DIR=~/tak-server           # Base directory; where everything kicks off
+# =======================
 
 sudo rm -rf $WORK_DIR
-
-TAK_DIR="${WORK_DIR}/tak"
-CERT_DIR="${TAK_DIR}/certs"
-
-SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
-TOOLS_DIR=$(dirname $(dirname $SCRIPT_DIR))
-TEMPLATE_DIR="${TOOLS_DIR}/templates"
-
-TAK_PATH="/opt/tak"
-CERT_PATH="${TAK_PATH}/certs"
 
 printf $warning "\n\n------------ Unpacking Docker Release ------------\n\n"
 
 unzip ~/release/takserver*.zip -d ~/
 mv ~/takserver* ${WORK_DIR}
 chown -R $USER:$USER ${WORK_DIR}
-VERSION=$(cat ${TAK_DIR}/version.txt | sed 's/\(.*\)-.*-.*/\1/')
+VERSION=$(cat ${TAK_PATH}/version.txt | sed 's/\(.*\)-.*-.*/\1/')
 
 PADS="abcdefghijklmnopqrstuvwxyz"
 PAD1=${PADS:$(( RANDOM % ${#PADS} )) : 1}
@@ -96,7 +73,7 @@ export ORGANIZATIONAL_UNIT=${ORGANIZATIONAL_UNIT:-${ORGANIZATION}}
 #
 printf $warning "\n\n------------ Updating CoreConfig.xml ------------\n\n"
 
-cp ${TEMPLATE_DIR}/CoreConfig-${VERSION}.xml.tmpl ${TAK_DIR}/CoreConfig.xml
+cp ${TEMPLATE_PATH}/CoreConfig-${VERSION}.xml.tmpl ${TAK_PATH}/CoreConfig.xml
 
 SSL_CERT_INFO=""
 if [[ -f ~/letsencrypt.txt ]]; then
@@ -105,20 +82,20 @@ if [[ -f ~/letsencrypt.txt ]]; then
     URL=$FQDN
     CERT_NAME=le-${FQDN//\./-}
     LE_DIR="/etc/letsencrypt/live/$FQDN"
-    mkdir -p ${CERT_DIR}/letsencrypt
+    mkdir -p ${CERT_PATH}/letsencrypt
 
     sudo openssl pkcs12 -export \
         -in ${LE_DIR}/fullchain.pem \
         -inkey ${LE_DIR}/privkey.pem \
         -name ${CERT_NAME} \
-        -out ${CERT_DIR}/letsencrypt/${CERT_NAME}.p12 \
+        -out ${CERT_PATH}/letsencrypt/${CERT_NAME}.p12 \
         -passout pass:${CAPASS}
 
     sudo keytool -importkeystore \
         -deststorepass ${CAPASS} \
         -srcstorepass ${CAPASS} \
-        -destkeystore ${CERT_DIR}/letsencrypt/${CERT_NAME}.jks \
-        -srckeystore ${CERT_DIR}/letsencrypt/${CERT_NAME}.p12 \
+        -destkeystore ${CERT_PATH}/letsencrypt/${CERT_NAME}.jks \
+        -srckeystore ${CERT_PATH}/letsencrypt/${CERT_NAME}.p12 \
         -srcstoretype PKCS12
 
     sudo keytool -import \
@@ -128,32 +105,32 @@ if [[ -f ~/letsencrypt.txt ]]; then
         -deststorepass ${CAPASS} \
         -srcstorepass ${CAPASS} \
         -file ${LE_DIR}/fullchain.pem \
-        -keystore ${CERT_DIR}/letsencrypt/${CERT_NAME}.jks
+        -keystore ${CERT_PATH}/letsencrypt/${CERT_NAME}.jks
 
-    SSL_CERT_INFO="keystore=\"JKS\" keystoreFile=\"${CERT_PATH}/letsencrypt/${CERT_NAME}.jks\" keystorePass=\"__CAPASS\" truststore=\"JKS\" truststoreFile=\"${CERT_PATH}/files/truststore-__TAK_CA.jks\" truststorePass=\"__CAPASS\""
+    SSL_CERT_INFO="keystore=\"JKS\" keystoreFile=\"${DOCKER_CERT_PATH}/letsencrypt/${CERT_NAME}.jks\" keystorePass=\"__CAPASS\" truststore=\"JKS\" truststoreFile=\"${DOCKER_CERT_PATH}/files/truststore-__TAK_CA.jks\" truststorePass=\"__CAPASS\""
 fi
 
-sed -i "s#__SSL_CERT_INFO#${SSL_CERT_INFO}#g" ${TAK_DIR}/CoreConfig.xml
-sed -i "s/__CAPASS/${CAPASS}/g" ${TAK_DIR}/CoreConfig.xml
-sed -i "s/__ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" ${TAK_DIR}/CoreConfig.xml
-sed -i "s/__ORGANIZATION/${ORGANIZATION}/g" ${TAK_DIR}/CoreConfig.xml
+sed -i "s#__SSL_CERT_INFO#${SSL_CERT_INFO}#g" ${TAK_PATH}/CoreConfig.xml
+sed -i "s/__CAPASS/${CAPASS}/g" ${TAK_PATH}/CoreConfig.xml
+sed -i "s/__ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" ${TAK_PATH}/CoreConfig.xml
+sed -i "s/__ORGANIZATION/${ORGANIZATION}/g" ${TAK_PATH}/CoreConfig.xml
 
 TAK_CA=${TAK_ALIAS}-Intermediary-CA-01
 SIGNING_KEY=${TAK_CA}-signing
-sed -i "s/__TAK_CA/${TAK_CA}/g" ${TAK_DIR}/CoreConfig.xml
-sed -i "s/__SIGNING_KEY/${SIGNING_KEY}/g" ${TAK_DIR}/CoreConfig.xml
-sed -i "s/__CRL/${TAK_CA}/g" ${TAK_DIR}/CoreConfig.xml
+sed -i "s/__TAK_CA/${TAK_CA}/g" ${TAK_PATH}/CoreConfig.xml
+sed -i "s/__SIGNING_KEY/${SIGNING_KEY}/g" ${TAK_PATH}/CoreConfig.xml
+sed -i "s/__CRL/${TAK_CA}/g" ${TAK_PATH}/CoreConfig.xml
 
-sed -i "s/__TAK_ALIAS/${TAK_ALIAS}/g" ${TAK_DIR}/CoreConfig.xml
-sed -i "s/__HOSTIP/${URL}/g" ${TAK_DIR}/CoreConfig.xml
-sed -i "s/__TAK_COT_PORT/${TAK_COT_PORT}/" ${TAK_DIR}/CoreConfig.xml
-sed -i "s/__PG_PASS/${PG_PASS}/" ${TAK_DIR}/CoreConfig.xml
+sed -i "s/__TAK_ALIAS/${TAK_ALIAS}/g" ${TAK_PATH}/CoreConfig.xml
+sed -i "s/__HOSTIP/${URL}/g" ${TAK_PATH}/CoreConfig.xml
+sed -i "s/__TAK_COT_PORT/${TAK_COT_PORT}/" ${TAK_PATH}/CoreConfig.xml
+sed -i "s/__PG_PASS/${PG_PASS}/" ${TAK_PATH}/CoreConfig.xml
 
 # Better memory allocation:
 # By default TAK server allocates memory based upon the *total* on a machine.
 # Allocate memory based upon the available memory so this still scales
 #
-sed -i "s/MemTotal/MemFree/g" ${TAK_DIR}/setenv.sh
+sed -i "s/MemTotal/MemFree/g" ${TAK_PATH}/setenv.sh
 
 
 printf $warning "\n\n------------ Creating ENV variable file ------------\n\n"
@@ -173,10 +150,12 @@ TAK_CA=$TAK_CA
 URL=$URL
 TAK_COT_PORT=$TAK_COT_PORT
 IP=$IP
+TAK_PATH=/opt/tak
+CERT_PATH=$DOCKER_CERT_PATH
 EOF
 
 printf $warning "\n\n------------ Building Docker Containers ------------\n\n"
-cp ${TOOLS_DIR}/docker/docker-compose.yml ${WORK_DIR}/
+cp ${TOOLS_PATH}/docker/docker-compose.yml ${WORK_DIR}/
 docker compose -f ${WORK_DIR}/docker-compose.yml up --force-recreate -d
 
 printf $warning "\n\n------------ Certificate Generation --------------\n\n"
@@ -187,13 +166,13 @@ read -p "Press Enter to resume setup... "
 while true;do
     printf $info "\n------------ Generating --------------\n"
 
-    docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeRootCa.sh --ca-name ${TAK_ALIAS}-Root-CA-01"
+    docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "cd \${CERT_PATH} && ./makeRootCa.sh --ca-name ${TAK_ALIAS}-Root-CA-01"
     if [ $? -eq 0 ];then
-        docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeCert.sh ca ${TAK_CA}"
+        docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "cd \${CERT_PATH} && ./makeCert.sh ca ${TAK_CA}"
         if [ $? -eq 0 ];then
-            docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeCert.sh server ${TAK_ALIAS}"
+            docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "cd \${CERT_PATH} && ./makeCert.sh server ${TAK_ALIAS}"
             if [ $? -eq 0 ];then
-                docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "cd ${CERT_PATH} && ./makeCert.sh client ${TAKADMIN}"
+                docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "cd \${CERT_PATH} && ./makeCert.sh client ${TAKADMIN}"
                 if [ $? -eq 0 ];then
                     break
                 fi
@@ -212,9 +191,9 @@ printf $info "You may see several JAVA warnings. This is expected.\n\n"
 while true; do
     printf $info "\n------------ Creating --------------\n"
 
-    docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "java -jar ${TAK_PATH}/utils/UserManager.jar usermod -A -p \"${TAKADMIN_PASS}\" ${TAKADMIN}"
+    docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "java -jar \${TAK_PATH}/utils/UserManager.jar usermod -A -p \"${TAKADMIN_PASS}\" ${TAKADMIN}"
     if [ $? -eq 0 ];then
-        docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "java -jar ${TAK_PATH}/utils/UserManager.jar certmod -A ${CERT_PATH}/files/${TAKADMIN}.pem"
+        docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "java -jar \${TAK_PATH}/utils/UserManager.jar certmod -A \${CERT_PATH}/files/${TAKADMIN}.pem"
         if [ $? -eq 0 ];then
             break
         fi
@@ -224,10 +203,10 @@ done
 
 printf $warning "\n\n------------ Configuration Complete. Restarting --------------\n\n"
 
-docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER ${CERT_PATH}/"
+docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER \${CERT_PATH}/"
 docker compose -f ${WORK_DIR}/docker-compose.yml restart tak-server
 
-cp ${TEMPLATE_DIR}/docker.service.tmpl ${WORK_DIR}/tak-server-docker.service
+cp ${TEMPLATE_PATH}/docker.service.tmpl ${WORK_DIR}/tak-server-docker.service
 sed -i "s#__WORK_DIR#${WORK_DIR}#g" ${WORK_DIR}/tak-server-docker.service
 sudo rm -rf /etc/systemd/system/tak-server-docker.service
 sudo ln -s ${WORK_DIR}/tak-server-docker.service /etc/systemd/system/tak-server-docker.service
