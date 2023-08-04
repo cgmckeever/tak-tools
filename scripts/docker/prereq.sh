@@ -30,6 +30,8 @@ sudo apt -y install \
 sudo ufw enable
 sudo ufw status
 
+read -p "Hit Enter to resume ... "
+
 printf $warning "\n\n------------ Installing Docker ------------\n\n"
 # Docker
 #
@@ -53,14 +55,14 @@ TAKUSER=tak
 PASS_OMIT="<>/\'\`\""
 TAKUSER_PASS=$(pwgen -cvy1 -r ${PASS_OMIT} 15)
 
-sudo adduser --gecos GECOS $TAKUSER
+sudo adduser --disabled-password --gecos GECOS $TAKUSER
 echo "$TAKUSER:$TAKUSER_PASS" | sudo chpasswd
 sudo usermod -aG sudo $TAKUSER
 sudo usermod -aG docker $TAKUSER
 
-printf $success "Created user: ${TAKUSER}\n"
+printf $success "\n\nCreated user: ${TAKUSER}\n"
 printf $success "Password    : ${TAKUSER_PASS}\n\n"
 
 sudo -H -u tak bash -c 'git config --global safe.directory /opt/tak-tools'
 
-printf $info "Switch to the ${TAKUSER} [su - ${TAKUSER}] and run the 'opt/tak-tools/scripts/docker/setup.sh' script"
+printf $info "Switch to the ${TAKUSER} [su - ${TAKUSER}] and run the 'opt/tak-tools/scripts/docker/setup.sh' script\n\n"

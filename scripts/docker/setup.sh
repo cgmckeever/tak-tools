@@ -181,7 +181,7 @@ docker compose -f ${WORK_DIR}/docker-compose.yml up --force-recreate -d
 
 printf $warning "\n\n------------ Certificate Generation --------------\n\n"
 printf $info "If prompted to replace certificate, enter Y\n"
-read -p "Press any key to resume setup... "
+read -p "Press Enter to resume setup... "
 ## Certs
 #
 while true;do
@@ -232,6 +232,7 @@ sed -i "s#__WORK_DIR#${WORK_DIR}#g" ${WORK_DIR}/tak-server-docker.service
 sudo rm -rf /etc/systemd/system/tak-server-docker.service
 sudo ln -s ${WORK_DIR}/tak-server-docker.service /etc/systemd/system/tak-server-docker.service
 
+echo; echo
 read -p "Do you want to configure TAK Server auto-start [y/n]? " AUTOSTART
 
 if [[ $AUTOSTART =~ ^[Yy]$ ]];then

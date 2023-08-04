@@ -7,6 +7,13 @@
 
 # Docker
 
+*Validated*
+
+- Ubuntu 20.04
+    - TAK 4.8
+- Ubuntu 22.04
+    - TAK 4.9
+
 ## Prereq
 
 ### System
@@ -18,7 +25,7 @@ sudo apt -y install \
 
 git clone https://github.com/cgmckeever/tak-tools.git /opt/tak-tools
 
-/opt/tak-tools/docker/prereq.sh
+/opt/tak-tools/scripts/docker/prereq.sh
 
 ```
 
