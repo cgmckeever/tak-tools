@@ -7,7 +7,7 @@
 
 # Docker
 
-*Validated*
+**Validated**
 
 - Ubuntu 20.04
     - [TAK 4.8](https://tak.gov/products/tak-server?product_version=tak-server-4-8-0)
@@ -96,7 +96,7 @@ sudo systemctl enable tak-server-docker
 /opt/tak-tools/scripts/docker/create-client-cert.sh
 ```
 
-- Will create aa cclient `p12` and `pem` files
+- Will create a client `p12` and `pem` files
 - Requires a reboot to be picked-up
 - You will need to manually create a user in the `administrative` user manager with the same name to sync groups
 
