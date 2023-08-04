@@ -57,19 +57,22 @@ sudo curl -L "https://github.com/docker/compose/releases/download/v2.10.2/docker
 sudo chmod +x /usr/local/bin/docker-compose
 
 
-printf $warning "\n\n------------ Creating Tak Service User ------------\n\n"
-TAKUSER=tak
-PASS_OMIT="<>/\'\`\""
-TAKUSER_PASS=$(pwgen -cvy1 -r ${PASS_OMIT} 15)
+printf $info "\n\nYou can install TAK with any user that has 'sudo'\n\n"
+read -p "Do you want to make a TAK service user [y/n]? "
 
-sudo adduser --disabled-password --gecos GECOS $TAKUSER
-echo "$TAKUSER:$TAKUSER_PASS" | sudo chpasswd
-sudo usermod -aG sudo $TAKUSER
-sudo usermod -aG docker $TAKUSER
+if [[ $AUTOSTART =~ ^[Yy]$ ]];then
+    printf $warning "\n\n------------ Creating Tak Service User ------------\n\n"
+    TAKUSER=tak
+    PASS_OMIT="<>/\'\`\""
+    TAKUSER_PASS=$(pwgen -cvy1 -r ${PASS_OMIT} 15)
 
-printf $success "\n\nCreated user: ${TAKUSER}\n"
-printf $success "Password    : ${TAKUSER_PASS}\n\n"
+    sudo adduser --disabled-password --gecos GECOS $TAKUSER
+    echo "$TAKUSER:$TAKUSER_PASS" | sudo chpasswd
+    sudo usermod -aG sudo $TAKUSER
+    sudo usermod -aG docker $TAKUSER
 
-sudo -H -u tak bash -c 'git config --global safe.directory /opt/tak-tools'
+    printf $success "\n\nCreated user: ${TAKUSER}\n"
+    printf $success "Password    : ${TAKUSER_PASS}\n\n"
 
-printf $info "Switch to the ${TAKUSER} [su - ${TAKUSER}] and run the 'opt/tak-tools/scripts/docker/setup.sh' script\n\n"
+    printf $info "Switch to the ${TAKUSER} [su - ${TAKUSER}] and run the 'opt/tak-tools/scripts/docker/setup.sh' script\n\n"
+fi
