@@ -121,10 +121,10 @@ clear
 ip link show
 
 echo; echo
-DEFAULT_NIC=$(route | grep default | awk '{print $8}')
-read -p "Which Network Interface? Default [${DEFAULT_NIC}] " NIC
-NIC=${NIC:-${DEFAULT_NIC}}
-
+DEFAULT_NIC=$(route | grep default | awk '{print $8}'); \
+read -p "Which Network Interface? Default [${DEFAULT_NIC}] " NIC; \
+NIC=${NIC:-${DEFAULT_NIC}} ;\
+echo; \
 TAK_IP=$(ip addr show ${NIC} | grep -m 1 "inet " | awk '{print $2}' | cut -d "/" -f1)
 sudo ufw default deny incoming; \
 sudo ufw default allow outgoing; \
