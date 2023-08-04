@@ -8,6 +8,7 @@ FILE_PATH="${CERT_PATH}/files"
 
 DOCKER_CERT_PATH="/opt/tak/certs"
 
+TOOLS_PATH=$(dirname $(dirname $SCRIPT_PATH))
 TEMPLATE_PATH="${TOOLS_PATH}/templates"
 
 source ${TOOLS_PATH}/scripts/color.inc.sh
