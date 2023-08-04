@@ -160,7 +160,8 @@ docker compose -f ${WORK_DIR}/docker-compose.yml up --force-recreate -d
 
 printf $warning "\n\n------------ Certificate Generation --------------\n\n"
 printf $info "If prompted to replace certificate, enter Y\n"
-read -p "Press Enter to resume setup... "
+pause
+
 ## Certs
 #
 while true;do

@@ -1,19 +1,11 @@
 #!/bin/bash
 
-color() {
-    STARTCOLOR="\e[$2";
-    ENDCOLOR="\e[0m";
-    export "$1"="$STARTCOLOR%b$ENDCOLOR"
-}
-color info 96m      # cyan
-color success 92m   # green
-color warning 93m   # yellow
-color danger 91m    # red
+SCRIPT_PATH=$(dirname "${BASH_SOURCE[0]}")
+source ${SCRIPT_PATH}/scripts/shared.inc.sh
+
+# =======================
 
 printf $warning "\n\n------------ Creating TAK Client Data Package ------------ \n\n"
-
-WORK_DIR=~/tak-server
-CERT_PATH=${WORK_DIR}/tak/certs/files
 
 TAK_ALIAS=$(docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "echo \$TAK_ALIAS" | tr -d '\r')
 URL=$(docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "echo \$URL" | tr -d '\r')
@@ -23,10 +15,10 @@ TAK_COT_PORT=$(docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server 
 TAK_CA=$(docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "echo \$TAK_CA" | tr -d '\r')
 
 read -p "Create data package for which user: " USERNAME
-rm -rf ${CERT_PATH}/clients/${USERNAME}
-mkdir -p ${CERT_PATH}/clients/${USERNAME}
+rm -rf ${FILE_PATH}/clients/${USERNAME}
+mkdir -p ${FILE_PATH}/clients/${USERNAME}
 
-tee ${CERT_PATH}/clients/${USERNAME}/manifest.xml >/dev/null << EOF
+tee ${FILE_PATH}/clients/${USERNAME}/manifest.xml >/dev/null << EOF
 <MissionPackageManifest version="2">
     <Configuration>
         <Parameter name="uid" value="bcfaa4a5-2224-4095-bbe3-fdaa22a82741"/>
@@ -42,7 +34,7 @@ tee ${CERT_PATH}/clients/${USERNAME}/manifest.xml >/dev/null << EOF
 EOF
 
 
-tee ${CERT_PATH}/clients/${USERNAME}/server.pref >/dev/null << EOF
+tee ${FILE_PATH}/clients/${USERNAME}/server.pref >/dev/null << EOF
 <?xml version='1.0' encoding='ASCII' standalone='yes'?>
 <preferences>
     <preference version="1" name="cot_streams">
@@ -61,7 +53,7 @@ tee ${CERT_PATH}/clients/${USERNAME}/server.pref >/dev/null << EOF
 </preferences>
 EOF
 
-cd ${CERT_PATH}/clients/${USERNAME}/
+cd ${FILE_PATH}/clients/${USERNAME}/
 zip -j ${USERNAME}-${TAK_ALIAS}.zip \
     ${CERT_PATH}/${USERNAME}.p12 \
     ${CERT_PATH}/${USERNAME}.pem \
@@ -69,4 +61,4 @@ zip -j ${USERNAME}-${TAK_ALIAS}.zip \
     manifest.xml \
     server.pref
 
-printf $info "\n\nUser Data Package Created: ${CERT_PATH}/clients/${USERNAME}/${USERNAME}-${TAK_ALIAS}.zip\n\n"
+printf $info "\n\nUser Data Package Created: ${FILE_PATH}/clients/${USERNAME}/${USERNAME}-${TAK_ALIAS}.zip\n\n"

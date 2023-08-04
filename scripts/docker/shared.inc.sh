@@ -12,3 +12,7 @@ TOOLS_PATH=$(dirname $(dirname $SCRIPT_PATH))
 TEMPLATE_PATH="${TOOLS_PATH}/templates"
 
 source ${TOOLS_PATH}/scripts/color.inc.sh
+
+pause () {
+    read -p "Press Enter to resume setup... "
+}

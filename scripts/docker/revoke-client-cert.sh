@@ -1,18 +1,9 @@
 #!/bin/bash
 
-color() {
-    STARTCOLOR="\e[$2";
-    ENDCOLOR="\e[0m";
-    export "$1"="$STARTCOLOR%b$ENDCOLOR"
-}
-color info 96m      # cyan
-color success 92m   # green
-color warning 93m   # yellow
-color danger 91m    # red
+SCRIPT_PATH=$(dirname "${BASH_SOURCE[0]}")
+source ${SCRIPT_PATH}/scripts/shared.inc.sh
 
-WORK_DIR=~/tak-server
-CERT_PATH=${WORK_DIR}/tak/certs
-FILE_PATH=${CERT_PATH}/files
+# =======================
 
 TAK_CA=$(docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "echo \$TAK_CA" | tr -d '\r')
 export CITY=$(docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "echo \$CITY" | tr -d '\r')
