@@ -10,7 +10,7 @@ color success 92m   # green
 color warning 93m   # yellow
 color danger 91m    # red
 
-case lsb_release -r -s in
+case $(lsb_release -r -s) in
 
   "20.04")
     JDK_VERSION=16
