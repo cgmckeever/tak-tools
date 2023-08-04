@@ -27,7 +27,6 @@ docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "java -
 
 printf $info "\nCreated Client Certificate ${FILE_PATH}/${USERNAME}.p12\n\n"
 
-
 printf $warning "TAK needs to restart to enable changes.\n\n"
 read -p "Restart TAK [y/n]? " RESTART
 
