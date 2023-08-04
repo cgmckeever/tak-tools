@@ -18,7 +18,6 @@ printf $warning "\n\n------------ Revoking TAK Client Certificate ------------ \
 read -p "What is the username: " USERNAME
 
 if [[ -f ${FILE_PATH}/${USERNAME}.p12 ]]; then
-    PASS_OMIT="<>/\'\`\""
     USER_PASS=$(pwgen -cvy1 -r ${PASS_OMIT} 25)
     docker compose -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "java -jar \${TAK_PATH}/utils/UserManager.jar usermod -p \"${USER_PASS}\" $USERNAME"
 

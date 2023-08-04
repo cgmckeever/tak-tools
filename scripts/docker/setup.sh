@@ -15,10 +15,8 @@ mv ~/takserver* ${WORK_DIR}
 chown -R $USER:$USER ${WORK_DIR}
 VERSION=$(cat ${TAK_PATH}/version.txt | sed 's/\(.*\)-.*-.*/\1/')
 
-PADS="abcdefghijklmnopqrstuvwxyz"
 PAD1=${PADS:$(( RANDOM % ${#PADS} )) : 1}
 PAD2=${PADS:$(( RANDOM % ${#PADS} )) : 1}
-PASS_OMIT="~<>/\'\`\""
 TAKADMIN_PASS=${PAD1}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD2}
 PG_PASS=${PAD2}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD1}
 

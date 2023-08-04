@@ -13,6 +13,9 @@ TEMPLATE_PATH="${TOOLS_PATH}/templates"
 
 source ${TOOLS_PATH}/scripts/color.inc.sh
 
+PASS_OMIT="~<>/\'\`\""
+PADS="abcdefghijklmnopqrstuvwxyz"
+
 pause () {
     read -p "Press Enter to resume setup... "
 }
