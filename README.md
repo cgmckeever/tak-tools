@@ -53,8 +53,19 @@ su - tak
 
 ## Setup
 
+- Log in as the TAK user
 ```
 su - tak
+```
+
+- Copy and change th config settings
+```
+sudo cp /opt/tak-tools/scripts/docker/config.inc.example.sh /opt/tak-tools/scripts/docker/config.inc.sh
+```
+
+- Kick off setup
+```
+/opt/tak-tools/scripts/docker/tear-down.sh
 /opt/tak-tools/scripts/docker/setup.sh
 
 ```
@@ -125,3 +136,16 @@ sudo ufw allow proto tcp from ${TAK_IP}/24 to any port 8446; \
 sudo ufw enable; \
 sudo ufw status
 ```
+
+# Random
+
+- Allow other users to pull `tak-tools`
+```
+git config --global --add safe.directory '/opt/tak-tools'
+```
+
+- Pull `tak-tools`
+```
+sudo git -C /opt/tak-tools pull
+```
+

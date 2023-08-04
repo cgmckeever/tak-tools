@@ -55,9 +55,9 @@ EOF
 
 cd ${FILE_PATH}/clients/${USERNAME}/
 zip -j ${USERNAME}-${TAK_ALIAS}.zip \
-    ${CERT_PATH}/${USERNAME}.p12 \
-    ${CERT_PATH}/${USERNAME}.pem \
-    ${CERT_PATH}/truststore-${TAK_CA}.p12 \
+    ${FILE_PATH}/${USERNAME}.p12 \
+    ${FILE_PATH}/${USERNAME}.pem \
+    ${FILE_PATH}/truststore-${TAK_CA}.p12 \
     manifest.xml \
     server.pref
 

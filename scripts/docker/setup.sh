@@ -39,7 +39,7 @@ URL=$IP
 
 printf $warning "\n\n------------ Updating UFW Firewall Rules ------------\n\n"
 
-printf $info "\nAllow 8089v [API]\n"
+printf $info "\nAllow 8089 [API]\n"
 sudo ufw allow proto tcp from ${IP}/24 to any port 8089
 printf $info "\nAllow 8443 [certificate auth]\n"
 sudo ufw allow proto tcp from ${IP}/24 to any port 8443
@@ -231,9 +231,9 @@ printf $success "\n\n ----------------- Installation Complete -----------------\
 printf $info "Certificates and *CERT DATA PACKAGES* are in tak/certs/files \n"
 printf $warning "Import the ${CERT_PATH}/files/$TAKADMIN.p12 certificate to your browser as per the README\n\n"
 
-printf $success "Login at https://$URL:8443 with your admin account certificate."
-printf $success "Login at https://$URL:8446 with your admin account user/pass."
-printf $success "No need to run the /setup step as this has been done."
+printf $success "Login at https://$URL:8443 with your admin account certificate.\n\n"
+printf $success "Login at https://$URL:8446 with your admin account user/pass.\n"
+printf $success "No need to run the /setup step as this has been done.\n\n"
 
 INFO=${WORK_DIR}/info.txt
 echo "---------PASSWORDS----------------" > ${INFO}

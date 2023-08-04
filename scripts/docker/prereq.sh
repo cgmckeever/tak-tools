@@ -32,9 +32,11 @@ sudo apt -y install \
 
 # Firewall Rules
 #
+printf $warning "\n\n------------ Current Firewall Rules ------------\n\n"
 sudo ufw enable
 sudo ufw status
 
+echo
 pause
 
 printf $warning "\n\n------------ Installing Docker ------------\n\n"
