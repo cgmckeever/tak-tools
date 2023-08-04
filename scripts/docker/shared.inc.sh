@@ -28,6 +28,7 @@ if [[ ! $(command -v docker-compose) ]];then
     DOCKER_COMPOSE="docker compose"
 fi
 
+echo $DOCKER_COMPOSE
 exit
 pause () {
     read -p "Press Enter to resume setup... "
