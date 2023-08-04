@@ -37,19 +37,19 @@ URL=$IP
 
 printf $warning "\n\n------------ Updating UFW Firewall Rules ------------\n\n"
 
-printf $info "\nAllow 22 [SSH]\n"
+printf $info "Allow 22 [SSH]\n\n"
 sudo ufw allow OpenSSH;
-printf $info "\nAllow 8089 [API]\n"
+printf $info "Allow 8089 [API]\n\n"
 sudo ufw allow proto tcp from ${IP}/24 to any port 8089
-printf $info "\nAllow 8443 [certificate auth]\n"
+printf $info "Allow 8443 [certificate auth]\n\n"
 sudo ufw allow proto tcp from ${IP}/24 to any port 8443
-printf $info "\nAllow 8446 [user/pass auth]\n"
+printf $info "Allow 8446 [user/pass auth]\n\n"
 sudo ufw allow proto tcp from ${IP}/24 to any port 8446
-printf $info "\nAllow 9000 [federation]\n"
+printf $info "Allow 9000 [federation]\n\n"
 sudo ufw allow proto tcp from ${IP}/24 to any port 9000
-printf $info "\nAllow 9001 [federation]\n"
+printf $info "Allow 9001 [federation]\n\n"
 sudo ufw allow proto tcp from ${IP}/24 to any port 9001
-printf $info "\nAllow Docker 5432 [postgres]\n"
+printf $info "Allow Docker 5432 [postgres]\n\n"
 sudo ufw allow proto tcp from ${DOCKER_SUBNET} to any port 5432
 sudo ufw route allow from ${DOCKER_SUBNET} to ${DOCKER_SUBNET}
 
@@ -107,23 +107,38 @@ if [[ -f ~/letsencrypt.txt ]]; then
         -file ${LE_DIR}/fullchain.pem \
         -keystore ${CERT_PATH}/letsencrypt/${CERT_NAME}.jks
 
+    printf $info "Setting LetsEncrypt on Port:8446\n\n"
     SSL_CERT_INFO="keystore=\"JKS\" keystoreFile=\"${DOCKER_CERT_PATH}/letsencrypt/${CERT_NAME}.jks\" keystorePass=\"__CAPASS\" truststore=\"JKS\" truststoreFile=\"${DOCKER_CERT_PATH}/files/truststore-__TAK_CA.jks\" truststorePass=\"__CAPASS\""
 fi
 
 sed -i "s#__SSL_CERT_INFO#${SSL_CERT_INFO}#g" ${TAK_PATH}/CoreConfig.xml
+
+printf $info "Setting Cert Password\n\n"
 sed -i "s/__CAPASS/${CAPASS}/g" ${TAK_PATH}/CoreConfig.xml
+
+printf $info "Setting Organization Info\n\n"
 sed -i "s/__ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" ${TAK_PATH}/CoreConfig.xml
 sed -i "s/__ORGANIZATION/${ORGANIZATION}/g" ${TAK_PATH}/CoreConfig.xml
 
 TAK_CA=${TAK_ALIAS}-Intermediary-CA-01
 SIGNING_KEY=${TAK_CA}-signing
+printf $info "Setting CA\n\n"
 sed -i "s/__TAK_CA/${TAK_CA}/g" ${TAK_PATH}/CoreConfig.xml
 sed -i "s/__SIGNING_KEY/${SIGNING_KEY}/g" ${TAK_PATH}/CoreConfig.xml
+
+printf $info "Setting Revocation List\n\n"
 sed -i "s/__CRL/${TAK_CA}/g" ${TAK_PATH}/CoreConfig.xml
 
+printf $info "Setting TAK Server Alias\n\n"
 sed -i "s/__TAK_ALIAS/${TAK_ALIAS}/g" ${TAK_PATH}/CoreConfig.xml
+
+printf $info "Setting IP/FQDN\n\n"
 sed -i "s/__HOSTIP/${URL}/g" ${TAK_PATH}/CoreConfig.xml
+
+printf $info "Setting API Port:${TAK_COT_PORT}\n\n"
 sed -i "s/__TAK_COT_PORT/${TAK_COT_PORT}/" ${TAK_PATH}/CoreConfig.xml
+
+printf $info "Setting API PostGres Password\n\n"
 sed -i "s/__PG_PASS/${PG_PASS}/" ${TAK_PATH}/CoreConfig.xml
 
 # Better memory allocation:
