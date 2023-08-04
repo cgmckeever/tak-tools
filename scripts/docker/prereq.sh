@@ -16,6 +16,12 @@ case $(lsb_release -r -s) in
     ;;
 esac
 
+APT_DOCKER=docker-ce
+arch=$(dpkg --print-architecture)
+if [[ "$arch" == "arm64" ]];then
+    APT_DOCKER=docker.io
+fi
+
 sudo apt -y update
 sudo apt -y install \
     git \
@@ -42,7 +48,6 @@ pause
 printf $warning "\n\n------------ Installing Docker ------------\n\n"
 # Docker
 #
-
 sudo apt -y install apt-transport-https ca-certificates curl software-properties-common
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"

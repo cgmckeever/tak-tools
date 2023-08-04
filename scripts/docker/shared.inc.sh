@@ -16,13 +16,6 @@ source ${TOOLS_PATH}/scripts/color.inc.sh
 PASS_OMIT="~<>/\'\`\""
 PADS="abcdefghijklmnopqrstuvwxyz"
 
-arch=$(dpkg --print-architecture)
-
-APT_DOCKER=docker-ce
-if [[ "$arch" == "arm64" ]];then
-    APT_DOCKER=docker
-fi
-
 DOCKER_COMPOSE="docker-compose"
 if [[ ! $(command -v docker-compose) ]];then
     DOCKER_COMPOSE="docker compose"
