@@ -59,7 +59,8 @@ su - tak
 
 ```
 
-- Will look for the docker install package as `/tmp/takserver*.zip`
+- Will look for the docker install package as `~/release/takserver*.zip`
+- Follow the prompts...its not perfect
 
 ## Start/Stop
 
