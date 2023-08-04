@@ -12,9 +12,19 @@ color danger 91m    # red
 
 # prereq
 #
+case $(lsb_release -r -s) in
+  "20.04")
+    JDK_VERSION=16
+    ;;
+  "22.04")
+    JDK_VERSION=19
+    ;;
+esac
+
 sudo apt -y update
 sudo apt -y install \
     git \
+    openjdk-${JDK_VERSION}-jre-headless \
     net-tools \
     pwgen \
     libxml2-utils \
