@@ -10,9 +10,9 @@
 *Validated*
 
 - Ubuntu 20.04
-    - TAK 4.8
+    - [TAK 4.8](https://tak.gov/products/tak-server?product_version=tak-server-4-8-0)
 - Ubuntu 22.04
-    - TAK 4.9
+    - [TAK 4.9](https://tak.gov/products/tak-server?product_version=tak-server-4-9-0)
 
 ## Prereq
 
@@ -38,7 +38,7 @@ git clone https://github.com/cgmckeever/tak-tools.git /opt/tak-tools
 ### TAK Docker
 
 - Download the docker package from https://tak.gov/products/tak-server
-- transfer it to your server in the `~/release/` directory
+- Transfer it to your server in the `~/release/` directory
 
 ## LetsEncrypt [optional]
 
