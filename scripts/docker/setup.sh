@@ -251,7 +251,9 @@ printf $success "\n\n ----------------- Installation Complete -----------------\
 printf $info "Certificates and *CERT DATA PACKAGES* are in tak/certs/files \n"
 printf $warning "Import the ${CERT_PATH}/files/$TAKADMIN.p12 certificate to your browser as per the README\n\n"
 
-printf $success "Login at https://$URL:8443 with your admin account. No need to run the /setup step as this has been done.\n\n"
+printf $success "Login at https://$URL:8443 with your admin account certificate."
+printf $success "Login at https://$URL:8446 with your admin account user/pass."
+printf $success "No need to run the /setup step as this has been done."
 
 INFO=${WORK_DIR}/info.txt
 echo "---------PASSWORDS----------------" > ${INFO}
