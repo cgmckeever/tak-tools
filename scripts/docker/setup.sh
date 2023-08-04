@@ -230,23 +230,25 @@ docker compose -f ${WORK_DIR}/docker-compose.yml restart tak-server
 cp ${TEMPLATE_DIR}/docker.service.tmpl ${WORK_DIR}/tak-server-docker.service
 sed -i "s#__WORK_DIR#${WORK_DIR}#g" ${WORK_DIR}/tak-server-docker.service
 sudo rm -rf /etc/systemd/system/tak-server-docker.service
-sudo ln -s {WORK_DIR}/tak-server-docker.service /etc/systemd/system/tak-server-docker.service
+sudo ln -s ${WORK_DIR}/tak-server-docker.service /etc/systemd/system/tak-server-docker.service
 
 read -p "Do you want to configure TAK Server auto-start [y/n]? " AUTOSTART
 
 if [[ $AUTOSTART =~ ^[Yy]$ ]];then
     sudo systemctl daemon-reload
     sudo systemctl enable tak-server-docker
-    printf $info "\n\nConfigured TAK Server for auto-start\n\n"
+    printf $info "\nConfigured TAK Server for auto-start\n\n"
 fi
+
+printf $success "\n\n ----------------- Installation Complete -----------------\n\n"
 
 #
 #
 ########################## OUTPUT ##########################
 #
 #
-printf $info "Certificates and *CERT DATA PACKAGES* are in tak/certs/files \n\n"
-printf $warning "\n\nImport the ${CERT_PATH}/files/$TAKADMIN.p12 certificate to your browser as per the README\n\n"
+printf $info "Certificates and *CERT DATA PACKAGES* are in tak/certs/files \n"
+printf $warning "Import the ${CERT_PATH}/files/$TAKADMIN.p12 certificate to your browser as per the README\n\n"
 
 printf $success "Login at https://$URL:8443 with your admin account. No need to run the /setup step as this has been done.\n\n"
 
