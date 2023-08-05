@@ -122,23 +122,23 @@ sed -i "s/__ORGANIZATION/${ORGANIZATION}/g" ${TAK_PATH}/CoreConfig.xml
 
 TAK_CA=${TAK_ALIAS}-Intermediary-CA-01
 SIGNING_KEY=${TAK_CA}-signing
-printf $info "Setting CA\n\n"
+printf $info "Setting CA: ${TAK_CA}\n\n"
 sed -i "s/__TAK_CA/${TAK_CA}/g" ${TAK_PATH}/CoreConfig.xml
 sed -i "s/__SIGNING_KEY/${SIGNING_KEY}/g" ${TAK_PATH}/CoreConfig.xml
 
-printf $info "Setting Revocation List\n\n"
+printf $info "Setting Revocation List: ${TAK_CA}.crl\n\n"
 sed -i "s/__CRL/${TAK_CA}/g" ${TAK_PATH}/CoreConfig.xml
 
-printf $info "Setting TAK Server Alias\n\n"
+printf $info "Setting TAK Server Alias: ${TAK_ALIAS}\n\n"
 sed -i "s/__TAK_ALIAS/${TAK_ALIAS}/g" ${TAK_PATH}/CoreConfig.xml
 
-printf $info "Setting IP/FQDN\n\n"
+printf $info "Setting IP/FQDN: ${URL}\n\n"
 sed -i "s/__HOSTIP/${URL}/g" ${TAK_PATH}/CoreConfig.xml
 
-printf $info "Setting API Port:${TAK_COT_PORT}\n\n"
+printf $info "Setting API Port: ${TAK_COT_PORT}\n\n"
 sed -i "s/__TAK_COT_PORT/${TAK_COT_PORT}/" ${TAK_PATH}/CoreConfig.xml
 
-printf $info "Setting PostGres Password\n\n"
+printf $info "Setting PostGres Password: ${PG_PASS}\n\n"
 PG_PASS=${PAD2}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD1}
 sed -i "s/__PG_PASS/${PG_PASS}/" ${TAK_PATH}/CoreConfig.xml
 pause
