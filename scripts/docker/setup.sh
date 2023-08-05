@@ -256,7 +256,7 @@ printf $warning "------------ Create Admin --------------\n\n"
 TAKADMIN_PASS=${PAD1}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD2}
 
 while true; do
-    printf $info "\n------------ Creating Admin --------------\n"
+    printf $info "\n------------ Enabling Admin User [pass and certificate] --------------\n"
 
     $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "java -jar \${TAK_PATH}/utils/UserManager.jar usermod -A -p \"${TAKADMIN_PASS}\" ${TAKADMIN}"
     if [ $? -eq 0 ];then
