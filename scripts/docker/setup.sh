@@ -141,6 +141,7 @@ sed -i "s/__TAK_COT_PORT/${TAK_COT_PORT}/" ${TAK_PATH}/CoreConfig.xml
 printf $info "Setting API PostGres Password\n\n"
 PG_PASS=${PAD2}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD1}
 sed -i "s/__PG_PASS/${PG_PASS}/" ${TAK_PATH}/CoreConfig.xml
+pause
 
 # Better memory allocation:
 # By default TAK server allocates memory based upon the *total* on a machine.
