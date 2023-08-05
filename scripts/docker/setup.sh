@@ -199,12 +199,13 @@ while true;do
 done
 
 echo; echo
+sleep 30
 while true; do
     RESPONSE=$(curl --insecure -I https://${IP}:8446)
-    if [[ "$RESPONSE" != *"Failed to connect"* ]]; then
+    if [[ "${RESPONSE}" != *"Failed to connect"* ]]; then
         break
     fi
-    sleep 30
+    sleep 20
     printf $warning "------------ Waiting for Server to start --------------\n\n"
 done
 
