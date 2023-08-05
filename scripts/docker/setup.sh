@@ -141,7 +141,6 @@ sed -i "s/__TAK_COT_PORT/${TAK_COT_PORT}/" ${TAK_PATH}/CoreConfig.xml
 printf $info "Setting PostGres Password\n\n"
 PG_PASS=${PAD2}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD1}
 sed -i "s/__PG_PASS/${PG_PASS}/" ${TAK_PATH}/CoreConfig.xml
-echo $PG_PASS
 pause
 
 # Better memory allocation:
