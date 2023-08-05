@@ -198,8 +198,15 @@ while true;do
     sleep 10
 done
 
-printf $warning "\n\n------------ Waiting for Server to start --------------\n\n"
-sleep 45
+echo; echo
+while true; do
+    RESPONSE=$(curl --insecure -I https://${IP}:8446)
+    if [[ "$RESPONSE" != *"Failed to connect"* ]]; then
+        break
+    fi
+    sleep 30
+    printf $warning "------------ Waiting for Server to start --------------\n\n"
+done
 
 printf $warning "\n\n------------ Create Admin User --------------\n\n"
 printf $info "You may see several JAVA warnings. This is expected.\n\n"

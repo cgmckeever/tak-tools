@@ -9,9 +9,9 @@
 
 **Validated**
 
-- Ubuntu 20.04
+- Ubuntu 20.04 [ AMD64 ]
     - [TAK 4.8](https://tak.gov/products/tak-server?product_version=tak-server-4-8-0)
-- Ubuntu 22.04
+- Ubuntu 22.04 [ AMD64 | ARM64 ]
     - [TAK 4.9](https://tak.gov/products/tak-server?product_version=tak-server-4-9-0)
 
 ## Prereq

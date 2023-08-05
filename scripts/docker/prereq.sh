@@ -17,7 +17,6 @@ case $(lsb_release -r -s) in
 esac
 
 DOCKER=docker-ce
-arch=$(dpkg --print-architecture)
 if [[ "$arch" == "arm64" ]];then
     DOCKER=docker.io
 fi

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+arch=$(dpkg --print-architecture)
+
 WORK_DIR=~/tak-server # Base directory; where everything kicks off
 
 TAK_PATH="${WORK_DIR}/tak"
