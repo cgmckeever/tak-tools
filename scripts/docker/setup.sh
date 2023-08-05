@@ -150,7 +150,7 @@ pause
 sed -i "s/MemTotal/MemFree/g" ${TAK_PATH}/setenv.sh
 
 
-printf $warning "\n\n------------ Creating ENV variable file ------------\n\n"
+printf $warning "\n\n------------ Creating ENV variable file ${WORK_DIR}/.env ------------\n\n"
 # Writes variables to a .env file for docker-compose
 #
 
