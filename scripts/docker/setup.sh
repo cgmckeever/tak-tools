@@ -206,15 +206,21 @@ done
 
 $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER \${CERT_PATH}/"
 printf $warning "\n\n------------ Configuration Complete. Restarting --------------\n\n"
-$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml restart tak-server
+$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml stop tak-server
+sleep 10
+$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml start tak-server
 
 echo; echo
+START_TIME="$(date -u +%s)"
 while true; do
     printf $warning "------------ Waiting for Server to start --------------\n"
     sleep 30
     RESPONSE=$(curl --insecure -I https://${IP}:8446 2>&1)
     if [ $? -eq 0 ]; then
-        printf $success "\n------------ Server Started --------------\n\n"
+        END_TIME="$(date -u +%s)"
+        printf $success "\n------------ Server Started --------------\n"
+        ELAPSED="$((${END_TIME}-${START_TIME})"
+        printf $info "Restart took ${ELAPSED} seconds}\n\n"
         break
     fi
 done
