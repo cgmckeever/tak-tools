@@ -172,7 +172,7 @@ EOF
 printf $warning "\n\n------------ Building Docker Containers ------------\n\n"
 cp ${TOOLS_PATH}/docker/docker-compose.yml ${WORK_DIR}/
 
-printf $info "\n\n------------ Building TAK DB ------------\n\n"
+printf $info "------------ Building TAK DB ------------\n\n"
 $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml up tak-db
 
 printf $info "\n\n------------ Building TAK Server ------------\n\n"
