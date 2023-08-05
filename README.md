@@ -12,6 +12,7 @@
 - Ubuntu 20.04
     - [TAK 4.8](https://tak.gov/products/tak-server?product_version=tak-server-4-8-0) [ AMD64 ]
 - Ubuntu 22.04
+    - [TAK 4.8](https://tak.gov/products/tak-server?product_version=tak-server-4-8-0) [ ARM64 ]
     - [TAK 4.9](https://tak.gov/products/tak-server?product_version=tak-server-4-9-0) [ AMD64 ]
 
 ## Prereq
@@ -67,9 +68,11 @@ sudo cp /opt/tak-tools/scripts/docker/config.inc.example.sh /opt/tak-tools/scrip
 ```
 /opt/tak-tools/scripts/docker/tear-down.sh
 /opt/tak-tools/scripts/docker/setup.sh
-
 ```
 
+Wrapper Script: `/opt/tak-tools/scripts/docker/start.sh`
+
+- Tear down and clean up Docker
 - Will look for the docker install package as `~/release/takserver*.zip`
 - Follow the prompts...its not perfect
 
