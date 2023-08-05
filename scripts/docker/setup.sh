@@ -8,12 +8,12 @@ source ${SCRIPT_PATH}/config.inc.sh
 
 sudo rm -rf $WORK_DIR
 
-printf $warning "\n\n------------ Unpacking Docker Release ------------\n\n"
-
-if ! compgen -G "~/release/takserver*.zip" > /dev/null; then
+if ! compgen -G "release/takserver*.zip" > /dev/null; then
     printf $warning "\n\n------------ No TAK Server Package found in ~/release/ ------------\n\n"
     exit
 fi
+
+printf $warning "\n\n------------ Unpacking Docker Release ------------\n\n"
 
 unzip ~/release/takserver*.zip -d ~/
 mv ~/takserver* ${WORK_DIR}
