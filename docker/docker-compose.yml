@@ -16,7 +16,7 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile.takserver-db
     volumes:
-      - "tak_data:/var/lib/postgresql/data:z"
+      - "tak_data:/var/lib/postgresql/data"
       - "./tak:/opt/tak:z"
     networks:
       taknet:

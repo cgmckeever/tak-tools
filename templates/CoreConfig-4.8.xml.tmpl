@@ -92,9 +92,10 @@
         <tls
             keystore="JKS"
             keystoreFile="/opt/tak/certs/files/__TAK_ALIAS.jks"
-            keystorePass="__CAPASS" truststore="JKS"
+            keystorePass="__PASS"
+            truststore="JKS"
             truststoreFile="/opt/tak/certs/files/truststore-__TAK_CA.jks"
-            truststorePass="__CAPASS"
+            truststorePass="__PASS"
             context="TLSv1.2"
             keymanager="SunX509">
             <crl _name="__CRL" crlFile="/opt/tak/certs/files/__CRL.crl"/>
@@ -103,9 +104,9 @@
         <tls
             keystore="JKS"
             keystoreFile="/opt/tak/certs/files/__TAK_ALIAS.jks"
-            keystorePass="__CAPASS" truststore="JKS"
+            keystorePass="__PASS" truststore="JKS"
             truststoreFile="/opt/tak/certs/files/truststore-root.jks"
-            truststorePass="__CAPASS"
+            truststorePass="__PASS"
             context="TLSv1.2"
             keymanager="SunX509">
         </tls>
@@ -116,10 +117,10 @@
             <tls
                 keystore="JKS"
                 keystoreFile="/opt/tak/certs/files/__TAK_ALIAS.jks"
-                keystorePass="__CAPASS"
+                keystorePass="__PASS"
                 truststore="JKS"
                 truststoreFile="/opt/tak/certs/files/fed-truststore.jks"
-                truststorePass="__CAPASS"
+                truststorePass="__PASS"
                 keymanager="SunX509"
             />
             <v1Tls tlsVersion="TLSv1.2"/>
