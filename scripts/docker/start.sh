@@ -5,7 +5,6 @@ source ${SCRIPT_PATH}/shared.inc.sh
 
 # =======================
 
-
 git config --global --add safe.directory '/opt/tak-tools'
 sudo git -C /opt/tak-tools pull
 
