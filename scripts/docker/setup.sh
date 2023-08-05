@@ -186,7 +186,7 @@ pause
 ## Certs
 #
 while true;do
-    printf $info "\n------------ Generating --------------\n"
+    printf $info "\n------------ Generating Certificates --------------\n"
 
     $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "cd \${CERT_PATH} && ./makeRootCa.sh --ca-name ${TAK_ALIAS}-Root-CA-01"
     if [ $? -eq 0 ];then
@@ -219,13 +219,13 @@ while true; do
     fi
 done
 
-printf $warning "------------ Create Admin User --------------\n\n"
-printf $info "You may see several JAVA warnings. This is expected.\n\n"
+printf $warning "------------ Create Admin --------------\n\n"
+## printf $info "You may see several JAVA warnings. This is expected.\n\n"
 
 TAKADMIN_PASS=${PAD1}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD2}
 
 while true; do
-    printf $info "\n------------ Creating --------------\n"
+    printf $info "\n------------ Creating Admin --------------\n"
 
     $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "java -jar \${TAK_PATH}/utils/UserManager.jar usermod -A -p \"${TAKADMIN_PASS}\" ${TAKADMIN}"
     if [ $? -eq 0 ];then
@@ -253,7 +253,7 @@ fi
 
 printf $success "\n\n ----------------- Installation Complete -----------------\n\n"
 
-#
+# We are done now
 #
 ########################## OUTPUT ##########################
 #
