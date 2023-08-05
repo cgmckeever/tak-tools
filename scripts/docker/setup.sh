@@ -115,6 +115,7 @@ sed -i "s#__SSL_CERT_INFO#${SSL_CERT_INFO}#g" ${TAK_PATH}/CoreConfig.xml
 
 printf $info "Setting Cert Password\n\n"
 sed -i "s/__CAPASS/${CAPASS}/g" ${TAK_PATH}/CoreConfig.xml
+sed -i "s/__PASS/${PASS}/g" ${TAK_PATH}/CoreConfig.xml
 
 printf $info "Setting Organization Info\n\n"
 sed -i "s/__ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" ${TAK_PATH}/CoreConfig.xml
@@ -138,8 +139,8 @@ sed -i "s/__HOSTIP/${URL}/g" ${TAK_PATH}/CoreConfig.xml
 printf $info "Setting API Port: ${TAK_COT_PORT}\n\n"
 sed -i "s/__TAK_COT_PORT/${TAK_COT_PORT}/" ${TAK_PATH}/CoreConfig.xml
 
-printf $info "Setting PostGres Password: ${PG_PASS}\n\n"
 PG_PASS=${PAD2}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD1}
+printf $info "Setting PostGres Password: ${PG_PASS}\n\n"
 sed -i "s/__PG_PASS/${PG_PASS}/" ${TAK_PATH}/CoreConfig.xml
 pause
 
@@ -173,45 +174,28 @@ EOF
 
 cat ${WORK_DIR}/.env
 
-printf $warning "\n\n------------ Building Docker Containers ------------\n\n"
-cp ${TOOLS_PATH}/docker/docker-compose.yml ${WORK_DIR}/
-
-printf $info "------------ Building TAK DB ------------\n\n"
-$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml up tak-db -d
-
-printf $info "\n\n------------ Building TAK Server ------------\n\n"
-$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml up tak-server -d
-
-cp ${TEMPLATE_PATH}/docker.service.tmpl ${WORK_DIR}/tak-server-docker.service
-sed -i "s#__WORK_DIR#${WORK_DIR}#g" ${WORK_DIR}/tak-server-docker.service
-sudo rm -rf /etc/systemd/system/tak-server-docker.service
-sudo ln -s ${WORK_DIR}/tak-server-docker.service /etc/systemd/system/tak-server-docker.service
-
-echo; echo
-read -p "Do you want to configure TAK Server auto-start [y/n]? " AUTOSTART
-
-if [[ $AUTOSTART =~ ^[Yy]$ ]];then
-    sudo systemctl daemon-reload
-    sudo systemctl enable tak-server-docker
-    printf $info "\nConfigured TAK Server for auto-start\n\n"
-fi
-
 printf $warning "\n\n------------ Certificate Generation --------------\n\n"
 printf $info "If prompted to replace certificate, enter Y\n"
 pause
 
 ## Certs
 #
+cd ${CERT_PATH}
+mkdir -p files
+echo "unique_subject=no" > files/crl_index.txt.attr
 while true;do
-    printf $info "\n------------ Generating Certificates --------------\n"
-
-    $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "cd \${CERT_PATH} && ./makeRootCa.sh --ca-name ${TAK_ALIAS}-Root-CA-01"
+    printf $info "\n------------ Generating Certificates --------------"
+    printf $success "\n\n${TAK_ALIAS}-Root-CA-01\n"
+    ./makeRootCa.sh --ca-name $root {TAK_ALIAS}-Root-CA-01
     if [ $? -eq 0 ];then
-        $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "cd \${CERT_PATH} && ./makeCert.sh ca ${TAK_CA}"
+        printf $success "\n\nca ${TAK_CA}\n"
+        ./makeCert.sh ca ${TAK_CA}
         if [ $? -eq 0 ];then
-            $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "cd \${CERT_PATH} && ./makeCert.sh server ${TAK_ALIAS}"
+            printf $success "\n\nserver {TAK_ALIAS}\n"
+            ./makeCert.sh server ${TAK_ALIAS}
             if [ $? -eq 0 ];then
-                $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "cd \${CERT_PATH} && ./makeCert.sh client ${TAKADMIN}"
+                printf $success "\n\nclient ${TAKADMIN}\n"
+                ./makeCert.sh client ${TAKADMIN}
                 if [ $? -eq 0 ];then
                     break
                 fi
@@ -221,11 +205,31 @@ while true;do
     sleep 10
 done
 
-$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER \${CERT_PATH}/"
-printf $warning "\n\n------------ Configuration Complete. Restarting --------------\n\n"
-$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml stop tak-server
-sleep 10
-$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml start tak-server
+printf $warning "\n\n------------ Configuration Complete. Starting Containers --------------\n\n"
+cp ${TOOLS_PATH}/docker/docker-compose.yml ${WORK_DIR}/
+
+printf $info "------------ Building TAK DB ------------\n\n"
+$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml up tak-db -d
+
+printf $info "\n\n------------ Building TAK Server ------------\n\n"
+$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml up tak-server -d
+
+ln -s ${TAK_PATH}/logs ${WORK_DIR}/logs
+
+echo; echo
+read -p "Do you want to configure TAK Server auto-start [y/n]? " AUTOSTART
+cp ${TEMPLATE_PATH}/docker.service.tmpl ${WORK_DIR}/tak-server-docker.service
+sed -i "s#__WORK_DIR#${WORK_DIR}#g" ${WORK_DIR}/tak-server-docker.service
+sudo rm -rf /etc/systemd/system/tak-server-docker.service
+sudo ln -s ${WORK_DIR}/tak-server-docker.service /etc/systemd/system/tak-server-docker.service
+
+if [[ $AUTOSTART =~ ^[Yy]$ ]];then
+    sudo systemctl daemon-reload
+    sudo systemctl enable tak-server-docker
+    printf $info "\nTAK Server auto-start enabled\n\n"
+else
+    printf $info "\nTAK Server auto-start disabled\n\n"
+fi
 
 echo; echo
 START_TIME="$(date -u +%s)"
@@ -241,6 +245,8 @@ while true; do
         break
     fi
 done
+
+$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER \${CERT_PATH}/"
 
 printf $warning "------------ Create Admin --------------\n\n"
 ## printf $info "You may see several JAVA warnings. This is expected.\n\n"
