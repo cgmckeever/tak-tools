@@ -171,6 +171,8 @@ TAK_PATH=/opt/tak
 CERT_PATH=$DOCKER_CERT_PATH
 EOF
 
+cat ${WORK_DIR}/.env
+
 printf $warning "\n\n------------ Building Docker Containers ------------\n\n"
 cp ${TOOLS_PATH}/docker/docker-compose.yml ${WORK_DIR}/
 
