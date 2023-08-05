@@ -138,8 +138,9 @@ sed -i "s/__HOSTIP/${URL}/g" ${TAK_PATH}/CoreConfig.xml
 printf $info "Setting API Port:${TAK_COT_PORT}\n\n"
 sed -i "s/__TAK_COT_PORT/${TAK_COT_PORT}/" ${TAK_PATH}/CoreConfig.xml
 
-printf $info "Setting API PostGres Password\n\n"
+printf $info "Setting PostGres Password\n\n"
 PG_PASS=${PAD2}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD1}
+echo $PG_PASS
 sed -i "s/__PG_PASS/${PG_PASS}/" ${TAK_PATH}/CoreConfig.xml
 pause
 
