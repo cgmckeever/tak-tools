@@ -19,7 +19,7 @@ read -p "What is the username: " USERNAME
 cd ${CERT_PATH}
 ./makeCert.sh client ${USERNAME}
 
-USER_PASS=$(pwgen -cvy1 -r ${PASS_OMIT} 25)
+USER_PASS=${PAD1}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD2}
 $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "java -jar \${TAK_PATH}/utils/UserManager.jar usermod -p \"${USER_PASS}\" $USERNAME"
 
 # Admin Priv

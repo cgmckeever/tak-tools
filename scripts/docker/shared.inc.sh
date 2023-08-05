@@ -17,6 +17,8 @@ source ${TOOLS_PATH}/scripts/color.inc.sh
 
 PASS_OMIT="~<>/\'\`\""
 PADS="abcdefghijklmnopqrstuvwxyz"
+PAD1=${PADS:$(( RANDOM % ${#PADS} )) : 1}
+PAD2=${PADS:$(( RANDOM % ${#PADS} )) : 1}
 
 DOCKER_COMPOSE="docker-compose"
 if [[ ! $(command -v docker-compose) ]];then

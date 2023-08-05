@@ -20,10 +20,6 @@ mv ~/takserver* ${WORK_DIR}
 chown -R $USER:$USER ${WORK_DIR}
 VERSION=$(cat ${TAK_PATH}/version.txt | sed 's/\(.*\)-.*-.*/\1/')
 
-PAD1=${PADS:$(( RANDOM % ${#PADS} )) : 1}
-PAD2=${PADS:$(( RANDOM % ${#PADS} )) : 1}
-PG_PASS=${PAD2}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD1}
-
 echo; echo
 HOSTNAME=${HOSTNAME//\./-}
 read -p "Alias of this Tak Server: Default [${HOSTNAME}] : " TAK_ALIAS
@@ -143,6 +139,7 @@ printf $info "Setting API Port:${TAK_COT_PORT}\n\n"
 sed -i "s/__TAK_COT_PORT/${TAK_COT_PORT}/" ${TAK_PATH}/CoreConfig.xml
 
 printf $info "Setting API PostGres Password\n\n"
+PG_PASS=${PAD2}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD1}
 sed -i "s/__PG_PASS/${PG_PASS}/" ${TAK_PATH}/CoreConfig.xml
 
 # Better memory allocation:
