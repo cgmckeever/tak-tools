@@ -171,8 +171,8 @@ EOF
 
 printf $warning "\n\n------------ Building Docker Containers ------------\n\n"
 cp ${TOOLS_PATH}/docker/docker-compose.yml ${WORK_DIR}/
-$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml up tak-db --force-recreate -d
-$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml up tak-server --force-recreate -d
+$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml start tak-db
+$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml start tak-server
 
 printf $warning "\n\n------------ Certificate Generation --------------\n\n"
 printf $info "If prompted to replace certificate, enter Y\n"
