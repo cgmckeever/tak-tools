@@ -220,7 +220,7 @@ while true; do
         END_TIME="$(date -u +%s)"
         printf $success "\n------------ Server Started --------------\n"
         ELAPSED="$((${END_TIME}-${START_TIME})"
-        printf $info "Restart took ${ELAPSED} seconds}\n\n"
+        printf $info "Restart took ${ELAPSED} seconds\n\n"
         break
     fi
 done
