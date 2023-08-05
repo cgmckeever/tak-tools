@@ -171,3 +171,8 @@ git config --global --add safe.directory '/opt/tak-tools'
 sudo git -C /opt/tak-tools pull
 ```
 
+- Change Admin Password [docker]
+```
+echo; read -p "New Admin Password: " TAKADMIN_PASS; docker-compose -f tak-server/docker-compose.yml exec tak-server bash -c "java -jar \${TAK_PATH}/utils/UserManager.jar usermod -A -p \"${TAKADMIN_PASS}\" tak-admin"
+```
+
