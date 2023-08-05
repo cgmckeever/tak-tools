@@ -205,15 +205,16 @@ done
 
 echo; echo
 while true; do
-    echo "------------ Waiting for Server to start --------------\n\n"
+    printf $warning "------------ Waiting for Server to start --------------\n"
     sleep 30
     RESPONSE=$(curl --insecure -I https://${IP}:8446 2>&1)
     if [ $? -eq 0 ]; then
+        printf $warning "\n------------ Server Started --------------\n\n"
         break
     fi
 done
 
-printf $warning "\n\n------------ Create Admin User --------------\n\n"
+printf $warning "------------ Create Admin User --------------\n\n"
 printf $info "You may see several JAVA warnings. This is expected.\n\n"
 
 while true; do

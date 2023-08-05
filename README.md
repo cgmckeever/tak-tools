@@ -139,6 +139,11 @@ sudo ufw status
 
 # Random
 
+- Check Docker network
+```
+docker network inspect $(docker network ls -q)
+```
+
 - Allow other users to pull `tak-tools`
 ```
 git config --global --add safe.directory '/opt/tak-tools'
