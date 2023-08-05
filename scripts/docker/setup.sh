@@ -208,6 +208,8 @@ while true;do
 done
 
 $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER \${CERT_PATH}/"
+printf $warning "\n\n------------ Configuration Complete. Restarting --------------\n\n"
+$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml restart tak-server
 
 echo; echo
 while true; do
@@ -222,9 +224,6 @@ done
 
 printf $warning "------------ Starting Admin Create Script --------------\n\n"
 source ${SCRIPT_PATH}/create-admin.sh n
-
-printf $warning "\n\n------------ Configuration Complete. Restarting --------------\n\n"
-$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml restart tak-server
 
 cp ${TEMPLATE_PATH}/docker.service.tmpl ${WORK_DIR}/tak-server-docker.service
 sed -i "s#__WORK_DIR#${WORK_DIR}#g" ${WORK_DIR}/tak-server-docker.service
