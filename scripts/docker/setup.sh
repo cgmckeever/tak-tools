@@ -37,19 +37,19 @@ URL=$IP
 
 printf $warning "\n\n------------ Updating UFW Firewall Rules ------------\n\n"
 
-printf $info "\n\nAllow 22 [SSH]\n"
+printf $info "Allow 22 [SSH]\n"
 sudo ufw allow OpenSSH;
-printf $info "\n\nAllow 8089 [API]\n"
+printf $info "\nAllow 8089 [API]\n"
 sudo ufw allow proto tcp from ${IP}/24 to any port 8089
-printf $info "\n\nAllow 8443 [certificate auth]\n"
+printf $info "\nAllow 8443 [certificate auth]\n"
 sudo ufw allow proto tcp from ${IP}/24 to any port 8443
-printf $info "\n\nAllow 8446 [user/pass auth]\n"
+printf $info "\nAllow 8446 [user/pass auth]\n"
 sudo ufw allow proto tcp from ${IP}/24 to any port 8446
-printf $info "\n\nAllow 9000 [federation]\n"
+printf $info "\nAllow 9000 [federation]\n"
 sudo ufw allow proto tcp from ${IP}/24 to any port 9000
-printf $info "\n\nAllow 9001 [federation]\n"
+printf $info "\nAllow 9001 [federation]\n"
 sudo ufw allow proto tcp from ${IP}/24 to any port 9001
-printf $info "\n\nAllow Docker 5432 [postgres]\n"
+printf $info "\nAllow Docker 5432 [postgres]\n"
 sudo ufw allow proto tcp from ${DOCKER_SUBNET} to any port 5432
 sudo ufw route allow from ${DOCKER_SUBNET} to ${DOCKER_SUBNET}
 
@@ -171,7 +171,8 @@ EOF
 
 printf $warning "\n\n------------ Building Docker Containers ------------\n\n"
 cp ${TOOLS_PATH}/docker/docker-compose.yml ${WORK_DIR}/
-$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml up --force-recreate -d
+$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml up tak-db --force-recreate -d
+$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml up tak-server --force-recreate -d
 
 printf $warning "\n\n------------ Certificate Generation --------------\n\n"
 printf $info "If prompted to replace certificate, enter Y\n"
@@ -199,14 +200,13 @@ while true;do
 done
 
 echo; echo
-sleep 30
 while true; do
-    RESPONSE=$(curl --insecure -I https://${IP}:8446)
-    if [[ "${RESPONSE}" != *"Failed to connect"* ]]; then
+    echo "------------ Waiting for Server to start --------------\n\n"
+    sleep 30
+    RESPONSE=$(curl --insecure -I https://${IP}:8446 2>&1)
+    if [ $? -eq 0 ]; then
         break
     fi
-    sleep 20
-    printf $warning "------------ Waiting for Server to start --------------\n\n"
 done
 
 printf $warning "\n\n------------ Create Admin User --------------\n\n"

@@ -37,8 +37,9 @@ sudo apt -y install \
 
 # Firewall Rules
 #
-printf $info "\nAllow 22 [SSH]\n"
+printf $info "\nAllow 22 [SSH]"
 sudo ufw allow OpenSSH
+echo
 sudo ufw enable
 printf $warning "\n\n------------ Current Firewall Rules ------------\n\n"
 sudo ufw status verbose
