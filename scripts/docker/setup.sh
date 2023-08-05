@@ -222,8 +222,23 @@ while true; do
     fi
 done
 
-printf $warning "------------ Starting Admin Create Script --------------\n\n"
-source ${SCRIPT_PATH}/create-admin.sh
+printf $warning "------------ Create Admin User --------------\n\n"
+printf $info "You may see several JAVA warnings. This is expected.\n\n"
+
+TAKADMIN_PASS=${PAD1}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD2}
+
+while true; do
+    printf $info "\n------------ Creating --------------\n"
+
+    $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "java -jar \${TAK_PATH}/utils/UserManager.jar usermod -A -p \"${TAKADMIN_PASS}\" ${TAKADMIN}"
+    if [ $? -eq 0 ];then
+        $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "java -jar \${TAK_PATH}/utils/UserManager.jar certmod -A \${CERT_PATH}/files/${TAKADMIN}.pem"
+        if [ $? -eq 0 ];then
+            break
+        fi
+    fi
+    sleep 10
+done
 
 cp ${TEMPLATE_PATH}/docker.service.tmpl ${WORK_DIR}/tak-server-docker.service
 sed -i "s#__WORK_DIR#${WORK_DIR}#g" ${WORK_DIR}/tak-server-docker.service
