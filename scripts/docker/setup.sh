@@ -37,19 +37,19 @@ URL=$IP
 
 printf $warning "\n\n------------ Updating UFW Firewall Rules ------------\n\n"
 
-printf $info "Allow 22 [SSH]\n\n"
+printf $info "\n\nAllow 22 [SSH]\n"
 sudo ufw allow OpenSSH;
-printf $info "Allow 8089 [API]\n\n"
+printf $info "\n\nAllow 8089 [API]\n"
 sudo ufw allow proto tcp from ${IP}/24 to any port 8089
-printf $info "Allow 8443 [certificate auth]\n\n"
+printf $info "\n\nAllow 8443 [certificate auth]\n"
 sudo ufw allow proto tcp from ${IP}/24 to any port 8443
-printf $info "Allow 8446 [user/pass auth]\n\n"
+printf $info "\n\nAllow 8446 [user/pass auth]\n"
 sudo ufw allow proto tcp from ${IP}/24 to any port 8446
-printf $info "Allow 9000 [federation]\n\n"
+printf $info "\n\nAllow 9000 [federation]\n"
 sudo ufw allow proto tcp from ${IP}/24 to any port 9000
-printf $info "Allow 9001 [federation]\n\n"
+printf $info "\n\nAllow 9001 [federation]\n"
 sudo ufw allow proto tcp from ${IP}/24 to any port 9001
-printf $info "Allow Docker 5432 [postgres]\n\n"
+printf $info "\n\nAllow Docker 5432 [postgres]\n"
 sudo ufw allow proto tcp from ${DOCKER_SUBNET} to any port 5432
 sudo ufw route allow from ${DOCKER_SUBNET} to ${DOCKER_SUBNET}
 
