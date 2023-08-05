@@ -10,7 +10,7 @@ sudo rm -rf $WORK_DIR
 
 printf $warning "\n\n------------ Unpacking Docker Release ------------\n\n"
 
-if [[ ! -f ~/release/takserver*.zip  ]]; then
+if ! compgen -G "~/release/takserver*.zip" > /dev/null; then
     printf $warning "\n\n------------ No TAK Server Package found in ~/release/ ------------\n\n"
     exit
 fi
