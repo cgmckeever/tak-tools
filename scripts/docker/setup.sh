@@ -209,7 +209,7 @@ while true; do
     sleep 30
     RESPONSE=$(curl --insecure -I https://${IP}:8446 2>&1)
     if [ $? -eq 0 ]; then
-        printf $warning "\n------------ Server Started --------------\n\n"
+        printf $success "\n------------ Server Started --------------\n\n"
         break
     fi
 done

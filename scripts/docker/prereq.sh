@@ -37,7 +37,7 @@ sudo apt -y install \
 
 # Firewall Rules
 #
-printf $info "\nAllow 22 [SSH]"
+printf $info "\nAllow 22 [SSH]\n"
 sudo ufw allow OpenSSH
 echo
 sudo ufw enable
@@ -65,9 +65,9 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 
 printf $info "\n\nYou can install TAK with any user that has 'sudo' and can run 'docker' without sudo\n\n"
-read -p "Do you want to make a TAK service user [y/n]? "
+read -p "Do you want to make a TAK service user [y/n]? " MAKEUSER
 
-if [[ $AUTOSTART =~ ^[Yy]$ ]];then
+if [[ ${MAKEUSER} =~ ^[Yy]$ ]];then
     printf $warning "\n\n------------ Creating Tak Service User ------------\n\n"
     TAKUSER=tak
     PASS_OMIT="<>/\'\`\""

@@ -137,12 +137,21 @@ sudo ufw enable; \
 sudo ufw status
 ```
 
-# Random
+# Notes
+
+## Docker
 
 - Check Docker network
 ```
 docker network inspect $(docker network ls -q)
 ```
+
+- Resource Usage
+```
+docker stats --no-stream
+```
+
+## Random
 
 - Allow other users to pull `tak-tools`
 ```
