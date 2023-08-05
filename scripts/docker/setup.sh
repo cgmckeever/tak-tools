@@ -219,7 +219,7 @@ while true; do
     if [ $? -eq 0 ]; then
         END_TIME="$(date -u +%s)"
         printf $success "\n------------ Server Started --------------\n"
-        ELAPSED="$((${END_TIME}-${START_TIME})"
+        ELAPSED="$((${END_TIME}-${START_TIME}))"
         printf $info "Restart took ${ELAPSED} seconds\n\n"
         break
     fi
