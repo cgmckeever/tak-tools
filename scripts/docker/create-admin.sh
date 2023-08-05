@@ -5,7 +5,6 @@ source ${SCRIPT_PATH}/shared.inc.sh
 
 # =======================
 
-RESTART_PROMPT=$1
 
 printf $warning "------------ Create Admin User --------------\n\n"
 printf $info "You may see several JAVA warnings. This is expected.\n\n"
@@ -26,12 +25,3 @@ while true; do
     fi
     sleep 10
 done
-
-if [[ ! $RESTART_PROMPT =~ ^[Nn]$ ]];then
-    printf $warning "TAK needs to restart to enable changes.\n\n"
-    read -p "Restart TAK [y/n]? " RESTART
-
-    if [[ $RESTART =~ ^[Yy]$ ]];then
-        $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml restart tak-server
-    fi
-fi

@@ -223,7 +223,7 @@ while true; do
 done
 
 printf $warning "------------ Starting Admin Create Script --------------\n\n"
-source ${SCRIPT_PATH}/create-admin.sh n
+source ${SCRIPT_PATH}/create-admin.sh
 
 cp ${TEMPLATE_PATH}/docker.service.tmpl ${WORK_DIR}/tak-server-docker.service
 sed -i "s#__WORK_DIR#${WORK_DIR}#g" ${WORK_DIR}/tak-server-docker.service
