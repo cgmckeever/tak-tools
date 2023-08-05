@@ -22,7 +22,6 @@ VERSION=$(cat ${TAK_PATH}/version.txt | sed 's/\(.*\)-.*-.*/\1/')
 
 PAD1=${PADS:$(( RANDOM % ${#PADS} )) : 1}
 PAD2=${PADS:$(( RANDOM % ${#PADS} )) : 1}
-TAKADMIN_PASS=${PAD1}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD2}
 PG_PASS=${PAD2}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD1}
 
 echo; echo
@@ -208,6 +207,8 @@ while true;do
     sleep 10
 done
 
+$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER \${CERT_PATH}/"
+
 echo; echo
 while true; do
     printf $warning "------------ Waiting for Server to start --------------\n"
@@ -219,25 +220,10 @@ while true; do
     fi
 done
 
-printf $warning "------------ Create Admin User --------------\n\n"
-printf $info "You may see several JAVA warnings. This is expected.\n\n"
-
-while true; do
-    printf $info "\n------------ Creating --------------\n"
-
-    $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "java -jar \${TAK_PATH}/utils/UserManager.jar usermod -A -p \"${TAKADMIN_PASS}\" ${TAKADMIN}"
-    if [ $? -eq 0 ];then
-        $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "java -jar \${TAK_PATH}/utils/UserManager.jar certmod -A \${CERT_PATH}/files/${TAKADMIN}.pem"
-        if [ $? -eq 0 ];then
-            break
-        fi
-    fi
-    sleep 10
-done
+printf $warning "------------ Starting Admin Create Script --------------\n\n"
+source ${SCRIPT_PATH}/create-admin.sh n
 
 printf $warning "\n\n------------ Configuration Complete. Restarting --------------\n\n"
-
-$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER \${CERT_PATH}/"
 $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml restart tak-server
 
 cp ${TEMPLATE_PATH}/docker.service.tmpl ${WORK_DIR}/tak-server-docker.service

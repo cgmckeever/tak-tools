@@ -151,6 +151,11 @@ docker network inspect $(docker network ls -q)
 docker stats --no-stream
 ```
 
+- Shell in
+```
+docker-compose -f tak-server/docker-compose.yml exec tak-server bash
+```
+
 ## Random
 
 - Allow other users to pull `tak-tools`
