@@ -73,7 +73,7 @@ export ORGANIZATIONAL_UNIT=${ORGANIZATIONAL_UNIT:-${ORGANIZATION}}
 #
 printf $warning "\n\n------------ Updating CoreConfig.xml ------------\n\n"
 
-cp ${TEMPLATE_PATH}/CoreConfig-${VERSION}.xml.tmpl ${TAK_PATH}/CoreConfig.xml
+cp ${TEMPLATE_PATH}/tak/CoreConfig-${VERSION}.xml.tmpl ${TAK_PATH}/CoreConfig.xml
 
 SSL_CERT_INFO=""
 if [[ -f ~/letsencrypt.txt ]]; then
@@ -218,7 +218,7 @@ ln -s ${TAK_PATH}/logs ${WORK_DIR}/logs
 
 echo; echo
 read -p "Do you want to configure TAK Server auto-start [y/n]? " AUTOSTART
-cp ${TEMPLATE_PATH}/docker.service.tmpl ${WORK_DIR}/tak-server-docker.service
+cp ${TEMPLATE_PATH}/docker/docker.service.tmpl ${WORK_DIR}/tak-server-docker.service
 sed -i "s#__WORK_DIR#${WORK_DIR}#g" ${WORK_DIR}/tak-server-docker.service
 sudo rm -rf /etc/systemd/system/tak-server-docker.service
 sudo ln -s ${WORK_DIR}/tak-server-docker.service /etc/systemd/system/tak-server-docker.service
