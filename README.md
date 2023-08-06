@@ -65,11 +65,11 @@ sudo cp /opt/tak-tools/scripts/docker/config.inc.example.sh /opt/tak-tools/scrip
 
 - Kick off setup
 ```
-/opt/tak-tools/scripts/docker/tear-down.sh
-/opt/tak-tools/scripts/docker/setup.sh
+/opt/tak-tools/scripts/tak/docker/tear-down.sh
+/opt/tak-tools/scripts/tak/docker/setup.sh
 ```
 
-Wrapper Script: `/opt/tak-tools/scripts/docker/start.sh`
+Wrapper Script: `/opt/tak-tools/scripts/tak/docker/start.sh`
 
 - Tear down and clean up Docker
 - Will look for the docker install package as `~/release/takserver*.zip`
@@ -95,7 +95,7 @@ sudo systemctl enable tak-server-docker
 ## Manually Create Client Certs
 
 ```
-/opt/tak-tools/scripts/docker/create-client-cert.sh
+/opt/tak-tools/scripts/tak/docker/create-client-cert.sh
 ```
 
 - Will create a client `p12` and `pem` files
@@ -105,7 +105,7 @@ sudo systemctl enable tak-server-docker
 ## Create Client Data Package
 
 ```
-/opt/tak-tools/scripts/docker/client-data-package.sh
+/opt/tak-tools/scripts/tak/docker/client-data-package.sh
 ```
 
 - Will generate the Client Data Package
@@ -113,7 +113,7 @@ sudo systemctl enable tak-server-docker
 ## Tear down
 
 ```
-/opt/tak-tools/scripts/docker/tear-down.sh
+/opt/tak-tools/scripts/tak/docker/tear-down.sh
 ```
 
 # Firewall
