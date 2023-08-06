@@ -55,6 +55,9 @@ sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add 
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 sudo apt-cache policy docker-ce
 sudo apt -y install $DOCKER
+sudo touch /etc/docker/daemon.json
+sudo cp /etc/docker/daemon.json /etc/docker/daemon.json.tak.install
+sudo rm -rf /etc/docker/daemon.json
 echo '{ "iptables" : false }' | sudo tee -a /etc/docker/daemon.json
 
 sudo systemctl restart docker
