@@ -15,7 +15,8 @@ TEMPLATE_PATH="${TOOLS_PATH}/templates"
 
 source ${TOOLS_PATH}/scripts/shared/color.inc.sh
 
-PASS_OMIT=",.~<>/\'\`\""
+# TAK symbols from this list [-_!@#$%^&*(){}[]+=~`|:;<>,./?]
+PASS_OMIT="$,.~<>/\'\`\""
 PADS="abcdefghijklmnopqrstuvwxyz"
 PAD1=${PADS:$(( RANDOM % ${#PADS} )) : 1}
 PAD2=${PADS:$(( RANDOM % ${#PADS} )) : 1}
