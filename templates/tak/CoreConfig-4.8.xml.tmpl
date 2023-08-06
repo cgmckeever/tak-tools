@@ -23,7 +23,7 @@
         primaryKeyBatchSize="500"
         insertionBatchSize="500"
         archive="false">
-        <connection url="jdbc:postgresql://tak-database:5432/cot" username="martiuser" password="__PG_PASS"/>
+        <connection url="jdbc:postgresql://${DATA_URL}:5432/cot" username="martiuser" password="__PG_PASS"/>
     </repository>
     <repeater enable="true" periodMillis="3000" staleDelayMillis="15000">
         <repeatableType initiate-test="/event/detail/emergency[@type='911 Alert']" cancel-test="/event/detail/emergency[@cancel='true']" _name="911"/>
