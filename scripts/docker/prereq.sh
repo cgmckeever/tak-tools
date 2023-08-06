@@ -17,7 +17,7 @@ case $(lsb_release -r -s) in
 esac
 
 DOCKER=docker-ce
-if [[ "$arch" == "arm64" ]];then
+if [[ "$arch" == *"arm"* ]];then
     DOCKER=docker.io
 fi
 
