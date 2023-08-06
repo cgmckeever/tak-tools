@@ -60,12 +60,11 @@ echo '{ "iptables" : false }' | sudo tee -a /etc/docker/daemon.json
 sudo systemctl restart docker
 sudo systemctl enable docker
 
-KERNEL="$(uname -s | tr '[A-Z]' '[a-z]')"
 HW=$(uname -m)
 if [[ $HW == "armv71" ]];
-    HW=arm7
+    HW=armv7
 fi
-sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-${KERNEL}-${HW}" -o /usr/local/bin/docker-compose
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-$(uname -s | tr '[A-Z]' '[a-z]')-${HW}" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 
 
