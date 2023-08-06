@@ -61,7 +61,7 @@ sudo systemctl restart docker
 sudo systemctl enable docker
 
 HW=$(uname -m)
-if [[ $HW == "armv71" ]];
+if [[ $HW == "armv71" ]];then
     HW=armv7
 fi
 sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-$(uname -s | tr '[A-Z]' '[a-z]')-${HW}" -o /usr/local/bin/docker-compose
