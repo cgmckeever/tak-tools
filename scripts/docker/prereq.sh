@@ -56,7 +56,7 @@ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubun
 sudo apt-cache policy docker-ce
 sudo apt -y install $DOCKER
 sudo touch /etc/docker/daemon.json
-sudo cp /etc/docker/daemon.json /etc/docker/daemon.json.tak.install
+sudo cp /etc/docker/daemon.json /etc/docker/daemon.json.$(date "+%Y.%m.%d-%H.%M.%S").tak.nstall
 sudo rm -rf /etc/docker/daemon.json
 echo '{ "iptables" : false }' | sudo tee -a /etc/docker/daemon.json
 
