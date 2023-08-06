@@ -115,7 +115,7 @@ sed -i "s#__SSL_CERT_INFO#${SSL_CERT_INFO}#g" ${TAK_PATH}/CoreConfig.xml
 
 printf $info "Setting Cert Password\n\n"
 sed -i "s/__CAPASS/${CAPASS}/g" ${TAK_PATH}/CoreConfig.xml
-sed -i "s/__PASS/${PASS}/g" ${TAK_PATH}/CoreConfig.xml
+sed -i "s/__PASS/${CERTPASS}/g" ${TAK_PATH}/CoreConfig.xml
 
 printf $info "Setting Organization Info\n\n"
 sed -i "s/__ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" ${TAK_PATH}/CoreConfig.xml
