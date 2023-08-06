@@ -10,7 +10,7 @@ FILE_PATH="${CERT_PATH}/files"
 
 DOCKER_CERT_PATH="/opt/tak/certs"
 
-TOOLS_PATH=$(dirname($(dirname $(dirname $SCRIPT_PATH))))
+TOOLS_PATH=$(dirname ($(dirname $(dirname $SCRIPT_PATH))))
 TEMPLATE_PATH="${TOOLS_PATH}/templates/tak/docker"
 
 source ${TOOLS_PATH}/scripts/shared/color.inc.sh
