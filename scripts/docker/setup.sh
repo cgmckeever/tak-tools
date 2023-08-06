@@ -191,7 +191,7 @@ while true;do
         printf $success "\n\nca ${TAK_CA}\n"
         ./makeCert.sh ca ${TAK_CA}
         if [ $? -eq 0 ];then
-            printf $success "\n\nserver {TAK_ALIAS}\n"
+            printf $success "\n\nserver ${TAK_ALIAS}\n"
             ./makeCert.sh server ${TAK_ALIAS}
             if [ $? -eq 0 ];then
                 printf $success "\n\nclient ${TAKADMIN}\n"
