@@ -15,7 +15,7 @@ TEMPLATE_PATH="${TOOLS_PATH}/templates/tak/docker"
 
 source ${TOOLS_PATH}/scripts/shared/color.inc.sh
 
-PASS_OMIT="~<>/\'\`\""
+PASS_OMIT=",.~<>/\'\`\""
 PADS="abcdefghijklmnopqrstuvwxyz"
 PAD1=${PADS:$(( RANDOM % ${#PADS} )) : 1}
 PAD2=${PADS:$(( RANDOM % ${#PADS} )) : 1}
