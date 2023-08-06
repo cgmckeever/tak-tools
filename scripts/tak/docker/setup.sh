@@ -209,7 +209,7 @@ while true;do
 done
 
 printf $warning "\n\n------------ Configuration Complete. Starting Containers --------------\n\n"
-cp ${TOOLS_PATH}/docker/docker-compose.yml ${WORK_DIR}/
+cp ${TOOLS_PATH}/docker/tak.docker-compose.yml ${WORK_DIR}/docker-compose.yml
 
 printf $info "------------ Building TAK DB ------------\n\n"
 $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml up tak-db -d
