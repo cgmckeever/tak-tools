@@ -115,18 +115,18 @@ TAK_CA=${TAK_ALIAS}-Intermediary-CA-01
 SIGNING_KEY=${TAK_CA}-signing
 PG_PASS=${PAD2}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD1}
 sed -i \
-    -e "s#__SSL_CERT_INFO#${SSL_CERT_INFO}#g" ${TAK_PATH}/CoreConfig.xml \
-    -e "s/__CAPASS/${CAPASS}/g" ${TAK_PATH}/CoreConfig.xml \
-    -e "s/__PASS/${CERTPASS}/g" ${TAK_PATH}/CoreConfig.xml \
-    -e "s/__ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" ${TAK_PATH}/CoreConfig.xml \
-    -e "s/__ORGANIZATION/${ORGANIZATION}/g" ${TAK_PATH}/CoreConfig.xml \
-    -e "s/__TAK_CA/${TAK_CA}/g" ${TAK_PATH}/CoreConfig.xml \
-    -e "s/__SIGNING_KEY/${SIGNING_KEY}/g" ${TAK_PATH}/CoreConfig.xml \
-    -e "s/__CRL/${TAK_CA}/g" ${TAK_PATH}/CoreConfig.xml \
-    -e "s/__TAK_ALIAS/${TAK_ALIAS}/g" ${TAK_PATH}/CoreConfig.xml \
-    -e "s/__HOSTIP/${URL}/g" ${TAK_PATH}/CoreConfig.xml \
-    -e "s/__TAK_COT_PORT/${TAK_COT_PORT}/" ${TAK_PATH}/CoreConfig.xml \
-    -e "s/__DATABASE_HOST/tak-database/" ${TAK_PATH}/CoreConfig.xml \
+    -e "s#__SSL_CERT_INFO#${SSL_CERT_INFO}#g" \
+    -e "s/__CAPASS/${CAPASS}/g" \
+    -e "s/__PASS/${CERTPASS}/g" \
+    -e "s/__ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" \
+    -e "s/__ORGANIZATION/${ORGANIZATION}/g" \
+    -e "s/__TAK_CA/${TAK_CA}/g" \
+    -e "s/__SIGNING_KEY/${SIGNING_KEY}/g" \
+    -e "s/__CRL/${TAK_CA}/g" \
+    -e "s/__TAK_ALIAS/${TAK_ALIAS}/g" \
+    -e "s/__HOSTIP/${URL}/g" \
+    -e "s/__TAK_COT_PORT/${TAK_COT_PORT}/" \
+    -e "s/__DATABASE_HOST/tak-database/" \
     -e "s/__PG_PASS/${PG_PASS}/" ${TAK_PATH}/CoreConfig.xml
 
 printf $info "Setting CA: ${TAK_CA}\n\n"
