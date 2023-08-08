@@ -5,9 +5,47 @@
 - https://github.com/Cloud-RF/tak-server
 - https://github.com/atakhq/tak-server-install-scripts
 
+# Prep this repository
+
+```
+sudo apt -y update; \
+sudo apt -y install git
+
+sudo git clone https://github.com/cgmckeever/tak-tools.git /opt/tak-tools
+```
+
+# LetsEncrypt [optional]
+
+```
+su - tak
+/opt/tak-tools/scripts/letsencrypt.sh
+```
+
+- Will prompt you for a FQDN
+- Port 80 *must* be exposed to the internet `sudo ufw allow 80` [remember to remove after]
+- The `setup.sh` script will find the `letsencrypt.txt` file and enable
+
+# Standalone
+
+## Validated
+
+## Prereq
+
+### System
+
+```
+/opt/tak-tools/scripts/standalone/prereq.sh
+
+```
+
+- Install prereq libraries
+- Enables UFW [Firewall]
+- Will create a `tak` service user
+    - *Remember* the displayed password; or `passwd tak` to change it
+
 # Docker
 
-**Validated**
+## Validated
 
 - Ubuntu 20.04
     - [TAK 4.8](https://tak.gov/products/tak-server?product_version=tak-server-4-8-0) [ AMD64 ]
@@ -20,11 +58,6 @@
 ### System
 
 ```
-sudo apt -y update; \
-sudo apt -y install git
-
-sudo git clone https://github.com/cgmckeever/tak-tools.git /opt/tak-tools
-
 /opt/tak-tools/scripts/docker/prereq.sh
 
 ```
@@ -35,21 +68,11 @@ sudo git clone https://github.com/cgmckeever/tak-tools.git /opt/tak-tools
 - Will create a `tak` service user
     - *Remember* the displayed password; or `passwd tak` to change it
 
-### TAK Docker
+### TAK Docker Package
 
 - Download the docker package from https://tak.gov/products/tak-server
 - Transfer it to your server in the `~/release/` directory
 
-## LetsEncrypt [optional]
-
-```
-su - tak
-/opt/tak-tools/scripts/letsencrypt.sh
-```
-
-- Will prompt you for a FQDN
-- Port 80 *must* be exposed to the internet `sudo ufw allow 80` [remember to remove after]
-- The `setup.sh` script will find the `letsencrypt.txt` file and enable
 
 ## Setup
 

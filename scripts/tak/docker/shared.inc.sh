@@ -27,5 +27,5 @@ if [[ ! $(command -v docker-compose) ]];then
 fi
 
 pause () {
-    read -p "Press Enter to resume setup... "
+    read -s -p "Press Enter to resume setup... "
 }
