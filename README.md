@@ -33,7 +33,7 @@ su - tak
 ### System
 
 ```
-/opt/tak-tools/scripts/standalone/prereq.sh
+/opt/tak-tools/scripts/tak/standalone/prereq.sh
 
 ```
 
