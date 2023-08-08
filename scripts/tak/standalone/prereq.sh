@@ -38,6 +38,7 @@ sudo apt-get -y install \
     openjdk-11-jdk \
     openssl \
     software-properties-common \
+    pwgen \
     qrencode \
     ufw \
     unzip \
@@ -59,6 +60,7 @@ read -p "Do you want to make a TAK service user [y/n]? " MAKEUSER
 
 if [[ ${MAKEUSER} =~ ^[Yy]$ ]];then
     printf $warning "\n\n------------ Creating Tak Service User ------------\n\n"
+    TAKUSER=tak
     PASS_OMIT="<>/\'\`\""
     TAKUSER_PASS=$(pwgen -cvy1 -r ${PASS_OMIT} 15)
 
