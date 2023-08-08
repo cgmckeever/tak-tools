@@ -5,9 +5,121 @@
 - https://github.com/Cloud-RF/tak-server
 - https://github.com/atakhq/tak-server-install-scripts
 
+# Prep this repository
+
+```
+sudo apt -y update; \
+sudo apt -y install git; \
+sudo git clone https://github.com/cgmckeever/tak-tools.git /opt/tak-tools
+```
+
+# LetsEncrypt [optional]
+
+```
+su - tak
+/opt/tak-tools/scripts/letsencrypt.sh
+```
+
+- Will prompt you for a FQDN
+- Port 80 *must* be exposed to the internet `sudo ufw allow 80` [remember to remove after]
+- The `setup.sh` script will find the `letsencrypt.txt` file and enable
+
+# Standalone
+
+## Validated
+
+## Prereq
+
+### System
+
+```
+/opt/tak-tools/scripts/tak/standalone/prereq.sh
+
+```
+
+- Install prereq libraries
+- Enables UFW [Firewall]
+- Will create a `tak` service user
+    - *Remember* the displayed password; or `passwd tak` to change it
+
+### TAK Package
+
+- Download the package from https://tak.gov/products/tak-server
+- Transfer it to your server in the `~/release/` directory
+
+## Setup
+
+- Log in as the TAK user
+```
+su - tak
+```
+
+- Copy and change th config settings
+```
+sudo cp /opt/tak-tools/scripts/tak/standalone/config.inc.example.sh \
+    /opt/tak-tools/scripts/tak/standalone/config.inc.sh; \
+cat /opt/tak-tools/scripts/tak/standalone/config.inc.sh
+```
+
+- Kick off setup
+```
+/opt/tak-tools/scripts/tak/standalone/setup.sh
+```
+
+Wrapper Script: `/opt/tak-tools/scripts/tak/standalone/start.sh`
+
+- Will look for the install package as `~/release/takserver*.zip`
+- Follow the prompts...its not perfect
+
+## Start/Stop
+
+- Start
+```
+sudo systemctl start takserver
+```
+
+- Stop
+```
+sudo systemctl stop takserver
+```
+
+- Autostart
+```
+sudo systemctl enable takserver
+```
+
+## Manage Client Certs
+
+### Create
+
+```
+/opt/tak-tools/scripts/tak/standalone/create-client-cert.sh
+```
+
+- Will create a client `p12` and `pem` files
+- Requires a reboot to be picked-up
+- You will need to manually create a user in the `administrative` user manager with the same name to sync groups
+
+### Revoke
+
+```
+/opt/tak-tools/scripts/tak/standalone/revoke-client-cert.sh
+```
+
+- Revoke client `p12` and `pem` files
+- Requires a reboot to be picked-up
+
+## Create Client Data Package
+
+```
+/opt/tak-tools/scripts/tak/standalone/client-data-package.sh
+```
+
+- Will generate the Client Data Package
+
 # Docker
 
-**Validated**
+## Validated
 
 - Ubuntu 20.04
     - [TAK 4.8](https://tak.gov/products/tak-server?product_version=tak-server-4-8-0) [ AMD64 ]
@@ -20,12 +132,7 @@
 ### System
 
 ```
-sudo apt -y update; \
-sudo apt -y install git
-
-sudo git clone https://github.com/cgmckeever/tak-tools.git /opt/tak-tools
-
-/opt/tak-tools/scripts/docker/prereq.sh
+/opt/tak-tools/scripts/tak/docker/prereq.sh
 
 ```
 
@@ -35,21 +142,11 @@ sudo git clone https://github.com/cgmckeever/tak-tools.git /opt/tak-tools
 - Will create a `tak` service user
     - *Remember* the displayed password; or `passwd tak` to change it
 
-### TAK Docker
+### TAK Docker Package
 
 - Download the docker package from https://tak.gov/products/tak-server
 - Transfer it to your server in the `~/release/` directory
 
-## LetsEncrypt [optional]
-
-```
-su - tak
-/opt/tak-tools/scripts/letsencrypt.sh
-```
-
-- Will prompt you for a FQDN
-- Port 80 *must* be exposed to the internet `sudo ufw allow 80` [remember to remove after]
-- The `setup.sh` script will find the `letsencrypt.txt` file and enable
 
 ## Setup
 
@@ -60,7 +157,9 @@ su - tak
 
 - Copy and change th config settings
 ```
-sudo cp /opt/tak-tools/scripts/docker/config.inc.example.sh /opt/tak-tools/scripts/docker/config.inc.sh
+sudo cp /opt/tak-tools/scripts/tak/docker/config.inc.example.sh \
+    /opt/tak-tools/scripts/tak/docker/config.inc.sh; \
+cat /opt/tak-tools/scripts/tak/docker/config.inc.sh
 ```
 
 - Kick off setup
@@ -94,6 +193,8 @@ sudo systemctl enable tak-server-docker
 
 ## Manually Create Client Certs
 
+### Create
+
 ```
 /opt/tak-tools/scripts/tak/docker/create-client-cert.sh
 ```
@@ -101,6 +202,15 @@ sudo systemctl enable tak-server-docker
 - Will create a client `p12` and `pem` files
 - Requires a reboot to be picked-up
 - You will need to manually create a user in the `administrative` user manager with the same name to sync groups
+
+### Revoke
+
+```
+/opt/tak-tools/scripts/tak/docker/revoke-client-cert.sh
+```
+
+- Revoke client `p12` and `pem` files
+- Requires a reboot to be picked-up
 
 ## Create Client Data Package
 
