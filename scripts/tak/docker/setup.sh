@@ -111,40 +111,35 @@ if [[ -f ~/letsencrypt.txt ]]; then
     SSL_CERT_INFO="keystore=\"JKS\" keystoreFile=\"${DOCKER_CERT_PATH}/letsencrypt/${CERT_NAME}.jks\" keystorePass=\"__CAPASS\" truststore=\"JKS\" truststoreFile=\"${DOCKER_CERT_PATH}/files/truststore-__TAK_CA.jks\" truststorePass=\"__CAPASS\""
 fi
 
-sed -i "s#__SSL_CERT_INFO#${SSL_CERT_INFO}#g" ${TAK_PATH}/CoreConfig.xml
-
-printf $info "Setting Cert Password\n\n"
-sed -i "s/__CAPASS/${CAPASS}/g" ${TAK_PATH}/CoreConfig.xml
-sed -i "s/__PASS/${CERTPASS}/g" ${TAK_PATH}/CoreConfig.xml
-
-printf $info "Setting Organization Info\n\n"
-sed -i "s/__ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" ${TAK_PATH}/CoreConfig.xml
-sed -i "s/__ORGANIZATION/${ORGANIZATION}/g" ${TAK_PATH}/CoreConfig.xml
 
 TAK_CA=${TAK_ALIAS}-Intermediary-CA-01
 SIGNING_KEY=${TAK_CA}-signing
-printf $info "Setting CA: ${TAK_CA}\n\n"
-sed -i "s/__TAK_CA/${TAK_CA}/g" ${TAK_PATH}/CoreConfig.xml
-sed -i "s/__SIGNING_KEY/${SIGNING_KEY}/g" ${TAK_PATH}/CoreConfig.xml
-
-printf $info "Setting Revocation List: ${TAK_CA}.crl\n\n"
-sed -i "s/__CRL/${TAK_CA}/g" ${TAK_PATH}/CoreConfig.xml
-
-printf $info "Setting TAK Server Alias: ${TAK_ALIAS}\n\n"
-sed -i "s/__TAK_ALIAS/${TAK_ALIAS}/g" ${TAK_PATH}/CoreConfig.xml
-
-printf $info "Setting IP/FQDN: ${URL}\n\n"
-sed -i "s/__HOSTIP/${URL}/g" ${TAK_PATH}/CoreConfig.xml
-
-printf $info "Setting API Port: ${TAK_COT_PORT}\n\n"
-sed -i "s/__TAK_COT_PORT/${TAK_COT_PORT}/" ${TAK_PATH}/CoreConfig.xml
-
-printf $info "Setting PostGres URL: tak-database\n\n"
-sed -i "s/__DATABASE_HOST/tak-database/" ${TAK_PATH}/CoreConfig.xml
-
 PG_PASS=${PAD2}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD1}
+sed -i \
+    -e "s#__SSL_CERT_INFO#${SSL_CERT_INFO}#g" ${TAK_PATH}/CoreConfig.xml \
+    -e "s/__CAPASS/${CAPASS}/g" ${TAK_PATH}/CoreConfig.xml \
+    -e "s/__PASS/${CERTPASS}/g" ${TAK_PATH}/CoreConfig.xml \
+    -e "s/__ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" ${TAK_PATH}/CoreConfig.xml \
+    -e "s/__ORGANIZATION/${ORGANIZATION}/g" ${TAK_PATH}/CoreConfig.xml \
+    -e "s/__TAK_CA/${TAK_CA}/g" ${TAK_PATH}/CoreConfig.xml \
+    -e "s/__SIGNING_KEY/${SIGNING_KEY}/g" ${TAK_PATH}/CoreConfig.xml \
+    -e "s/__CRL/${TAK_CA}/g" ${TAK_PATH}/CoreConfig.xml \
+    -e "s/__TAK_ALIAS/${TAK_ALIAS}/g" ${TAK_PATH}/CoreConfig.xml \
+    -e "s/__HOSTIP/${URL}/g" ${TAK_PATH}/CoreConfig.xml \
+    -e "s/__TAK_COT_PORT/${TAK_COT_PORT}/" ${TAK_PATH}/CoreConfig.xml \
+    -e "s/__DATABASE_HOST/tak-database/" ${TAK_PATH}/CoreConfig.xml \
+    -e "s/__PG_PASS/${PG_PASS}/" ${TAK_PATH}/CoreConfig.xml
+
+printf $info "Setting CA: ${TAK_CA}\n\n"
+printf $info "Setting Cert Password\n\n"
+printf $info "Setting Organization Info\n\n"
+printf $info "Setting Revocation List: ${TAK_CA}.crl\n\n"
+printf $info "Setting TAK Server Alias: ${TAK_ALIAS}\n\n"
+printf $info "Setting IP/FQDN: ${URL}\n\n"
+printf $info "Setting API Port: ${TAK_COT_PORT}\n\n"
+printf $info "Setting PostGres URL: tak-database\n\n"
 printf $info "Setting PostGres Password: ${PG_PASS}\n\n"
-sed -i "s/__PG_PASS/${PG_PASS}/" ${TAK_PATH}/CoreConfig.xml
+
 pause
 
 # Better memory allocation:
