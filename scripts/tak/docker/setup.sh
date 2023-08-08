@@ -111,7 +111,6 @@ if [[ -f ~/letsencrypt.txt ]]; then
     SSL_CERT_INFO="keystore=\"JKS\" keystoreFile=\"${DOCKER_CERT_PATH}/letsencrypt/${CERT_NAME}.jks\" keystorePass=\"__CAPASS\" truststore=\"JKS\" truststoreFile=\"${DOCKER_CERT_PATH}/files/truststore-__TAK_CA.jks\" truststorePass=\"__CAPASS\""
 fi
 
-
 TAK_CA=${TAK_ALIAS}-Intermediary-CA-01
 SIGNING_KEY=${TAK_CA}-signing
 PG_PASS=${PAD2}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD1}
