@@ -6,139 +6,29 @@ source ${SCRIPT_PATH}/config.inc.sh
 
 # =======================
 
-sudo rm -rf $WORK_DIR
+## Set inputs
+#
+source ${TAK_SCRIPT_PATH}/v1/inputs.inc.sh "release/takserver*.zip"
 
-if ! compgen -G "release/takserver*.zip" > /dev/null; then
-    printf $warning "\n\n------------ No TAK Server Package found in ~/release/ ------------\n\n"
-    exit
-fi
-
-echo; echo
-HOSTNAME=${HOSTNAME//\./-}
-read -p "Alias of this Tak Server: Default [${HOSTNAME}] : " TAK_ALIAS
-TAK_ALIAS=${TAK_ALIAS:-$HOSTNAME}
-
-echo; echo
-ip link show
-echo; echo
-DEFAULT_NIC=$(route | grep default | awk '{print $8}')
-read -p "Which Network Interface? Default [${DEFAULT_NIC}] : " NIC
-NIC=${NIC:-${DEFAULT_NIC}}
-
-IP=$(ip addr show $NIC | grep -m 1 "inet " | awk '{print $2}' | cut -d "/" -f1)
-URL=$IP
-
-printf $warning "\n\n------------ Unpacking Docker Release ------------\n\n"
-
-unzip ~/release/takserver*.zip -d ~/
-mv ~/takserver* ${WORK_DIR}
-chown -R $USER:$USER ${WORK_DIR}
-VERSION=$(cat ${TAK_PATH}/version.txt | sed 's/\(.*\)-.*-.*/\1/')
-
-printf $warning "\n\n------------ Updating UFW Firewall Rules ------------\n\n"
-
-printf $info "Allow 22 [SSH]\n"
-sudo ufw allow OpenSSH;
-printf $info "\nAllow 8089 [API]\n"
-sudo ufw allow proto tcp from ${IP}/24 to any port 8089
-printf $info "\nAllow 8443 [certificate auth]\n"
-sudo ufw allow proto tcp from ${IP}/24 to any port 8443
-printf $info "\nAllow 8446 [user/pass auth]\n"
-sudo ufw allow proto tcp from ${IP}/24 to any port 8446
-printf $info "\nAllow 9000 [federation]\n"
-sudo ufw allow proto tcp from ${IP}/24 to any port 9000
-printf $info "\nAllow 9001 [federation]\n"
-sudo ufw allow proto tcp from ${IP}/24 to any port 9001
+## Set firewall rules
+#
+source ${TAK_SCRIPT_PATH}/v1/firewall.inc.sh
 printf $info "\nAllow Docker 5432 [postgres]\n"
 sudo ufw allow proto tcp from ${DOCKER_SUBNET} to any port 5432
 sudo ufw route allow from ${DOCKER_SUBNET} to ${DOCKER_SUBNET}
 
-printf $warning "\n\n------------ SSL setup. Hit enter (x4) to accept the defaults ------------\n\n"
+printf $warning "\n\n------------ Unpacking Docker Release ------------\n\n"
+unzip ~/release/takserver*.zip -d ~/
+mv ~/takserver* ${WORK_DIR}
+VERSION=$(cat ${TAK_PATH}/version.txt | sed 's/\(.*\)-.*-.*/\1/')
+
 ## Set variables for generating CA and client certs
 #
-
-read -p "State (for cert generation). Default [state] : " STATE
-export STATE=${STATE:-state}
-
-read -p "City (for cert generation). Default [city] : " CITY
-export CITY=${CITY:-city}
-
-read -p "Organization Name (for cert generation) Default [TAK] : " ORGANIZATION
-export ORGANIZATION=${ORGANIZATION:-TAK}
-
-read -p "Organizational Unit (for cert generation). Default [${ORGANIZATION}] : " ORGANIZATIONAL_UNIT
-export ORGANIZATIONAL_UNIT=${ORGANIZATIONAL_UNIT:-${ORGANIZATION}}
+source ${TAK_SCRIPT_PATH}/v1/ca-vars.inc.sh
 
 ## CoreConfig
 #
-printf $warning "\n\n------------ Updating CoreConfig.xml ------------\n\n"
-
-cp ${TEMPLATE_PATH}/tak/CoreConfig-${VERSION}.xml.tmpl ${TAK_PATH}/CoreConfig.xml
-
-SSL_CERT_INFO=""
-if [[ -f ~/letsencrypt.txt ]]; then
-    printf $info "\nUsing LetsEncrypt Certificate\n"
-    FQDN=$(cat ~/letsencrypt.txt)
-    URL=$FQDN
-    CERT_NAME=le-${FQDN//\./-}
-    LE_PATH="/etc/letsencrypt/live/$FQDN"
-    mkdir -p ${CERT_PATH}/letsencrypt
-
-    sudo openssl pkcs12 -export \
-        -in ${LE_PATH}/fullchain.pem \
-        -inkey ${LE_PATH}/privkey.pem \
-        -name ${CERT_NAME} \
-        -out ${CERT_PATH}/letsencrypt/${CERT_NAME}.p12 \
-        -passout pass:${CAPASS}
-
-    sudo keytool -importkeystore \
-        -deststorepass ${CAPASS} \
-        -srcstorepass ${CAPASS} \
-        -destkeystore ${CERT_PATH}/letsencrypt/${CERT_NAME}.jks \
-        -srckeystore ${CERT_PATH}/letsencrypt/${CERT_NAME}.p12 \
-        -srcstoretype PKCS12
-
-    sudo keytool -import \
-        -noprompt \
-        -alias bundle \
-        -trustcacerts \
-        -deststorepass ${CAPASS} \
-        -srcstorepass ${CAPASS} \
-        -file ${LE_PATH}/fullchain.pem \
-        -keystore ${CERT_PATH}/letsencrypt/${CERT_NAME}.jks
-
-    printf $info "Setting LetsEncrypt on Port:8446\n\n"
-    SSL_CERT_INFO="keystore=\"JKS\" keystoreFile=\"${DOCKER_CERT_PATH}/letsencrypt/${CERT_NAME}.jks\" keystorePass=\"__CAPASS\" truststore=\"JKS\" truststoreFile=\"${DOCKER_CERT_PATH}/files/truststore-__TAK_CA.jks\" truststorePass=\"__CAPASS\""
-fi
-
-TAK_CA=${TAK_ALIAS}-Intermediary-CA-01
-SIGNING_KEY=${TAK_CA}-signing
-PG_PASS=${PAD2}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD1}
-sed -i \
-    -e "s#__SSL_CERT_INFO#${SSL_CERT_INFO}#g" \
-    -e "s/__CAPASS/${CAPASS}/g" \
-    -e "s/__PASS/${CERTPASS}/g" \
-    -e "s/__ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" \
-    -e "s/__ORGANIZATION/${ORGANIZATION}/g" \
-    -e "s/__TAK_CA/${TAK_CA}/g" \
-    -e "s/__SIGNING_KEY/${SIGNING_KEY}/g" \
-    -e "s/__CRL/${TAK_CA}/g" \
-    -e "s/__TAK_ALIAS/${TAK_ALIAS}/g" \
-    -e "s/__HOSTIP/${URL}/g" \
-    -e "s/__TAK_COT_PORT/${TAK_COT_PORT}/" \
-    -e "s/__DATABASE_HOST/tak-database/" \
-    -e "s/__PG_PASS/${PG_PASS}/" ${TAK_PATH}/CoreConfig.xml
-
-printf $info "Setting CA: ${TAK_CA}\n\n"
-printf $info "Setting Cert Password\n\n"
-printf $info "Setting Organization Info\n\n"
-printf $info "Setting Revocation List: ${TAK_CA}.crl\n\n"
-printf $info "Setting TAK Server Alias: ${TAK_ALIAS}\n\n"
-printf $info "Setting IP/FQDN: ${URL}\n\n"
-printf $info "Setting API Port: ${TAK_COT_PORT}\n\n"
-printf $info "Setting PostGres URL: tak-database\n\n"
-printf $info "Setting PostGres Password: ${PG_PASS}\n\n"
-
+source ${TAK_SCRIPT_PATH}/v1/coreconfig.inc.sh ${DATABASE_ALIAS}
 pause
 
 # Better memory allocation:
@@ -146,7 +36,6 @@ pause
 # Allocate memory based upon the available memory so this still scales
 #
 sed -i "s/MemTotal/MemFree/g" ${TAK_PATH}/setenv.sh
-
 
 printf $warning "\n\n------------ Creating ENV variable file ${WORK_DIR}/.env ------------\n\n"
 # Writes variables to a .env file for docker-compose
@@ -171,39 +60,16 @@ EOF
 
 cat ${WORK_DIR}/.env
 
-printf $warning "\n\n------------ Certificate Generation --------------\n\n"
-printf $info "If prompted to replace certificate, enter Y\n"
-pause
-
-## Certs
+## Generate Certs
 #
-cd ${CERT_PATH}
-mkdir -p files
-echo "unique_subject=no" > files/crl_index.txt.attr
-while true;do
-    printf $info "\n------------ Generating Certificates --------------"
-    printf $success "\n\n${TAK_ALIAS}-Root-CA-01\n"
-    ./makeRootCa.sh --ca-name $root {TAK_ALIAS}-Root-CA-01
-    if [ $? -eq 0 ];then
-        printf $success "\n\nca ${TAK_CA}\n"
-        ./makeCert.sh ca ${TAK_CA}
-        if [ $? -eq 0 ];then
-            printf $success "\n\nserver ${TAK_ALIAS}\n"
-            ./makeCert.sh server ${TAK_ALIAS}
-            if [ $? -eq 0 ];then
-                printf $success "\n\nclient ${TAKADMIN}\n"
-                ./makeCert.sh client ${TAKADMIN}
-                if [ $? -eq 0 ];then
-                    break
-                fi
-            fi
-        fi
-    fi
-    sleep 10
-done
+source ${TAK_SCRIPT_PATH}/v1/cert-gen.inc.sh
 
 printf $warning "\n\n------------ Configuration Complete. Starting Containers --------------\n\n"
-cp ${TOOLS_PATH}/docker/tak.docker-compose.yml ${WORK_DIR}/docker-compose.yml
+cp ${TEMPLATE_PATH}/tak/docker/docker-compose.yml.tmpl ${WORK_DIR}/docker-compose.yml
+
+sed -i \
+    -e "s#__DOCKER_SUBNET#${DOCKER_SUBNET}#g" \
+    -e "s/__DATABASE_ALIAS/${DATABASE_ALIAS}/"${WORK_DIR}/docker-compose.yml
 
 printf $info "------------ Building TAK DB ------------\n\n"
 $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml up tak-db -d
@@ -228,20 +94,9 @@ else
     printf $info "\nTAK Server auto-start disabled\n\n"
 fi
 
-echo; echo
-START_TIME="$(date -u +%s)"
-while true; do
-    printf $warning "------------ Waiting for Server to start --------------\n"
-    sleep 30
-    RESPONSE=$(curl --insecure -I https://${IP}:8446 2>&1)
-    if [ $? -eq 0 ]; then
-        END_TIME="$(date -u +%s)"
-        printf $success "\n------------ Server Started --------------\n"
-        ELAPSED="$((${END_TIME}-${START_TIME}))"
-        printf $info "Restart took ${ELAPSED} seconds\n\n"
-        break
-    fi
-done
+## Check Server Status
+#
+source ${TAK_SCRIPT_PATH}/v1/server-check.inc.sh
 
 $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER \${CERT_PATH}/"
 
@@ -252,7 +107,7 @@ printf $warning "------------ Create Admin --------------\n\n"
 
 TAKADMIN_PASS=${PAD1}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD2}
 
-while true; do
+while true;do
     printf $info "\n------------ Enabling Admin User [password and certificate] --------------\n"
 
     $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "java -jar \${TAK_PATH}/utils/UserManager.jar usermod -A -p \"${TAKADMIN_PASS}\" ${TAKADMIN}"
@@ -267,30 +122,6 @@ done
 
 printf $success "\n\n ----------------- Installation Complete -----------------\n\n"
 
-# We are done now
+## Installation Summary
 #
-########################## OUTPUT ##########################
-#
-#
-printf $info "Certificates and *CERT DATA PACKAGES* are in tak/certs/files \n"
-printf $warning "Import the ${CERT_PATH}/files/$TAKADMIN.p12 certificate to your browser as per the README\n\n"
-
-printf $success "Login at https://$URL:8443 with your admin account certificate.\n\n"
-printf $success "Login at https://$URL:8446 with your admin account user/pass.\n"
-printf $success "No need to run the /setup step as this has been done.\n\n"
-
-INFO=${WORK_DIR}/info.txt
-echo "---------PASSWORDS----------------" > ${INFO}
-echo >> ${INFO}
-echo "Tak Admin user      : $TAKADMIN" >> ${INFO}
-echo "Tak Admin password  : $TAKADMIN_PASS" >> ${INFO}
-echo "PostgreSQL password : $PG_PASS" >> ${INFO}
-echo >> ${INFO}
-echo "---------PASSWORDS----------------" >> ${INFO}
-printf $danger "$(cat ${INFO})"
-
-printf $warning "\nMAKE A NOTE OF YOUR PASSWORDS. THEY WON'T BE SHOWN AGAIN.\n\n
-"
-printf $warning "You have a database listening on TCP 5432 which requires a login. You should still block this port with a firewall\n\n"
-
-printf $info "Execute into running container '$DOCKER_COMPOSE -f ${WORKDIR}/docker-compose.yml exec tak-server bash' \n\n"
+source ${TAK_SCRIPT_PATH}/v1/summary.inc.sh

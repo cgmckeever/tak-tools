@@ -9,19 +9,19 @@ source ${SCRIPT_PATH}/config.inc.sh
 ## Set inputs
 #
 source ${TAK_SCRIPT_PATH}/v1/inputs.inc.sh "release/takserver*.deb"
-mkdir -p $WORK_DIR
 
 ## Set firewall rules
 #
 source ${TAK_SCRIPT_PATH}/v1/firewall.inc.sh
 
-PACKAGE=$(ls release/takserver*.deb)
-VERSION=$(echo ${PACKAGE} | sed 's/release\/takserver_\(.*\)-RELEASE.*/\1/')
+printf $warning "\n\n------------ Unpacking TAK Installer ------------\n\n"
 cd release/
 PACKAGE=$(ls takserver*.deb)
+VERSION=$(echo ${PACKAGE} | sed 's/takserver_\(.*\)-RELEASE.*/\1/')
 sudo apt install -y ./${PACKAGE}
-sudo chown -R $USER:$USER ${TAK_PATH}
+
 ## Strange 4.8 error
+#
 sudo ln -s /bin/systemctl /usr/bin/systemctl
 
 ## Set variables for generating CA and client certs
@@ -34,7 +34,7 @@ source ${TAK_SCRIPT_PATH}/v1/coreconfig.inc.sh "127.0.0.1"
 
 ## Database Setup
 #
-if [ -f /opt/tak/db-utils/takserver-setup-db.sh ]; then
+if [ -f /opt/tak/db-utils/takserver-setup-db.sh ];then
     sudo ${TAK_PATH}/db-utils/takserver-setup-db.sh
 fi
 
@@ -85,22 +85,20 @@ source ${TAK_SCRIPT_PATH}/v1/server-check.inc.sh
 
 printf $warning "------------ Create Admin --------------\n\n"
 TAKADMIN_PASS=${PAD1}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD2}
-while true; do
+while true;do
     sudo java -jar /opt/tak/utils/UserManager.jar usermod -A -p "${TAKADMIN_PASS}" ${TAKADMIN}
-    if [ $? -eq 0 ]; then
+    if [ $? -eq 0 ];then
         sudo java -jar /opt/tak/utils/UserManager.jar certmod -A /opt/tak/certs/files/${TAKADMIN}.pem
-        if [ $? -eq 0 ]; then
+        if [ $? -eq 0 ];then
             break
         fi
     fi
     sleep 10
 done
 
-printf $success "\n\n ----------------- Installation Complete -----------------\n\n"
+printf $success "\n\n----------------- Installation Complete -----------------\n\n"
 
-## Installation Summaary
+## Installation Summary
 #
 source ${TAK_SCRIPT_PATH}/v1/summary.inc.sh
-
-
 

@@ -86,7 +86,7 @@ Wrapper Script: `/opt/tak-tools/scripts/tak/standalone/start.sh`
 ### System
 
 ```
-/opt/tak-tools/scripts/docker/prereq.sh
+/opt/tak-tools/scripts/tak/docker/prereq.sh
 
 ```
 
