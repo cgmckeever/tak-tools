@@ -14,7 +14,6 @@ mkdir -p $WORK_DIR
 ## Set firewall rules
 #
 source ${TAK_SCRIPT_PATH}/v1/firewall.inc.sh
-sudo ufw allow proto tcp from 127.0.0.1 to any port 5432
 
 PACKAGE=$(ls release/takserver*.deb)
 VERSION=$(echo ${PACKAGE} | sed 's/release\/takserver_\(.*\)-RELEASE.*/\1/')
