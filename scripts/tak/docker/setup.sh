@@ -29,7 +29,6 @@ source ${TAK_SCRIPT_PATH}/v1/ca-vars.inc.sh
 ## CoreConfig
 #
 source ${TAK_SCRIPT_PATH}/v1/coreconfig.inc.sh ${DATABASE_ALIAS}
-pause
 
 # Better memory allocation:
 # By default TAK server allocates memory based upon the *total* on a machine.
@@ -69,7 +68,7 @@ cp ${TEMPLATE_PATH}/tak/docker/docker-compose.yml.tmpl ${WORK_DIR}/docker-compos
 
 sed -i \
     -e "s#__DOCKER_SUBNET#${DOCKER_SUBNET}#g" \
-    -e "s/__DATABASE_ALIAS/${DATABASE_ALIAS}/"${WORK_DIR}/docker-compose.yml
+    -e "s/__DATABASE_ALIAS/${DATABASE_ALIAS}/" ${WORK_DIR}/docker-compose.yml
 
 printf $info "------------ Building TAK DB ------------\n\n"
 $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml up tak-db -d
