@@ -13,13 +13,6 @@ if ! compgen -G "release/takserver*.zip" > /dev/null; then
     exit
 fi
 
-printf $warning "\n\n------------ Unpacking Docker Release ------------\n\n"
-
-unzip ~/release/takserver*.zip -d ~/
-mv ~/takserver* ${WORK_DIR}
-chown -R $USER:$USER ${WORK_DIR}
-VERSION=$(cat ${TAK_PATH}/version.txt | sed 's/\(.*\)-.*-.*/\1/')
-
 echo; echo
 HOSTNAME=${HOSTNAME//\./-}
 read -p "Alias of this Tak Server: Default [${HOSTNAME}] : " TAK_ALIAS
@@ -34,6 +27,13 @@ NIC=${NIC:-${DEFAULT_NIC}}
 
 IP=$(ip addr show $NIC | grep -m 1 "inet " | awk '{print $2}' | cut -d "/" -f1)
 URL=$IP
+
+printf $warning "\n\n------------ Unpacking Docker Release ------------\n\n"
+
+unzip ~/release/takserver*.zip -d ~/
+mv ~/takserver* ${WORK_DIR}
+chown -R $USER:$USER ${WORK_DIR}
+VERSION=$(cat ${TAK_PATH}/version.txt | sed 's/\(.*\)-.*-.*/\1/')
 
 printf $warning "\n\n------------ Updating UFW Firewall Rules ------------\n\n"
 
@@ -81,12 +81,12 @@ if [[ -f ~/letsencrypt.txt ]]; then
     FQDN=$(cat ~/letsencrypt.txt)
     URL=$FQDN
     CERT_NAME=le-${FQDN//\./-}
-    LE_DIR="/etc/letsencrypt/live/$FQDN"
+    LE_PATH="/etc/letsencrypt/live/$FQDN"
     mkdir -p ${CERT_PATH}/letsencrypt
 
     sudo openssl pkcs12 -export \
-        -in ${LE_DIR}/fullchain.pem \
-        -inkey ${LE_DIR}/privkey.pem \
+        -in ${LE_PATH}/fullchain.pem \
+        -inkey ${LE_PATH}/privkey.pem \
         -name ${CERT_NAME} \
         -out ${CERT_PATH}/letsencrypt/${CERT_NAME}.p12 \
         -passout pass:${CAPASS}
@@ -104,7 +104,7 @@ if [[ -f ~/letsencrypt.txt ]]; then
         -trustcacerts \
         -deststorepass ${CAPASS} \
         -srcstorepass ${CAPASS} \
-        -file ${LE_DIR}/fullchain.pem \
+        -file ${LE_PATH}/fullchain.pem \
         -keystore ${CERT_PATH}/letsencrypt/${CERT_NAME}.jks
 
     printf $info "Setting LetsEncrypt on Port:8446\n\n"

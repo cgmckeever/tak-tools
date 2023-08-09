@@ -42,6 +42,33 @@ su - tak
 - Will create a `tak` service user
     - *Remember* the displayed password; or `passwd tak` to change it
 
+### TAK Package
+
+- Download the package from https://tak.gov/products/tak-server
+- Transfer it to your server in the `~/release/` directory
+
+## Setup
+
+- Log in as the TAK user
+```
+su - tak
+```
+
+- Copy and change th config settings
+```
+sudo cp /opt/tak-tools/scripts/standalone/config.inc.example.sh /opt/tak-tools/scripts/standalone/config.inc.sh
+```
+
+- Kick off setup
+```
+/opt/tak-tools/scripts/tak/docker/setup.sh
+```
+
+Wrapper Script: `/opt/tak-tools/scripts/tak/docker/start.sh`
+
+- Will look for the install package as `~/release/takserver*.zip`
+- Follow the prompts...its not perfect
+
 # Docker
 
 ## Validated
