@@ -82,7 +82,18 @@ fi
 source ${TAK_SCRIPT_PATH}/v1/server-check.inc.sh
 
 printf $warning "------------ Create Admin --------------\n\n"
-## TODO
+while true; do
+    sudo java -jar /opt/tak/utils/UserManager.jar usermod -A -p "${TAKADMIN_PASS}" ${TAKADMIN}
+    if [ $? -eq 0 ]; then
+        sudo java -jar /opt/tak/utils/UserManager.jar certmod -A /opt/tak/certs/files/${TAKADMIN}.pem
+        if [ $? -eq 0 ]; then
+            break
+        fi
+    fi
+    sleep 10
+done
+
+printf $success "\n\n ----------------- Installation Complete -----------------\n\n"
 
 ## Installation Summaary
 #
