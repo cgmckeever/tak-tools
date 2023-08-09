@@ -13,7 +13,9 @@ mkdir -p $WORK_DIR
 
 PACKAGE=$(ls release/takserver*.deb)
 VERSION=$(echo ${PACKAGE} | sed 's/release\/takserver_\(.*\)-RELEASE.*/\1/')
-sudo apt install -y ${PACKAGE}
+cd release/
+PACKAGE=$(ls takserver*.deb)
+sudo apt install -y ./${PACKAGE}
 sudo chown -R $USER:$USER ${TAK_PATH}
 
 ## Database Setup
