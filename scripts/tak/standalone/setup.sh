@@ -11,6 +11,11 @@ source ${SCRIPT_PATH}/config.inc.sh
 source ${TAK_SCRIPT_PATH}/v1/inputs.inc.sh "release/takserver*.deb"
 mkdir -p $WORK_DIR
 
+## Set firewall rules
+#
+source ${TAK_SCRIPT_PATH}/v1/firewall.inc.sh
+sudo ufw allow proto tcp from 127.0.0.1 to any port 5432
+
 PACKAGE=$(ls release/takserver*.deb)
 VERSION=$(echo ${PACKAGE} | sed 's/release\/takserver_\(.*\)-RELEASE.*/\1/')
 cd release/
@@ -33,7 +38,7 @@ source ${TAK_SCRIPT_PATH}/v1/ca-vars.inc.sh
 
 ## CoreConfig
 #
-source ${TAK_SCRIPT_PATH}/v1/coreconfig.inc.sh $IP
+source ${TAK_SCRIPT_PATH}/v1/coreconfig.inc.sh "127.0.0.1"
 
 
 printf $warning "\n\n------------ Creating ENV variable file  ------------\n\n"
