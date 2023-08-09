@@ -2,12 +2,12 @@
 
 printf $warning "\n\n------------ Updating UFW Firewall Rules ------------\n\n"
 
-read -p "Is the TAK Server behind aa VPN [Y/n]? " VPN
+read -p "Is the TAK Server behind a VPN [Y/n]? " VPN
 VPN=${VPN:-y}
 
 SOURCE=${IP}/24
 if [[ ${VPN} =~ ^[Nn]$ ]];then
-    SOURCE="ANYWHERE"
+    SOURCE="0.0.0.0/0"
 fi
 
 printf $info "Allow 22 [SSH]\n"
