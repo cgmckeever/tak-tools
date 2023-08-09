@@ -85,6 +85,7 @@ fi
 source ${TAK_SCRIPT_PATH}/v1/server-check.inc.sh
 
 printf $warning "------------ Create Admin --------------\n\n"
+TAKADMIN_PASS=${PAD1}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD2}
 while true; do
     sudo java -jar /opt/tak/utils/UserManager.jar usermod -A -p "${TAKADMIN_PASS}" ${TAKADMIN}
     if [ $? -eq 0 ]; then
