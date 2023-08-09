@@ -33,7 +33,7 @@ source ${TAK_SCRIPT_PATH}/v1/ca-vars.inc.sh
 
 ## CoreConfig
 #
-source ${TAK_SCRIPT_PATH}/v1/coreconfig.inc.sh ${IP}
+source ${TAK_SCRIPT_PATH}/v1/coreconfig.inc.sh $IP
 
 
 printf $warning "\n\n------------ Creating ENV variable file  ------------\n\n"
