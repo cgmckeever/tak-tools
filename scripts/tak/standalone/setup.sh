@@ -54,7 +54,7 @@ sed -i \
     -e "s/__ORGANIZATION/${ORGANIZATION}/g" \
     -e "s/__TAK_IP/${IP}/g" \
     -e "s/__TAK_COT_PORT/${TAK_COT_PORT}/" \
-    -e "s/__TAK_URL/${URL}/"
+    -e "s/__TAK_URL/${URL}/" /etc/profile.d/tak.profile.sh
 
 cat /etc/profile.d/tak.profile.sh
 
