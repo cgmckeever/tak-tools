@@ -23,7 +23,7 @@ sudo chown -R $USER:$USER ${TAK_PATH}
 if [ -f /opt/tak/db-utils/takserver-setup-db.sh ]; then
     ## Strange 4.8 error
     sudo ln -s /bin/systemctl /usr/bin/systemctl
-    systemctl stop takserver
+    sudo systemctl stop takserver
     sudo ${TAK_PATH}/db-utils/takserver-setup-db.sh
 fi
 
@@ -42,7 +42,7 @@ sudo cp ${TEMPLATE_PATH}/tak/standalone/tak.profile.sh.tmpl /etc/profile.d/tak.p
 sudo chmod 755 /etc/profile.d/tak.profile.sh
 
 sed -i \
-    -e "s/__TAK_PATH/${TAK_PATH}/g" \
+    -e "s#__TAK_PATH#${TAK_PATH}#g" \
     -e "s/__TAK_ALIAS/${TAK_ALIAS}/g" \
     -e "s/__NIC/${NIC}/g" \
     -e "s/__CAPASS/${CAPASS}/g" \
