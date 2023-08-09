@@ -22,15 +22,8 @@ cd release/
 PACKAGE=$(ls takserver*.deb)
 sudo apt install -y ./${PACKAGE}
 sudo chown -R $USER:$USER ${TAK_PATH}
-
-## Database Setup
-#
-if [ -f /opt/tak/db-utils/takserver-setup-db.sh ]; then
-    ## Strange 4.8 error
-    sudo ln -s /bin/systemctl /usr/bin/systemctl
-    sudo systemctl stop takserver
-    sudo ${TAK_PATH}/db-utils/takserver-setup-db.sh
-fi
+## Strange 4.8 error
+sudo ln -s /bin/systemctl /usr/bin/systemctl
 
 ## Set variables for generating CA and client certs
 #
@@ -40,6 +33,11 @@ source ${TAK_SCRIPT_PATH}/v1/ca-vars.inc.sh
 #
 source ${TAK_SCRIPT_PATH}/v1/coreconfig.inc.sh "127.0.0.1"
 
+## Database Setup
+#
+if [ -f /opt/tak/db-utils/takserver-setup-db.sh ]; then
+    sudo ${TAK_PATH}/db-utils/takserver-setup-db.sh
+fi
 
 printf $warning "\n\n------------ Creating ENV variable file  ------------\n\n"
 
