@@ -8,7 +8,7 @@ cd ${CERT_PATH}
 mkdir -p files
 echo "unique_subject=no" > files/crl_index.txt.attr
 while true;do
-    printf $info "\n------------ Generating Certificates --------------"
+    printf $info "\n\n------------ Generating Certificates --------------"
     printf $success "\n\n${TAK_ALIAS}-Root-CA-01\n"
     ./makeRootCa.sh --ca-name $root {TAK_ALIAS}-Root-CA-01
     if [ $? -eq 0 ];then
