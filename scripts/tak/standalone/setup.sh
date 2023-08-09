@@ -52,9 +52,9 @@ sudo sed -i \
     -e "s/__STATE/${STATE}/g" \
     -e "s/__ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" \
     -e "s/__ORGANIZATION/${ORGANIZATION}/g" \
-    -e "s/__TAK_IP/${IP}/g" \
+    -e "s/__IP/${IP}/g" \
     -e "s/__TAK_COT_PORT/${TAK_COT_PORT}/" \
-    -e "s/__TAK_URL/${URL}/" /etc/profile.d/tak.profile.sh
+    -e "s/__URL/${URL}/" /etc/profile.d/tak.profile.sh
 
 cat /etc/profile.d/tak.profile.sh
 
