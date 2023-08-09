@@ -9,6 +9,7 @@ source ${SCRIPT_PATH}/config.inc.sh
 ## Set inputs
 #
 source ${TAK_SCRIPT_PATH}/v1/inputs.inc.sh "release/takserver*.deb"
+mkdir -p $WORK_DIR
 
 ## Set firewall rules
 #
