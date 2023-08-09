@@ -41,7 +41,7 @@ printf $warning "\n\n------------ Creating ENV variable file  ------------\n\n"
 sudo cp ${TEMPLATE_PATH}/tak/standalone/tak.profile.sh.tmpl /etc/profile.d/tak.profile.sh
 sudo chmod 755 /etc/profile.d/tak.profile.sh
 
-sed -i \
+sudo sed -i \
     -e "s#__TAK_PATH#${TAK_PATH}#g" \
     -e "s/__TAK_ALIAS/${TAK_ALIAS}/g" \
     -e "s/__NIC/${NIC}/g" \
