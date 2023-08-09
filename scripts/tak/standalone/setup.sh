@@ -48,8 +48,8 @@ sudo sed -i \
     -e "s/__CAPASS/${CAPASS}/g" \
     -e "s/__PASS/${CERTPASS}/g" \
     -e "s/__TAK_CA/${TAK_CA}/g" \
-    -e "s/__TAK_CITY/${CITY}/g" \
-    -e "s/__TAK_STATE/${STATE}/g" \
+    -e "s/__CITY/${CITY}/g" \
+    -e "s/__STATE/${STATE}/g" \
     -e "s/__ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" \
     -e "s/__ORGANIZATION/${ORGANIZATION}/g" \
     -e "s/__TAK_IP/${IP}/g" \
