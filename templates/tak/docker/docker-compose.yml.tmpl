@@ -5,7 +5,7 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: "172.20.0.0/24"
+        - subnet: __DOCKER_SUBNET
 
 volumes:
   tak_data:
@@ -21,7 +21,7 @@ services:
     networks:
       taknet:
         aliases:
-          - tak-database
+          - __DATABASE_ALIAS
     ports:
       - "5432:5432"
     restart: always

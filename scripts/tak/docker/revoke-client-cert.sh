@@ -32,7 +32,7 @@ if [[ -f ${FILE_PATH}/${USERNAME}.p12 ]]; then
     read -p "Restart TAK [y/n]? " RESTART
 
     if [[ $RESTART =~ ^[Yy]$ ]];then
-        $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml restart tak-server
+        $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml restart tak-server-docker
     fi
 else
     printf $warning "\nClient Certificate ${FILE_PATH}/${USERNAME}.p12 not found\n\n"
