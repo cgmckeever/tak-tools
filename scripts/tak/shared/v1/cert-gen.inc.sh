@@ -24,17 +24,17 @@ mkdir -p files
 echo "unique_subject=no" > files/crl_index.txt.attr
 while true;do
     printf $info "\n\n------------ Generating Certificates --------------"
-    printf $success "\n\n${TAK_ALIAS}-Root-CA-01\n"
+    printf $success "\n\n$Root: {TAK_ALIAS}-Root-CA-01\n"
     ./makeRootCa.sh --ca-name $root {TAK_ALIAS}-Root-CA-01
     if [ $? -eq 0 ];then
         TAK_CA=${TAK_ALIAS}-Intermediary-CA-01
-        printf $success "\n\nca ${TAK_CA}\n"
+        printf $success "\n\nCA: ${TAK_CA}\n"
         ./makeCert.sh ca ${TAK_CA}
         if [ $? -eq 0 ];then
-            printf $success "\n\nserver ${TAK_ALIAS}\n"
+            printf $success "\n\nServer: ${TAK_ALIAS}\n"
             ./makeCert.sh server ${TAK_ALIAS}
             if [ $? -eq 0 ];then
-                printf $success "\n\nclient ${TAKADMIN}\n"
+                printf $success "\n\nAdmin: ${TAKADMIN}\n"
                 ./makeCert.sh client ${TAKADMIN}
                 if [ $? -eq 0 ];then
                     break

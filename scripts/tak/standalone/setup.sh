@@ -61,11 +61,6 @@ sudo sed -i \
 
 cat /etc/profile.d/tak.profile.sh
 
-printf $info "\n\n------------ Restarting TAK Server ------------\n\n"
-sudo systemctl daemon-reload
-sudo systemctl restart takserver
-ln -s ${TAK_PATH}/logs ${WORK_DIR}/logs
-
 echo; echo
 read -p "Do you want to configure TAK Server auto-start [y/n]? " AUTOSTART
 
@@ -75,6 +70,11 @@ if [[ $AUTOSTART =~ ^[Yy]$ ]];then
 else
     printf $info "\nTAK Server auto-start disabled\n\n"
 fi
+
+printf $info "\n\n------------ Restarting TAK Server ------------\n\n"
+sudo systemctl daemon-reload
+sudo systemctl restart takserver
+ln -s ${TAK_PATH}/logs ${WORK_DIR}/logs
 
 ## Check Server Status
 #
