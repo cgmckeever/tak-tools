@@ -5,6 +5,14 @@ source ${SCRIPT_PATH}/shared.inc.sh
 
 # =======================
 
+export CITY=${TAK_CITY}
+export STATE=${TAK_STATE}
+export ORGANIZATION=${TAK_ORGANIZATION}
+export ORGANIZATIONAL_UNIT=${TAK_ORGANIZATIONAL_UNIT}
+
+export CAPASS=${TAK_CAPASS}
+export PASS=${TAK_PASS}
+
 printf $warning "\n\n------------ Creating TAK Client Certificate ------------ \n\n"
 
 read -p "What is the username: " USERNAME
