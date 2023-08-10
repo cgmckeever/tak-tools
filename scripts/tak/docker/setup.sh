@@ -22,9 +22,9 @@ unzip ~/release/takserver*.zip -d ~/
 mv ~/takserver* ${WORK_DIR}
 VERSION=$(cat ${TAK_PATH}/version.txt | sed 's/\(.*\)-.*-.*/\1/')
 
-## Set variables for generating CA and client certs
+## Generate Certs
 #
-source ${TAK_SCRIPT_PATH}/v1/ca-vars.inc.sh
+source ${TAK_SCRIPT_PATH}/v1/cert-gen.inc.sh
 
 ## CoreConfig
 #
@@ -58,10 +58,6 @@ CERT_PATH=$DOCKER_CERT_PATH
 EOF
 
 cat ${WORK_DIR}/.env
-
-## Generate Certs
-#
-source ${TAK_SCRIPT_PATH}/v1/cert-gen.inc.sh
 
 printf $warning "\n\n------------ Configuration Complete. Starting Containers --------------\n\n"
 cp ${TEMPLATE_PATH}/tak/docker/docker-compose.yml.tmpl ${WORK_DIR}/docker-compose.yml

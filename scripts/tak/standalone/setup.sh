@@ -25,9 +25,9 @@ sudo apt install -y ./${PACKAGE}
 #
 sudo ln -s /bin/systemctl /usr/bin/systemctl
 
-## Set variables for generating CA and client certs
+## Generate Certs
 #
-source ${TAK_SCRIPT_PATH}/v1/ca-vars.inc.sh
+source ${TAK_SCRIPT_PATH}/v1/cert-gen.inc.sh
 
 ## CoreConfig
 #
@@ -60,10 +60,6 @@ sudo sed -i \
     -e "s/__URL/${URL}/" /etc/profile.d/tak.profile.sh
 
 cat /etc/profile.d/tak.profile.sh
-
-## Generate Certs
-#
-source ${TAK_SCRIPT_PATH}/v1/cert-gen.inc.sh
 
 printf $info "\n\n------------ Restarting TAK Server ------------\n\n"
 sudo systemctl daemon-reload
