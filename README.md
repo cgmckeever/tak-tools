@@ -71,6 +71,52 @@ Wrapper Script: `/opt/tak-tools/scripts/tak/standalone/start.sh`
 - Will look for the install package as `~/release/takserver*.zip`
 - Follow the prompts...its not perfect
 
+## Start/Stop
+
+- Start
+```
+sudo systemctl start takserver
+```
+
+- Stop
+```
+sudo systemctl stop takserver
+```
+
+- Autostart
+```
+sudo systemctl enable takserver
+```
+
+## Manage Client Certs
+
+### Create
+
+```
+/opt/tak-tools/scripts/tak/standalone/create-client-cert.sh
+```
+
+- Will create a client `p12` and `pem` files
+- Requires a reboot to be picked-up
+- You will need to manually create a user in the `administrative` user manager with the same name to sync groups
+
+### Revoke
+
+```
+/opt/tak-tools/scripts/tak/standalone/revoke-client-cert.sh
+```
+
+- Revoke client `p12` and `pem` files
+- Requires a reboot to be picked-up
+
+## Create Client Data Package
+
+```
+/opt/tak-tools/scripts/tak/standalone/client-data-package.sh
+```
+
+- Will generate the Client Data Package
+
 # Docker
 
 ## Validated
@@ -147,6 +193,8 @@ sudo systemctl enable tak-server-docker
 
 ## Manually Create Client Certs
 
+### Create
+
 ```
 /opt/tak-tools/scripts/tak/docker/create-client-cert.sh
 ```
@@ -154,6 +202,15 @@ sudo systemctl enable tak-server-docker
 - Will create a client `p12` and `pem` files
 - Requires a reboot to be picked-up
 - You will need to manually create a user in the `administrative` user manager with the same name to sync groups
+
+### Revoke
+
+```
+/opt/tak-tools/scripts/tak/docker/revoke-client-cert.sh
+```
+
+- Revoke client `p12` and `pem` files
+- Requires a reboot to be picked-up
 
 ## Create Client Data Package
 
