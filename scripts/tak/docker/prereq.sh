@@ -77,7 +77,9 @@ if [[ ${MAKEUSER} =~ ^[Yy]$ ]];then
     printf $warning "\n\n------------ Creating Tak Service User ------------\n\n"
     TAKUSER=tak
     PASS_OMIT="<>/\'\`\""
-    TAKUSER_PASS=$(pwgen -cvy1 -r ${PASS_OMIT} 15)
+    PASS_TEMP=$(pwgen -cvy1 -r ${PASS_OMIT} 15)
+    read -p "Enter ${TAKUSER} user password: default [${PASS_TEMP}] " TAKUSER_PASS
+    TAKUSER_PASS=${TAKUSER_PASS:-${PASS_TEMP}}
 
     sudo adduser --disabled-password --gecos GECOS $TAKUSER
     echo "$TAKUSER:$TAKUSER_PASS" | sudo chpasswd
