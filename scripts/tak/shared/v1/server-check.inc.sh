@@ -12,5 +12,5 @@ while true; do
         printf $info "Restart took ${ELAPSED} seconds\n\n"
         break
     fi
-    sleep 30
+    sleep 10
 done
