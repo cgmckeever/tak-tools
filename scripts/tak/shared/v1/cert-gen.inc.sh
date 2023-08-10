@@ -24,7 +24,7 @@ mkdir -p files
 echo "unique_subject=no" > files/crl_index.txt.attr
 while true;do
     printf $info "\n\n------------ Generating Certificates --------------"
-    printf $success "\n\n$Root: {TAK_ALIAS}-Root-CA-01\n"
+    printf $success "\n\nRoot: ${TAK_ALIAS}-Root-CA-01\n"
     ./makeRootCa.sh --ca-name $root {TAK_ALIAS}-Root-CA-01
     if [ $? -eq 0 ];then
         TAK_CA=${TAK_ALIAS}-Intermediary-CA-01
