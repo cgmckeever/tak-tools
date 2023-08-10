@@ -58,6 +58,7 @@ sed -i \
     -e "s/__HOSTIP/${URL}/g" \
     -e "s/__TAK_COT_PORT/${TAK_COT_PORT}/" \
     -e "s/__DATABASE_HOST/${DATABASE_HOST}/" \
+    -e "s/__DATABASE_CONNECTIONS/${DATABASE_CONNECTIONS}/" \
     -e "s/__PG_PASS/${PG_PASS}/" ${TAK_PATH}/CoreConfig.xml
 
 printf $info "Setting CA: ${TAK_CA}\n\n"
