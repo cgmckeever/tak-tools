@@ -43,7 +43,6 @@ if [[ -f ~/letsencrypt.txt ]]; then
 fi
 
 DATABASE_HOST=$1
-TAK_CA=${TAK_ALIAS}-Intermediary-CA-01
 SIGNING_KEY=${TAK_CA}-signing
 PG_PASS=${PAD2}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD1}
 sed -i \

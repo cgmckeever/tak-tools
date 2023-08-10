@@ -22,6 +22,7 @@ NIC=${NIC:-${DEFAULT_NIC}}
 IP=$(ip addr show $NIC | grep -m 1 "inet " | awk '{print $2}' | cut -d "/" -f1)
 URL=$IP
 
+echo; echo
 read -p "Is the TAK Server behind a VPN [Y/n]? " VPN
 VPN=${VPN:-y}
 

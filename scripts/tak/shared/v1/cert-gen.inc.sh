@@ -2,7 +2,7 @@
 
 printf $warning "\n\n------------ Certificate Generation --------------\n\n"
 
-printf $warning "\n\n------------ SSL setup. Hit enter (x4) to accept the defaults ------------\n\n"
+printf $warning "------------ SSL setup. Hit enter (x4) to accept the defaults ------------\n\n"
 
 read -p "State (for cert generation). Default [state] : " STATE
 export STATE=${STATE:-state}
@@ -27,6 +27,7 @@ while true;do
     printf $success "\n\n${TAK_ALIAS}-Root-CA-01\n"
     ./makeRootCa.sh --ca-name $root {TAK_ALIAS}-Root-CA-01
     if [ $? -eq 0 ];then
+        TAK_CA=${TAK_ALIAS}-Intermediary-CA-01
         printf $success "\n\nca ${TAK_CA}\n"
         ./makeCert.sh ca ${TAK_CA}
         if [ $? -eq 0 ];then
