@@ -16,6 +16,7 @@ source ${TAK_SCRIPT_PATH}/v1/firewall.inc.sh
 printf $info "\nAllow Docker 5432 [postgres]\n"
 sudo ufw allow proto tcp from ${DOCKER_SUBNET} to any port 5432
 sudo ufw route allow from ${DOCKER_SUBNET} to ${DOCKER_SUBNET}
+pause
 
 printf $warning "\n\n------------ Unpacking Docker Release ------------\n\n"
 unzip ~/release/takserver*.zip -d ~/

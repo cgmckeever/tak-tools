@@ -14,6 +14,7 @@ mkdir -p $WORK_DIR
 ## Set firewall rules
 #
 source ${TAK_SCRIPT_PATH}/v1/firewall.inc.sh
+pause
 
 printf $warning "\n\n------------ Unpacking TAK Installer ------------\n\n"
 cd release/
@@ -71,7 +72,7 @@ else
     printf $info "\nTAK Server auto-start disabled\n\n"
 fi
 
-printf $info "\n\n------------ Restarting TAK Server ------------\n\n"
+printf $info "\n\n------------ Restarting TAK Server ------------"
 sudo systemctl daemon-reload
 sudo systemctl restart takserver
 ln -s ${TAK_PATH}/logs ${WORK_DIR}/logs
