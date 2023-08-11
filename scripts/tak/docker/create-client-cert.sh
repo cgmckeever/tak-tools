@@ -31,6 +31,6 @@ printf $warning "TAK needs to restart to enable changes.\n\n"
 read -p "Restart TAK [y/n]? " RESTART
 
 if [[ $RESTART =~ ^[Yy]$ ]];then
-    $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml restart tak-server-docker
+    $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml restart tak-server
 fi
 

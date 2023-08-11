@@ -14,6 +14,7 @@ mkdir -p $WORK_DIR
 ## Set firewall rules
 #
 source ${TAK_SCRIPT_PATH}/v1/firewall.inc.sh
+echo
 pause
 
 printf $warning "\n\n------------ Unpacking TAK Installer ------------\n\n"
