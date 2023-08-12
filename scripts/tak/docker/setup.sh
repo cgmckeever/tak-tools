@@ -76,8 +76,8 @@ printf $info "\n\n------------ Building TAK Server ------------\n\n"
 $DOCKER_COMPOSE -f ${WORK_PATH}/docker-compose.yml up tak-server -d
 $DOCKER_COMPOSE -f ${WORK_PATH}/docker-compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER \${CERT_PATH}/"
 
-ln -s ${TAK_PATH}/logs logs
-ln -s ${SCRIPT_PATH}/ tools
+ln -s ${TAK_PATH}/logs ~/logs
+ln -s ${SCRIPT_PATH}/ ~/tools
 
 echo; echo
 read -p "Do you want to configure TAK Server auto-start [y/n]? " AUTOSTART
