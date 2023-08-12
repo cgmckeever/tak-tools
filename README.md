@@ -88,7 +88,7 @@ run aas `tak` service user `su - tak`
 ### Create
 
 ```
-/opt/tak-tools/scripts/tak/standalone/create-client-cert.sh
+tools/create-client-cert.sh
 ```
 
 - Will create a client `p12` and `pem` files
@@ -98,7 +98,7 @@ run aas `tak` service user `su - tak`
 ### Revoke
 
 ```
-/opt/tak-tools/scripts/tak/standalone/revoke-client-cert.sh
+tools/revoke-client-cert.sh
 ```
 
 - Revoke client `p12` and `pem` files
@@ -107,7 +107,7 @@ run aas `tak` service user `su - tak`
 ## Create Client Data Package
 
 ```
-/opt/tak-tools/scripts/tak/standalone/client-data-package.sh
+tools/client-data-package.sh
 ```
 
 - Will generate the Client Data Package
