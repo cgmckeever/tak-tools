@@ -194,7 +194,7 @@ sudo systemctl enable tak-server-docker
 ### Create
 
 ```
-/opt/tak-tools/scripts/tak/docker/create-client-cert.sh
+tools/create-client-cert.sh
 ```
 
 - Will create a client `p12` and `pem` files
@@ -204,7 +204,7 @@ sudo systemctl enable tak-server-docker
 ### Revoke
 
 ```
-/opt/tak-tools/scripts/tak/docker/revoke-client-cert.sh
+tools/revoke-client-cert.sh
 ```
 
 - Revoke client `p12` and `pem` files
@@ -213,7 +213,7 @@ sudo systemctl enable tak-server-docker
 ## Create Client Data Package
 
 ```
-/opt/tak-tools/scripts/tak/docker/client-data-package.sh
+tools/client-data-package.sh
 ```
 
 - Will generate the Client Data Package
@@ -221,7 +221,7 @@ sudo systemctl enable tak-server-docker
 ## Tear down
 
 ```
-/opt/tak-tools/scripts/tak/docker/tear-down.sh
+tools/tear-down.sh
 ```
 
 # Firewall

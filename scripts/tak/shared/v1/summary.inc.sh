@@ -12,7 +12,7 @@ printf $success "Login at https://$URL:8443 with your admin account certificate.
 printf $success "Login at https://$URL:8446 with your admin account user/pass.\n"
 printf $success "No need to run the /setup step as this has been done.\n\n"
 
-INFO=${WORK_DIR}/info.txt
+INFO=${WORK_PATH}/info.txt
 echo "---------PASSWORDS----------------" > ${INFO}
 echo >> ${INFO}
 echo "Tak Admin user      : $TAKADMIN" >> ${INFO}
