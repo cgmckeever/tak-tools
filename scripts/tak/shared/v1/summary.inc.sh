@@ -25,5 +25,3 @@ printf $danger "$(cat ${INFO})"
 printf $warning "\nMAKE A NOTE OF YOUR PASSWORDS. THEY WON'T BE SHOWN AGAIN.\n\n
 "
 printf $warning "You have a database listening on TCP 5432 which requires a login. You should still block this port with a firewall\n\n"
-
-printf $info "Execute into running container '$DOCKER_COMPOSE -f ${WORKDIR}/docker-compose.yml exec tak-server bash' \n\n"
