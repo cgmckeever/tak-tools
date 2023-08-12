@@ -2,6 +2,7 @@
 
 WORK_PATH=~/tak-server # Base directory; where everything kicks off
 
+SCRIPT_PATH="$(dirname "$(readlink -f "$0")")"
 TOOLS_PATH=$(dirname $(dirname $(dirname $SCRIPT_PATH)))
 source ${TOOLS_PATH}/scripts/shared/functions.inc.sh
 
