@@ -3,7 +3,7 @@
 PACKAGE_PATH="/tmp"
 
 SCRIPT_PATH="$(cd ${SCRIPT_PATH} && pwd)"
-DIR="$(cd "$(dirname "$0")" && pwd)"
+DIR="$(cd "$(dirname "$BASH_SOURCE")" && pwd)"
 echo $DIR
 exit
 
