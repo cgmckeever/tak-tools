@@ -2,10 +2,7 @@
 
 PACKAGE_PATH="/tmp"
 
-SCRIPT_PATH="$(cd ${SCRIPT_PATH} && pwd)"
-DIR="$(dirname "$(readlink -f "$0")")"
-echo $DIR
-exit
+SCRIPT_PATH=="$(dirname "$(readlink -f "$0")")"
 
 TOOLS_PATH=$(dirname $(dirname $(dirname $SCRIPT_PATH)))
 source ${TOOLS_PATH}/scripts/shared/functions.inc.sh
