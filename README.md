@@ -43,7 +43,7 @@ su - tak
 ### TAK Package
 
 - Download the package from https://tak.gov/products/tak-server
-- Transfer it to your server in the `~/release/` directory
+- Transfer it to your server in the `/tmp` directory
 
 ## Setup
 
@@ -140,7 +140,7 @@ tools/client-data-package.sh
 ### TAK Docker Package
 
 - Download the docker package from https://tak.gov/products/tak-server
-- Transfer it to your server in the `~/release/` directory
+- Transfer it to your server in the `/home/tak/release/` directory
 
 
 ## Setup
