@@ -1,6 +1,6 @@
 #!/bin/bash
 
-WORK_DIR=~/tak-server # Base directory; where everything kicks off
+PACKAGE_PATH="/tmp'
 
 TOOLS_PATH=$(dirname $(dirname $(dirname $SCRIPT_PATH)))
 source ${TOOLS_PATH}/scripts/shared/functions.inc.sh

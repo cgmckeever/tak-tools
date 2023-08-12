@@ -9,7 +9,6 @@ source ${SCRIPT_PATH}/config.inc.sh
 ## Set inputs
 #
 PACKAGE="${PACKAGE_PATH}/takserver*.deb"
-echo ${PACKAGE}
 source ${TAK_SCRIPT_PATH}/v1/inputs.inc.sh ${PACKAGE}
 
 ## Set firewall rules
