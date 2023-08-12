@@ -1,5 +1,8 @@
 # Tak Tools
 
+- [Standalone](#standalone)
+- [Docker](#docker)
+
 ## Inspiration
 
 - https://github.com/Cloud-RF/tak-server
