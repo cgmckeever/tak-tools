@@ -83,6 +83,8 @@ sudo systemctl enable takserver
 
 ## Manage Client Certs
 
+run aas `tak` service user `su - tak`
+
 ### Create
 
 ```
