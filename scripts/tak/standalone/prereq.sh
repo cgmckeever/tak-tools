@@ -55,23 +55,3 @@ sudo ufw enable
 printf $warning "\n\n------------ Current Firewall Rules ------------\n\n"
 sudo ufw status verbose
 
-printf $info "\n\nYou can install TAK with any user that has 'sudo'\n\n"
-read -p "Do you want to make a TAK service user [y/n]? " MAKEUSER
-
-if [[ ${MAKEUSER} =~ ^[Yy]$ ]];then
-    printf $warning "\n\n------------ Creating Tak Service User ------------\n\n"
-    TAKUSER=tak
-    PASS_OMIT="<>/\'\`\""
-    PASS_TEMP=$(pwgen -cvy1 -r ${PASS_OMIT} 15)
-    read -p "Enter ${TAKUSER} user password: default [${PASS_TEMP}] " TAKUSER_PASS
-    TAKUSER_PASS=${TAKUSER_PASS:-${PASS_TEMP}}
-
-    sudo adduser --disabled-password --gecos GECOS $TAKUSER
-    echo "$TAKUSER:$TAKUSER_PASS" | sudo chpasswd
-    sudo usermod -aG sudo $TAKUSER
-
-    printf $success "\n\nCreated user: ${TAKUSER}\n"
-    printf $success "Password    : ${TAKUSER_PASS}\n\n"
-
-    printf $info "Switch to the ${TAKUSER} [su - ${TAKUSER}] and run the 'opt/tak-tools/scripts/standalone/setup.sh' script\n\n"
-fi

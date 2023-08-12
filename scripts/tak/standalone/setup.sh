@@ -34,6 +34,7 @@ source ${TAK_SCRIPT_PATH}/v1/cert-gen.inc.sh
 ## CoreConfig
 #
 source ${TAK_SCRIPT_PATH}/v1/coreconfig.inc.sh "127.0.0.1"
+chown -R tak:tak ${TAK_PATH}
 
 ## Database Setup
 #

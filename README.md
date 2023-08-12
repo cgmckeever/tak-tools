@@ -39,8 +39,6 @@ su - tak
 
 - Install prereq libraries
 - Enables UFW [Firewall]
-- Will create a `tak` service user
-    - *Remember* the displayed password; or `passwd tak` to change it
 
 ### TAK Package
 
@@ -49,9 +47,6 @@ su - tak
 
 ## Setup
 
-- Log in as the TAK user
-```
-su - tak
 ```
 
 - Copy and change th config settings

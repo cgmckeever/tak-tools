@@ -73,6 +73,7 @@ $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml up tak-db -d
 
 printf $info "\n\n------------ Building TAK Server ------------\n\n"
 $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml up tak-server -d
+$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER \${CERT_PATH}/"
 
 ln -s ${TAK_PATH}/logs ${WORK_DIR}/logs
 
@@ -94,8 +95,6 @@ fi
 ## Check Server Status
 #
 source ${TAK_SCRIPT_PATH}/v1/server-check.inc.sh
-
-$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER \${CERT_PATH}/"
 
 printf $warning "------------ Create Admin --------------\n\n"
 ## printf $info "You may see several JAVA warnings. This is expected.\n\n"
