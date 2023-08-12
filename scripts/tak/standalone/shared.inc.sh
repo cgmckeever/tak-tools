@@ -3,7 +3,7 @@
 PACKAGE_PATH="/tmp"
 
 SCRIPT_PATH="$(cd ${SCRIPT_PATH} && pwd)"
-DIR="$(cd "$(dirname "$BASH_SOURCE")" && pwd)"
+DIR="$(dirname "$(readlink -f "$0")")"
 echo $DIR
 exit
 
