@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PACKAGE_PATH="/tmp'
+PACKAGE_PATH="/tmp"
 
 TOOLS_PATH=$(dirname $(dirname $(dirname $SCRIPT_PATH)))
 source ${TOOLS_PATH}/scripts/shared/functions.inc.sh
