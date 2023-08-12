@@ -122,4 +122,4 @@ printf $success "\n\n ----------------- Installation Complete -----------------\
 ## Installation Summary
 #
 source ${TAK_SCRIPT_PATH}/v1/summary.inc.sh
-printf $info "Execute into running container '$DOCKER_COMPOSE -f ${WORKDIR}/docker-compose.yml exec tak-server bash' \n\n"
+printf $info "Execute into running container: '$DOCKER_COMPOSE -f ${WORKDIR}/docker-compose.yml exec tak-server bash' \n\n"
