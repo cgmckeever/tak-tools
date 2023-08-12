@@ -47,9 +47,7 @@ su - tak
 
 ## Setup
 
-```
-
-- Copy and change th config settings
+- Copy and change the config settings
 ```
 sudo cp /opt/tak-tools/scripts/tak/standalone/config.inc.example.sh \
     /opt/tak-tools/scripts/tak/standalone/config.inc.sh; \
@@ -150,7 +148,7 @@ sudo systemctl enable takserver
 su - tak
 ```
 
-- Copy and change th config settings
+- Copy and change the config settings
 ```
 sudo cp /opt/tak-tools/scripts/tak/docker/config.inc.example.sh \
     /opt/tak-tools/scripts/tak/docker/config.inc.sh; \
