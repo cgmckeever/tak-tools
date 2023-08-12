@@ -8,8 +8,7 @@ source ${SCRIPT_PATH}/config.inc.sh
 
 ## Set inputs
 #
-source ${TAK_SCRIPT_PATH}/v1/inputs.inc.sh "release/takserver*.deb"
-mkdir -p $WORK_DIR
+source ${TAK_SCRIPT_PATH}/v1/inputs.inc.sh "${PACKAGE_PATH}/takserver*.deb"
 
 ## Set firewall rules
 #
@@ -18,7 +17,7 @@ echo
 pause
 
 printf $warning "\n\n------------ Unpacking TAK Installer ------------\n\n"
-cd release/
+cd ${PACKAGE_PATH}/
 PACKAGE=$(ls takserver*.deb)
 VERSION=$(echo ${PACKAGE} | sed 's/takserver_\(.*\)-RELEASE.*/\1/')
 sudo apt install -y ./${PACKAGE}
@@ -77,7 +76,6 @@ fi
 printf $info "\n\n------------ Restarting TAK Server ------------"
 sudo systemctl daemon-reload
 sudo systemctl restart takserver
-ln -s ${TAK_PATH}/logs ${WORK_DIR}/logs
 
 ## Check Server Status
 #

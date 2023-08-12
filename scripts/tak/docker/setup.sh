@@ -8,6 +8,7 @@ source ${SCRIPT_PATH}/config.inc.sh
 
 ## Set inputs
 #
+sudo rm -rf $WORK_PATH
 source ${TAK_SCRIPT_PATH}/v1/inputs.inc.sh "release/takserver*.zip"
 
 ## Set firewall rules
@@ -21,7 +22,7 @@ pause
 
 printf $warning "\n\n------------ Unpacking Docker Release ------------\n\n"
 unzip ~/release/takserver*.zip -d ~/
-mv ~/takserver* ${WORK_DIR}
+mv ~/takserver* ${WORK_PATH}
 VERSION=$(cat ${TAK_PATH}/version.txt | sed 's/\(.*\)-.*-.*/\1/')
 
 ## Generate Certs
@@ -38,11 +39,11 @@ source ${TAK_SCRIPT_PATH}/v1/coreconfig.inc.sh ${DATABASE_ALIAS}
 #
 sed -i "s/MemTotal/MemFree/g" ${TAK_PATH}/setenv.sh
 
-printf $warning "\n\n------------ Creating ENV variable file ${WORK_DIR}/.env ------------\n\n"
+printf $warning "\n\n------------ Creating ENV variable file ${WORK_PATH}/.env ------------\n\n"
 # Writes variables to a .env file for docker-compose
 #
 
-cat << EOF > ${WORK_DIR}/.env
+cat << EOF > ${WORK_PATH}/.env
 STATE=$STATE
 CITY=$CITY
 ORGANIZATION=$ORGANIZATION
@@ -59,30 +60,30 @@ TAK_PATH=/opt/tak
 CERT_PATH=$DOCKER_CERT_PATH
 EOF
 
-cat ${WORK_DIR}/.env
+cat ${WORK_PATH}/.env
 
 printf $warning "\n\n------------ Configuration Complete. Starting Containers --------------\n\n"
-cp ${TEMPLATE_PATH}/tak/docker/docker-compose.yml.tmpl ${WORK_DIR}/docker-compose.yml
+cp ${TEMPLATE_PATH}/tak/docker/docker-compose.yml.tmpl ${WORK_PATH}/docker-compose.yml
 
 sed -i \
     -e "s#__DOCKER_SUBNET#${DOCKER_SUBNET}#g" \
-    -e "s/__DATABASE_ALIAS/${DATABASE_ALIAS}/" ${WORK_DIR}/docker-compose.yml
+    -e "s/__DATABASE_ALIAS/${DATABASE_ALIAS}/" ${WORK_PATH}/docker-compose.yml
 
 printf $info "------------ Building TAK DB ------------\n\n"
-$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml up tak-db -d
+$DOCKER_COMPOSE -f ${WORK_PATH}/docker-compose.yml up tak-db -d
 
 printf $info "\n\n------------ Building TAK Server ------------\n\n"
-$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml up tak-server -d
-$DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER \${CERT_PATH}/"
+$DOCKER_COMPOSE -f ${WORK_PATH}/docker-compose.yml up tak-server -d
+$DOCKER_COMPOSE -f ${WORK_PATH}/docker-compose.yml exec tak-server bash -c "useradd $USER && chown -R $USER:$USER \${CERT_PATH}/"
 
-ln -s ${TAK_PATH}/logs ${WORK_DIR}/logs
+ln -s ${TAK_PATH}/logs ${WORK_PATH}/logs
 
 echo; echo
 read -p "Do you want to configure TAK Server auto-start [y/n]? " AUTOSTART
-cp ${TEMPLATE_PATH}/tak/docker/docker.service.tmpl ${WORK_DIR}/tak-server-docker.service
-sed -i "s#__WORK_DIR#${WORK_DIR}#g" ${WORK_DIR}/tak-server-docker.service
+cp ${TEMPLATE_PATH}/tak/docker/docker.service.tmpl ${WORK_PATH}/tak-server-docker.service
+sed -i "s#__WORK_PATH#${WORK_PATH}#g" ${WORK_PATH}/tak-server-docker.service
 sudo rm -rf /etc/systemd/system/tak-server-docker.service
-sudo ln -s ${WORK_DIR}/tak-server-docker.service /etc/systemd/system/tak-server-docker.service
+sudo ln -s ${WORK_PATH}/tak-server-docker.service /etc/systemd/system/tak-server-docker.service
 
 if [[ $AUTOSTART =~ ^[Yy]$ ]];then
     sudo systemctl daemon-reload
@@ -106,9 +107,9 @@ TAKADMIN_PASS=${PAD1}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD2}
 while true;do
     printf $info "\n------------ Enabling Admin User [password and certificate] --------------\n"
 
-    $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "java -jar \${TAK_PATH}/utils/UserManager.jar usermod -A -p \"${TAKADMIN_PASS}\" ${TAKADMIN}"
+    $DOCKER_COMPOSE -f ${WORK_PATH}/docker-compose.yml exec tak-server bash -c "java -jar \${TAK_PATH}/utils/UserManager.jar usermod -A -p \"${TAKADMIN_PASS}\" ${TAKADMIN}"
     if [ $? -eq 0 ];then
-        $DOCKER_COMPOSE -f ${WORK_DIR}/docker-compose.yml exec tak-server bash -c "java -jar \${TAK_PATH}/utils/UserManager.jar certmod -A \${CERT_PATH}/files/${TAKADMIN}.pem"
+        $DOCKER_COMPOSE -f ${WORK_PATH}/docker-compose.yml exec tak-server bash -c "java -jar \${TAK_PATH}/utils/UserManager.jar certmod -A \${CERT_PATH}/files/${TAKADMIN}.pem"
         if [ $? -eq 0 ];then
             break
         fi
