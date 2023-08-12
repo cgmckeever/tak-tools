@@ -3,7 +3,9 @@
 PACKAGE_PATH="/tmp"
 
 SCRIPT_PATH="$(cd ${SCRIPT_PATH} && pwd)"
-echo $SCRIPT_PATH
+DIR="$(cd "$(dirname "$0")" && pwd)"
+echo $DIR
+exit
 
 TOOLS_PATH=$(dirname $(dirname $(dirname $SCRIPT_PATH)))
 source ${TOOLS_PATH}/scripts/shared/functions.inc.sh
