@@ -19,23 +19,24 @@ export ORGANIZATIONAL_UNIT=${ORGANIZATIONAL_UNIT:-${ORGANIZATION}}
 printf $info "\n\nIf prompted to replace certificate, enter Y\n"
 pause
 
+sudo chown -R $USER:$USER ${CERT_PATH}
 cd ${CERT_PATH}
 mkdir -p files
-echo "unique_subject=no" > files/crl_index.txt.attr
+sudo echo "unique_subject=no" > files/crl_index.txt.attr
 while true;do
     printf $info "\n\n------------ Generating Certificates --------------"
     printf $success "\n\nRoot: ${TAK_ALIAS}-Root-CA-01\n"
-    sudo ./makeRootCa.sh --ca-name $root {TAK_ALIAS}-Root-CA-01
+    ./makeRootCa.sh --ca-name $root {TAK_ALIAS}-Root-CA-01
     if [ $? -eq 0 ];then
         TAK_CA=${TAK_ALIAS}-Intermediary-CA-01
         printf $success "\n\nCA: ${TAK_CA}\n"
-        sudo ./makeCert.sh ca ${TAK_CA}
+        ./makeCert.sh ca ${TAK_CA}
         if [ $? -eq 0 ];then
             printf $success "\n\nServer: ${TAK_ALIAS}\n"
-            sudo ./makeCert.sh server ${TAK_ALIAS}
+            ./makeCert.sh server ${TAK_ALIAS}
             if [ $? -eq 0 ];then
                 printf $success "\n\nAdmin: ${TAKADMIN}\n"
-                sudo ./makeCert.sh client ${TAKADMIN}
+                ./makeCert.sh client ${TAKADMIN}
                 if [ $? -eq 0 ];then
                     break
                 fi
