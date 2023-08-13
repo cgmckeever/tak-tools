@@ -64,7 +64,7 @@ cat /opt/tak-tools/scripts/tak/standalone/config.inc.sh
 
 Wrapper Script: `/opt/tak-tools/scripts/tak/standalone/start.sh`
 
-- Will look for the install package as `~/release/takserver*.zip`
+- Will look for the install package as `/tmp/takserver*.zip`
 - Follow the prompts...its not perfect
 
 ## Start/Stop
