@@ -2,7 +2,7 @@
 
 printf $warning "\n\n------------ Updating CoreConfig.xml ------------\n\n"
 
-touch ${TAK_PATH}/CoreConfig.xml
+sudo touch ${TAK_PATH}/CoreConfig.xml
 sudo cp ${TAK_PATH}/CoreConfig.xml ${TAK_PATH}/CoreConfig.xml.install
 sudo cp ${TEMPLATE_PATH}/tak/CoreConfig-${VERSION}.xml.tmpl ${TAK_PATH}/CoreConfig.xml
 
