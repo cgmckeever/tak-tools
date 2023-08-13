@@ -13,7 +13,7 @@ if [[ -f ~/letsencrypt.txt ]]; then
     URL=$FQDN
     CERT_NAME=le-${FQDN//\./-}
     LE_PATH="/etc/letsencrypt/live/$FQDN"
-    mkdir -p ${CERT_PATH}/letsencrypt
+    sudo mkdir -p ${CERT_PATH}/letsencrypt
 
     sudo openssl pkcs12 -export \
         -in ${LE_PATH}/fullchain.pem \
