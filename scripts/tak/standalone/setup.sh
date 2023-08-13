@@ -29,6 +29,7 @@ sudo ln -s /bin/systemctl /usr/bin/systemctl
 
 ## Generate Certs
 #
+sudo chown -R $USER:$USER ${CERT_PATH}
 source ${TAK_SCRIPT_PATH}/v1/cert-gen.inc.sh
 
 ## CoreConfig

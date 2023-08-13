@@ -19,7 +19,6 @@ export ORGANIZATIONAL_UNIT=${ORGANIZATIONAL_UNIT:-${ORGANIZATION}}
 printf $info "\n\nIf prompted to replace certificate, enter Y\n"
 pause
 
-sudo chown -R $USER:$USER ${CERT_PATH}
 cd ${CERT_PATH}
 mkdir -p files
 sudo echo "unique_subject=no" > files/crl_index.txt.attr
