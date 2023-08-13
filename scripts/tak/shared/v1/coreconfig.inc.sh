@@ -3,8 +3,8 @@
 printf $warning "\n\n------------ Updating CoreConfig.xml ------------\n\n"
 
 touch ${TAK_PATH}/CoreConfig.xml
-cp ${TAK_PATH}/CoreConfig.xml ${TAK_PATH}/CoreConfig.xml.install
-cp ${TEMPLATE_PATH}/tak/CoreConfig-${VERSION}.xml.tmpl ${TAK_PATH}/CoreConfig.xml
+sudo cp ${TAK_PATH}/CoreConfig.xml ${TAK_PATH}/CoreConfig.xml.install
+sudo cp ${TEMPLATE_PATH}/tak/CoreConfig-${VERSION}.xml.tmpl ${TAK_PATH}/CoreConfig.xml
 
 SSL_CERT_INFO=""
 if [[ -f ~/letsencrypt.txt ]]; then
@@ -45,7 +45,7 @@ fi
 DATABASE_HOST=$1
 SIGNING_KEY=${TAK_CA}-signing
 PG_PASS=${PAD2}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD1}
-sed -i \
+sudo sed -i \
     -e "s#__SSL_CERT_INFO#${SSL_CERT_INFO}#g" \
     -e "s/__CAPASS/${CAPASS}/g" \
     -e "s/__PASS/${CERTPASS}/g" \
