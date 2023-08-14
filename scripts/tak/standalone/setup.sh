@@ -25,7 +25,9 @@ sudo apt install -y ./${PACKAGE}
 
 ## Strange 4.8 error
 #
-sudo ln -s /bin/systemctl /usr/bin/systemctl
+if [ ! -f /usr/bin/systemctl ]; then
+    sudo ln -s /bin/systemctl /usr/bin/systemctl
+fi
 
 ## Generate Certs
 #
