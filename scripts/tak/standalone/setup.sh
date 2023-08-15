@@ -8,7 +8,6 @@ source ${SCRIPT_PATH}/config.inc.sh
 
 ## Set inputs
 #
-PACKAGE="${PACKAGE_PATH}/takserver*.deb"
 cd ${PACKAGE_PATH}/
 PACKAGE=$(ls takserver*.deb)
 VERSION=$(echo ${PACKAGE} | sed 's/takserver_\(.*\)-RELEASE.*/\1/')
