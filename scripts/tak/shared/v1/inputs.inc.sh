@@ -31,3 +31,19 @@ TRAFFIC_SOURCE=${IP}/24
 if [[ ${VPN} =~ ^[Nn]$ ]];then
     TRAFFIC_SOURCE="0.0.0.0/0"
 fi
+
+printf $warning "\n\n------------ Certificate Subject Info --------------\n\n"
+
+printf $warning "------------ SSL setup. Hit enter (x4) to accept the defaults ------------\n\n"
+
+read -p "State (for cert generation). Default [state] : " STATE
+export STATE=${STATE:-state}
+
+read -p "City (for cert generation). Default [city] : " CITY
+export CITY=${CITY:-city}
+
+read -p "Organization Name (for cert generation) Default [TAK] : " ORGANIZATION
+export ORGANIZATION=${ORGANIZATION:-TAK}
+
+read -p "Organizational Unit (for cert generation). Default [${ORGANIZATION}] : " ORGANIZATIONAL_UNIT
+export ORGANIZATIONAL_UNIT=${ORGANIZATIONAL_UNIT:-${ORGANIZATION}}
