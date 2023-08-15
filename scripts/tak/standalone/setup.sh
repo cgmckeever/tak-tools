@@ -37,9 +37,9 @@ source ${TAK_SCRIPT_PATH}/v1/cert-gen.inc.sh
 ## CoreConfig
 #
 source ${TAK_SCRIPT_PATH}/v1/coreconfig.inc.sh "127.0.0.1"
-sudo chown -R tak:tak ${TAK_PATH}
 sudo usermod --shell /bin/bash tak
 sudo ln -s ${TAK_SCRIPTS}/ ${TAK_PATH}/tools
+sudo chown -R tak:tak ${TAK_PATH}
 
 ## Database Setup
 #
