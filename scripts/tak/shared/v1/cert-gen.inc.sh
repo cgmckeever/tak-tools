@@ -27,7 +27,6 @@ while true;do
     printf $success "\n\nRoot: ${TAK_ALIAS}-Root-CA-01\n"
     ./makeRootCa.sh --ca-name $root {TAK_ALIAS}-Root-CA-01
     if [ $? -eq 0 ];then
-        TAK_CA=${TAK_ALIAS}-Intermediary-CA-01
         printf $success "\n\nCA: ${TAK_CA}\n"
         ./makeCert.sh ca ${TAK_CA}
         if [ $? -eq 0 ];then

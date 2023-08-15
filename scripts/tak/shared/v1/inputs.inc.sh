@@ -11,6 +11,7 @@ echo; echo
 HOSTNAME=${HOSTNAME//\./-}
 read -p "Alias of this Tak Server: Default [${HOSTNAME}] : " TAK_ALIAS
 TAK_ALIAS=${TAK_ALIAS:-${HOSTNAME}}
+TAK_CA=${TAK_ALIAS}-Intermediary-CA-01
 
 echo; echo
 ip link show
