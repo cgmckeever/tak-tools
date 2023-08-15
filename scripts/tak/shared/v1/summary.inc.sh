@@ -13,13 +13,13 @@ printf $success "Login at https://$URL:8446 with your admin account user/pass.\n
 printf $success "No need to run the /setup step as this has been done.\n\n"
 
 INFO=${WORK_PATH}/info.txt
-echo "---------PASSWORDS----------------" | sudo tee ${INFO}
-echo | sudo tee -a ${INFO}
-echo "Tak Admin user      : $TAKADMIN" | sudo tee -a ${INFO}
-echo "Tak Admin password  : $TAKADMIN_PASS" | sudo tee -a ${INFO}
-echo "PostgreSQL password : $PG_PASS" | sudo tee -a ${INFO}
-echo | sudo tee -a ${INFO}
-echo "---------PASSWORDS----------------" | sudo tee -a ${INFO}
+echo "---------PASSWORDS----------------" | sudo tee ${INFO} >/dev/null
+echo | sudo tee -a ${INFO} >/dev/null
+echo "Tak Admin user      : $TAKADMIN" | sudo tee -a ${INFO} >/dev/null
+echo "Tak Admin password  : $TAKADMIN_PASS" | sudo tee -a ${INFO} >/dev/null
+echo "PostgreSQL password : $PG_PASS" | sudo tee -a ${INFO} >/dev/null
+echo | sudo tee -a ${INFO} >/dev/null
+echo "---------PASSWORDS----------------" | sudo tee -a ${INFO} >/dev/null
 printf $danger "$(sudo cat ${INFO})"
 
 printf $warning "\nMAKE A NOTE OF YOUR PASSWORDS. THEY WON'T BE SHOWN AGAIN.\n\n
