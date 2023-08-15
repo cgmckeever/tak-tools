@@ -13,7 +13,7 @@ printf $success "Login at https://$URL:8446 with your admin account user/pass.\n
 printf $success "No need to run the /setup step as this has been done.\n\n"
 
 INFO=${WORK_PATH}/info.txt
-echo "---------PASSWORDS----------------" | sudo tee  ${INFO}
+echo "---------PASSWORDS----------------" | sudo tee ${INFO}
 echo | sudo tee -a ${INFO}
 echo "Tak Admin user      : $TAKADMIN" | sudo tee -a ${INFO}
 echo "Tak Admin password  : $TAKADMIN_PASS" | sudo tee -a ${INFO}
