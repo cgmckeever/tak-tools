@@ -9,6 +9,9 @@ source ${SCRIPT_PATH}/config.inc.sh
 ## Set inputs
 #
 PACKAGE="${PACKAGE_PATH}/takserver*.deb"
+cd ${PACKAGE_PATH}/
+PACKAGE=$(ls takserver*.deb)
+VERSION=$(echo ${PACKAGE} | sed 's/takserver_\(.*\)-RELEASE.*/\1/')
 source ${TAK_SCRIPT_PATH}/v1/inputs.inc.sh ${PACKAGE}
 
 ## Set firewall rules
@@ -19,10 +22,7 @@ pause
 
 ## CoreConfig
 #
-mkdir -p ${TAK_PATH}
-cd ${PACKAGE_PATH}/
-PACKAGE=$(ls takserver*.deb)
-VERSION=$(echo ${PACKAGE} | sed 's/takserver_\(.*\)-RELEASE.*/\1/')
+sudo mkdir -p ${TAK_PATH}
 source ${TAK_SCRIPT_PATH}/v1/coreconfig.inc.sh "127.0.0.1"
 
 printf $warning "\n\n------------ Unpacking TAK Installer ------------\n\n"
