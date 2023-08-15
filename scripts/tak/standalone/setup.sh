@@ -43,9 +43,9 @@ sudo chown -R tak:tak ${TAK_PATH}
 
 ## Database Setup
 #
-if [ -f /opt/tak/db-utils/takserver-setup-db.sh ];then
-    sudo ${TAK_PATH}/db-utils/takserver-setup-db.sh
-fi
+#if [ -f /opt/tak/db-utils/takserver-setup-db.sh ];then
+#    sudo ${TAK_PATH}/db-utils/takserver-setup-db.sh
+#fi
 
 printf $warning "\n\n------------ Creating ENV variable file  ------------\n\n"
 
