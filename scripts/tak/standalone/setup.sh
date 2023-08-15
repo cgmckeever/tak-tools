@@ -17,6 +17,11 @@ source ${TAK_SCRIPT_PATH}/v1/firewall.inc.sh
 echo
 pause
 
+## CoreConfig
+#
+mkdir -p ${TAK_PATH}
+source ${TAK_SCRIPT_PATH}/v1/coreconfig.inc.sh "127.0.0.1"
+
 printf $warning "\n\n------------ Unpacking TAK Installer ------------\n\n"
 cd ${PACKAGE_PATH}/
 PACKAGE=$(ls takserver*.deb)
@@ -34,9 +39,8 @@ fi
 sudo chown -R $USER:$USER ${CERT_PATH}
 source ${TAK_SCRIPT_PATH}/v1/cert-gen.inc.sh
 
-## CoreConfig
+## User cleanup
 #
-source ${TAK_SCRIPT_PATH}/v1/coreconfig.inc.sh "127.0.0.1"
 sudo usermod --shell /bin/bash tak
 sudo ln -s ${TAK_SCRIPTS}/ ${TAK_PATH}/tools
 sudo chown -R tak:tak ${TAK_PATH}
