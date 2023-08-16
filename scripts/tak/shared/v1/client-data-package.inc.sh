@@ -6,6 +6,10 @@ read -p "Create data package for which user: " USERNAME
 rm -rf ${FILE_PATH}/clients/${USERNAME}
 mkdir -p ${FILE_PATH}/clients/${USERNAME}
 
+echo; echo
+read -p "Server Connection String [${URL}]: " CONNECTION_STRING
+CONNECTION_STRING=${CONNECTION_STRING:-${URL}}
+
 tee ${FILE_PATH}/clients/${USERNAME}/manifest.xml >/dev/null << EOF
 <MissionPackageManifest version="2">
     <Configuration>
@@ -29,7 +33,7 @@ tee ${FILE_PATH}/clients/${USERNAME}/server.pref >/dev/null << EOF
         <entry key="count" class="class java.lang.Integer">1</entry>
         <entry key="description0" class="class java.lang.String">${USERNAME}-${TAK_ALIAS}</entry>
         <entry key="enabled0" class="class java.lang.Boolean">true</entry>
-        <entry key="connectString0" class="class java.lang.String">${URL}:${TAK_COT_PORT}:ssl</entry>
+        <entry key="connectString0" class="class java.lang.String">${CONNECTION_STRING}:${TAK_COT_PORT}:ssl</entry>
     </preference>
     <preference version="1" name="com.atakmap.app_preferences">
         <entry key="displayServerConnectionWidget" class="class java.lang.Boolean">true</entry>
