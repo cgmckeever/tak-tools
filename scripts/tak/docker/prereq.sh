@@ -28,12 +28,21 @@ sudo apt -y install \
     net-tools \
     pwgen \
     libxml2-utils \
+    nano \
+    metwork-manager \
     qrencode\
     ufw \
     unzip \
     vim \
     wget \
     zip
+
+
+printf $warning "\n\n------------ Installing Network Manager ------------\n\n"
+## Network Manager
+#
+sudo systemctl start NetworkManager.service
+sudo systemctl enable NetworkManager.service
 
 # Firewall Rules
 #

@@ -34,6 +34,7 @@ sudo apt-get -y install \
     dirmngr \
     git \
     nano \
+    metwork-manager \
     net-tools \
     openjdk-11-jdk \
     openssl \
@@ -45,6 +46,13 @@ sudo apt-get -y install \
     vim \
     wget \
     zip
+
+
+printf $warning "\n\n------------ Installing Network Manager ------------\n\n"
+## Network Manager
+#
+sudo systemctl start NetworkManager.service
+sudo systemctl enable NetworkManager.service
 
 # Firewall Rules
 #
