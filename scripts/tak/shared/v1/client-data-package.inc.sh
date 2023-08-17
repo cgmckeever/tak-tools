@@ -2,7 +2,10 @@
 
 printf $warning "\n\n------------ Creating TAK Client Data Package ------------ \n\n"
 
-read -p "Create data package for which user: " USERNAME
+USERNAME=$1
+if [ -z "${USERNAME}" ]; then
+    read -p "Create data package for which user: " USERNAME
+fi
 rm -rf ${FILE_PATH}/clients/${USERNAME}
 mkdir -p ${FILE_PATH}/clients/${USERNAME}
 

@@ -57,6 +57,7 @@ sudo sed -i \
     -e "s/__TAK_ALIAS/${TAK_ALIAS}/g" \
     -e "s/__HOSTIP/${URL}/g" \
     -e "s/__TAK_COT_PORT/${TAK_COT_PORT}/" \
+    -e "s/__TAK_CLIENT_VALID/${TAK_CLIENT_VALID}/" \
     -e "s/__DATABASE_HOST/${DATABASE_HOST}/" \
     -e "s/__PG_PASS/${PG_PASS}/" ${TAK_PATH}/CoreConfig.xml
 

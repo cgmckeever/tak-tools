@@ -7,4 +7,4 @@ source ${SCRIPT_PATH}/shared.inc.sh
 
 ## create package
 #
-source ${TAK_SCRIPT_PATH}/v1/client-data-package.inc.sh $1
+source ${TAK_SCRIPT_PATH}/v1/autoenroll-data-package.inc.sh
