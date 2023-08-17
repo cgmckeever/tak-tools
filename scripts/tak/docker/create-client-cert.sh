@@ -12,6 +12,11 @@ export ORGANIZATIONAL_UNIT=$($DOCKER_COMPOSE -f ${WORK_PATH}/docker-compose.yml 
 export CAPASS=$($DOCKER_COMPOSE -f ${WORK_PATH}/docker-compose.yml exec tak-server bash -c "echo \$CAPASS" | tr -d '\r')
 export PASS=$($DOCKER_COMPOSE -f ${WORK_PATH}/docker-compose.yml exec tak-server bash -c "echo \$PASS" | tr -d '\r')
 
+export TAK_ALIAS=$($DOCKER_COMPOSE -f ${WORK_PATH}/docker-compose.yml exec tak-server bash -c "echo \$TAK_ALIAS" | tr -d '\r')
+export URL=$($DOCKER_COMPOSE -f ${WORK_PATH}/docker-compose.yml exec tak-server bash -c "echo \$URL" | tr -d '\r')
+export TAK_COT_PORT=$($DOCKER_COMPOSE -f ${WORK_PATH}/docker-compose.yml exec tak-server bash -c "echo \$TAK_COT_PORT" | tr -d '\r')
+export TAK_CA=$($DOCKER_COMPOSE -f ${WORK_PATH}/docker-compose.yml exec tak-server bash -c "echo \$TAK_CA" | tr -d '\r')
+
 printf $warning "\n\n------------ Creating TAK Client Certificate ------------ \n\n"
 
 read -p "What is the username: " USERNAME
@@ -26,6 +31,8 @@ $DOCKER_COMPOSE -f ${WORK_PATH}/docker-compose.yml exec tak-server bash -c "java
 # $DOCKER_COMPOSE -f ${WORK_PATH}/docker-compose.yml exec tak-server bash -c "java -jar \${TAK_PATH}/utils/UserManager.jar certmod -A \${TAK_PATH}/certs/files/${USERNAME}.pem"
 
 printf $info "\nCreated Client Certificate ${FILE_PATH}/${USERNAME}.p12\n\n"
+
+source ${TAK_SCRIPT_PATH}/v1/client-data-package.inc.sh ${USERNAME}
 
 printf $warning "TAK needs to restart to enable changes.\n\n"
 read -p "Restart TAK [y/n]? " RESTART
