@@ -8,7 +8,6 @@ CONNECTION_STRING=${CONNECTION_STRING:-${URL}}
 mkdir -p ${FILE_PATH}/clients
 UUID=$(uuidgen -r)
 
-
 tee ${FILE_PATH}/clients/manifest.xml >/dev/null << EOF
 <MissionPackageManifest version="2">
     <Configuration>
@@ -45,6 +44,7 @@ tee ${FILE_PATH}/clients/server.pref >/dev/null << EOF
 </preferences>
 EOF
 
+echo; echo
 cd ${FILE_PATH}/clients/
 zip -j ${TAK_ALIAS}-${CONNECTION_STRING}.zip \
     ${FILE_PATH}/truststore-${TAK_CA}.p12 \
