@@ -29,7 +29,7 @@ sudo apt -y install \
     pwgen \
     libxml2-utils \
     nano \
-    metwork-manager \
+    network-manager \
     qrencode\
     ufw \
     unzip \
