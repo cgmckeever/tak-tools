@@ -34,7 +34,7 @@ sudo apt-get -y install \
     dirmngr \
     git \
     nano \
-    metwork-manager \
+    network-manager \
     net-tools \
     openjdk-11-jdk \
     openssl \
