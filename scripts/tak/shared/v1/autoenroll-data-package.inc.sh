@@ -5,6 +5,8 @@ printf $warning "\n\n------------ Creating TAK Auto-Enroll Data Package --------
 read -p "Server Connection String [${URL}]: " CONNECTION_STRING
 CONNECTION_STRING=${CONNECTION_STRING:-${URL}}
 
+mkdir -p ${FILE_PATH}/clients
+
 tee ${FILE_PATH}/clients/manifest.xml >/dev/null << EOF
 <MissionPackageManifest version="2">
     <Configuration>
