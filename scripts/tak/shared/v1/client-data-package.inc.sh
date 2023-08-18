@@ -50,6 +50,7 @@ tee ${FILE_PATH}/clients/${USERNAME}/server.pref >/dev/null << EOF
 </preferences>
 EOF
 
+echo; echo
 cd ${FILE_PATH}/clients/${USERNAME}/
 zip -j ${USERNAME}-${TAK_ALIAS}.zip \
     ${FILE_PATH}/${USERNAME}.p12 \
