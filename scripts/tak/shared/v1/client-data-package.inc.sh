@@ -13,10 +13,12 @@ echo; echo
 read -p "Server Connection String [${URL}]: " CONNECTION_STRING
 CONNECTION_STRING=${CONNECTION_STRING:-${URL}}
 
+UUID=$(uuidgen -r)
+
 tee ${FILE_PATH}/clients/${USERNAME}/manifest.xml >/dev/null << EOF
 <MissionPackageManifest version="2">
     <Configuration>
-        <Parameter name="uid" value="bcfaa4a5-2224-4095-bbe3-fdaa22a82741"/>
+        <Parameter name="uid" value="${UUID}"/>
         <Parameter name="name" value="${USERNAME}-${TAK_ALIAS}-DP"/>
         <Parameter name="onReceiveDelete" value="true"/>
     </Configuration>

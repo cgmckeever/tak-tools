@@ -33,6 +33,7 @@ sudo apt -y install \
     qrencode\
     ufw \
     unzip \
+    uuid-runtime \
     vim \
     wget \
     zip

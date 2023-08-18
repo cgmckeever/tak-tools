@@ -6,11 +6,13 @@ read -p "Server Connection String [${URL}]: " CONNECTION_STRING
 CONNECTION_STRING=${CONNECTION_STRING:-${URL}}
 
 mkdir -p ${FILE_PATH}/clients
+UUID=$(uuidgen -r)
+
 
 tee ${FILE_PATH}/clients/manifest.xml >/dev/null << EOF
 <MissionPackageManifest version="2">
     <Configuration>
-        <Parameter name="uid" value="bcfaa4a5-2224-4095-bbe3-fdaa22a82741"/>
+        <Parameter name="uid" value="${UUID}"/>
         <Parameter name="name" value="${TAK_ALIAS}-${CONNECTION_STRING}-AutoEnroll-DP"/>
         <Parameter name="onReceiveDelete" value="true"/>
     </Configuration>
