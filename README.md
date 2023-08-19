@@ -164,7 +164,7 @@ sudo cp /opt/tak-tools/scripts/tak/docker/config.inc.example.sh \
     /opt/tak-tools/scripts/tak/docker/config.inc.sh; \
 cat /opt/tak-tools/scripts/tak/docker/config.inc.sh
 
-sudo ln -s /opt/tak-tools/scripts/tak/docker/ ~/tools
+ln -s /opt/tak-tools/scripts/tak/docker/ ~/tools
 ```
 
 - Kick off setup
@@ -269,6 +269,11 @@ cat tak-server/tak/UserAuthenticationFile.xml
 mkdir -p tak-server/tak/certs/files/; \
 cp -R backups/{NEW-BACKUP}/cert-files/* tak-server/tak/certs/files/; \
 ls -la tak-server/tak/certs/files/
+```
+
+- Link the env file
+```
+cp core-files/.env tak-server/.env
 ```
 
 - Force build of new docker
