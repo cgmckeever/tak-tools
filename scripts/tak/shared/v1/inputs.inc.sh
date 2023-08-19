@@ -1,7 +1,5 @@
 #!/bin/bash
 
-sudo rm -rf $WORK_PATH
-
 if ! compgen -G "${1}" > /dev/null; then
     printf $warning "\n\n------------ No TAK Server Package found in ${1} ------------\n\n"
     exit

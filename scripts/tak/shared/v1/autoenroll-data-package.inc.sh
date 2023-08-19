@@ -16,8 +16,8 @@ tee ${FILE_PATH}/clients/manifest.xml >/dev/null << EOF
         <Parameter name="onReceiveDelete" value="true"/>
     </Configuration>
     <Contents>
-        <Content ignore="false" zipEntry="certs\server.pref"/>
-        <Content ignore="false" zipEntry="certs\truststore-${TAK_CA}.p12"/>
+        <Content ignore="false" zipEntry="server.pref"/>
+        <Content ignore="false" zipEntry="truststore-${TAK_CA}.p12"/>
     </Contents>
 </MissionPackageManifest>
 EOF
@@ -34,10 +34,10 @@ tee ${FILE_PATH}/clients/server.pref >/dev/null << EOF
         <entry key="enrollForCertificateWithTrust0" class="class java.lang.Boolean">true</entry>
         <entry key="useAuth0" class="class java.lang.Boolean">true</entry>
         <entry key="cacheCreds0" class="class java.lang.String">Cache credentials</entry>
+        <entry key="caLocation0" class="class java.lang.String">cert/truststore-${TAK_CA}.p12</entry>
+        <entry key="caPassword0" class="class java.lang.String">${CAPASS}</entry>
     </preference>
     <preference version="1" name="com.atakmap.app_preferences">
-        <entry key="caLocation" class="class java.lang.String">cert/truststore-${TAK_CA}.p12</entry>
-        <entry key="caPassword" class="class java.lang.String">${CAPASS}</entry>
         <entry key="displayServerConnectionWidget" class="class java.lang.Boolean">true</entry>
         <entry key="locationTeam" class="class java.lang.String">Blue</entry>
     </preference>

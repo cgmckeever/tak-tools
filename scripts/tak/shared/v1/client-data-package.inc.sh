@@ -23,9 +23,9 @@ tee ${FILE_PATH}/clients/${USERNAME}/manifest.xml >/dev/null << EOF
         <Parameter name="onReceiveDelete" value="true"/>
     </Configuration>
     <Contents>
-        <Content ignore="false" zipEntry="certs\server.pref"/>
-        <Content ignore="false" zipEntry="certs\\truststore-${TAK_CA}.p12"/>
-        <Content ignore="false" zipEntry="certs\\${USERNAME}.p12"/>
+        <Content ignore="false" zipEntry="server.pref"/>
+        <Content ignore="false" zipEntry="truststore-${TAK_CA}.p12"/>
+        <Content ignore="false" zipEntry="${USERNAME}.p12"/>
     </Contents>
 </MissionPackageManifest>
 EOF
