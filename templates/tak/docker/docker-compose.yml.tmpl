@@ -13,11 +13,11 @@ volumes:
 services:
   tak-db:
     build:
-      context: .
+      context: __WORK_PATH
       dockerfile: ./docker/Dockerfile.takserver-db
     volumes:
       - "tak_data:/var/lib/postgresql/data"
-      - "./tak:/opt/tak:z"
+      - "__WORK_PATH/tak:/opt/tak:z"
     networks:
       taknet:
         aliases:
@@ -27,12 +27,12 @@ services:
     restart: always
   tak-server:
     build:
-      context: .
+      context: __WORK_PATH
       dockerfile: ./docker/Dockerfile.takserver
     env_file:
       - .env
     volumes:
-      - "./tak:/opt/tak:z"
+      - "__WORK_PATH/tak:/opt/tak:z"
     ports:
       - "8443:8443"
       - "8446:8446"

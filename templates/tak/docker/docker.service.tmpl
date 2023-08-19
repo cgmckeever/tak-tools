@@ -7,8 +7,8 @@ After=docker.service
 Type=oneshot
 RemainAfterExit=yes
 WorkingDirectory=__WORK_PATH
-ExecStart=/usr/local/bin/docker-compose up -d
-ExecStop=/usr/local/bin/docker-compose down
+ExecStart=/usr/local/bin/__DOCKER_COMPOSE -f __DOCKER_COMPOSE_YML up -d
+ExecStop=/usr/local/bin/__DOCKER_COMPOSE -f __DOCKER_COMPOSE_YML down
 TimeoutStartSec=0
 
 [Install]
