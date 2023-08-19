@@ -31,6 +31,10 @@ su - tak
 
 ## Validated
 
+- Ubuntu 22.04
+    - [TAK 4.8](https://tak.gov/products/tak-server?product_version=tak-server-4-8-0) [ ARM64 ]
+    - [TAK 4.9](https://tak.gov/products/tak-server?product_version=tak-server-4-9-0) [ AMD64 | ARM64 ]
+
 ## Prereq
 
 ### System
@@ -124,6 +128,7 @@ tools/client-data-package.sh
 - Ubuntu 22.04
     - [TAK 4.8](https://tak.gov/products/tak-server?product_version=tak-server-4-8-0) [ ARM64 ]
     - [TAK 4.9](https://tak.gov/products/tak-server?product_version=tak-server-4-9-0) [ AMD64 | ARM64 ]
+    - [TAK 4.10](https://tak.gov/products/tak-server?product_version=tak-server-4-10-0) [ AMD64 ]
 
 ## Prereq
 
@@ -158,15 +163,17 @@ su - tak
 sudo cp /opt/tak-tools/scripts/tak/docker/config.inc.example.sh \
     /opt/tak-tools/scripts/tak/docker/config.inc.sh; \
 cat /opt/tak-tools/scripts/tak/docker/config.inc.sh
+
+sudo ln -s /opt/tak-tools/scripts/tak/docker/ ~/tools
 ```
 
 - Kick off setup
 ```
-/opt/tak-tools/scripts/tak/docker/tear-down.sh
-/opt/tak-tools/scripts/tak/docker/setup.sh
+tools/tear-down.sh
+tools/setup.sh
 ```
 
-Wrapper Script: `/opt/tak-tools/scripts/tak/docker/start.sh`
+Wrapper Script: `tools/start.sh`
 
 - Tear down and clean up Docker
 - Will look for the docker install package as `~/release/takserver*.zip`
@@ -217,6 +224,57 @@ tools/client-data-package.sh
 ```
 
 - Will generate the Client Data Package
+
+## Upgrade
+
+Not all persisted data has been tested across upgrade.
+
+- Copy new `docker` zip to the `release/` directory
+
+- Unzip the docker zip
+```
+unzip release/`NEW-DOCKER-VERSION`.zip -d release/
+```
+
+- Run a config/cert backup
+```
+tools/backup.sh n
+```
+
+- Stop the currrent docker
+```
+docker-compose -f core-files/docker-compose.yml stop
+```
+
+- Remove the current existing docker tree
+```
+rm -rf tak-server
+```
+
+- Create the link to the new docker tree
+```
+ln -s release/{NEW-DOCKER-VERSION} tak-server
+```
+
+- Copy backed up configs to new docker tree
+
+```
+cp backups/{NEW-BACKUP}/* tak-server/tak; \
+cat tak-server/tak/CoreConfig.xml; \
+cat tak-server/tak/UserAuthenticationFile.xml
+```
+
+- Copy cert-files to new docker tree
+```
+mkdir -p tak-server/tak/certs/files/; \
+cp -R backups/{NEW-BACKUP}/cert-files/* tak-server/tak/certs/files/; \
+ls -la tak-server/tak/certs/files/
+```
+
+- Force build of new docker
+```
+docker-compose -f core-files/docker-compose.yml up  --build  -d
+```
 
 ## Tear down
 

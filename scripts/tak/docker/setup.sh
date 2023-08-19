@@ -25,6 +25,7 @@ sudo rm -rf $WORK_PATH
 ln -s ~/release/takserver*/ ${WORK_PATH}
 VERSION=$(cat ${TAK_PATH}/version.txt | sed 's/\(.*\)-.*-.*/\1/')
 mkdir -p ${CORE_FILES}
+mkdir -p ${BACKUPS}
 
 ## Generate Certs
 #
@@ -77,10 +78,9 @@ $DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} up tak-db -d
 
 printf $info "\n\n------------ Building TAK Server ------------\n\n"
 $DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} up tak-server -d
-$DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} exec tak-server bash -c "useradd $USER && chown -R $USER:$USER \${CERT_PATH}/"
+$DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} exec tak-server bash -c "useradd $USER && chown -R $USER:$USER /opt/tak/"
 
 ln -s ${TAK_PATH}/logs ~/logs
-sudo ln -s ${SCRIPT_PATH}/ ~/tools
 
 echo; echo
 read -p "Do you want to configure TAK Server auto-start [y/n]? " AUTOSTART
@@ -95,9 +95,9 @@ sudo ln -s ${CORE_FILES}/tak-server-docker.service /etc/systemd/system/tak-serve
 if [[ $AUTOSTART =~ ^[Yy]$ ]]; then
     sudo systemctl daemon-reload
     sudo systemctl enable tak-server-docker
-    printf $info "\nTAK Server auto-start enabled\n\n"
+    printf $info "\nTAK Server auto-start enabled\n"
 else
-    printf $info "\nTAK Server auto-start disabled\n\n"
+    printf $info "\nTAK Server auto-start disabled\n"
 fi
 
 ## Check Server Status
