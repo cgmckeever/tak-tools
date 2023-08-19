@@ -16,7 +16,7 @@ services:
       context: __WORK_PATH
       dockerfile: ./docker/Dockerfile.takserver-db
     volumes:
-      - "tak_data:/var/lib/postgresql/data"
+      - "tak_data:/var/lib/postgresql"
       - "__WORK_PATH/tak:/opt/tak:z"
     networks:
       taknet:
