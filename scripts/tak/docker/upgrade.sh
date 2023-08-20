@@ -8,14 +8,14 @@ source ${SCRIPT_PATH}/shared.inc.sh
 source ${SCRIPT_PATH}/env.inc.sh
 
 printf $warning "\n\nAvailable Releases: \n\n"
-ln -s release/*.zip
+ls release/*.zip
 
 echo; echo
 UPGRADE=""
-while ${UPGRADE} == ""; do
+while [ -z "${UPGRADE}" ]; do
     read -p "Which upgrade package: " UPGRADE
 done
-
+pause
 unzip release/${UPGRADE} -d release/
 
 printf $info "\n\nCreating Backup \n\n"
