@@ -22,9 +22,28 @@ sudo git clone https://github.com/cgmckeever/tak-tools.git /opt/tak-tools
 
 [Simple Wireguard Setup](https://github.com/cgmckeever/wireguard-tools)
 
+You will be able to access the TAK Server via `https://{WIREGUARD-TAK-SERVER-IP}:8446` (or create a DNS entry for a domain name)
+
 ## Zero Tier
 
-TBD
+- Create an account at zerotier.com
+- Create a new ZeroTier Network via the UI
+
+- Install ZeroTier
+```
+curl -s https://install.zerotier.com | sudo bash
+```
+
+- Add TAK Server as ZeroTier Node
+```
+sudo zerotier-cli join {ZEROTIER-NETWORK-ID}
+```
+
+- In the ZeroTier UI, allow the TAK Server Access
+- Repeat for each peer/node
+
+You will be able to access the TAK Server via `https://{ZEROTIER-TAK-SERVER-IP}:8446`. You can manually add a memorable (or create a DNS entry for a domain name) for connection as well.
+
 
 # LetsEncrypt [optional]
 
@@ -44,6 +63,7 @@ su - tak
 - Ubuntu 22.04
     - [TAK 4.8](https://tak.gov/products/tak-server?product_version=tak-server-4-8-0) [ ARM64 ]
     - [TAK 4.9](https://tak.gov/products/tak-server?product_version=tak-server-4-9-0) [ AMD64 | ARM64 ]
+    - [TAK 4.10](https://tak.gov/products/tak-server?product_version=tak-server-4-10-0) [ AMD64 | ARM64 ]
 
 ## Prereq
 
