@@ -42,7 +42,7 @@ sudo zerotier-cli join {ZEROTIER-NETWORK-ID}
 - In the ZeroTier UI, allow the TAK Server Access
 - Repeat for each peer/node
 
-You will be able to access the TAK Server via `https://{ZEROTIER-TAK-SERVER-IP}:8446`. You can manually add a memorable (or create a DNS entry for a domain name) for connection as well.
+You will be able to access the TAK Server via `https://{ZEROTIER-TAK-SERVER-IP}:8446`. You can manually add a memorable IP in the UI,  or create a DNS entry for a domain name.
 
 
 # LetsEncrypt [optional]
