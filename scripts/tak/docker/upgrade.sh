@@ -8,18 +8,18 @@ source ${SCRIPT_PATH}/shared.inc.sh
 source ${SCRIPT_PATH}/env.inc.sh
 
 printf $warning "\n\nAvailable Releases: \n\n"
-ls release/*.zip
+ls -l release/*.zip
 
 echo; echo
 UPGRADE=""
 while [ -z "${UPGRADE}" ]; do
     read -p "Which upgrade package: " UPGRADE
 done
-pause
 unzip release/${UPGRADE} -d release/
 
 printf $info "\n\nCreating Backup \n\n"
 source ${SCRIPT_PATH}/backup.sh n
+cd ~
 
 printf $info "Stopping Current Containers \n\n"
 docker-compose -f core-files/docker-compose.yml stop
