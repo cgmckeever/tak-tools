@@ -17,7 +17,7 @@ case $(lsb_release -r -s) in
 esac
 
 DOCKER=docker-ce
-if [[ "$arch" == *"arm"* ]];then
+if [[ "$arch" == *"arm"* ]]; then
     DOCKER=docker.io
 fi
 
@@ -79,7 +79,7 @@ echo
 pause
 
 HW=$(uname -m)
-if [[ $HW == "armv71" ]];then
+if [[ $HW == "armv71" ]]; then
     HW=armv7
 fi
 sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-$(uname -s | tr '[A-Z]' '[a-z]')-${HW}" -o /usr/local/bin/docker-compose
@@ -89,7 +89,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 printf $info "\n\nYou can install TAK with any user that has 'sudo' and can run 'docker' without sudo\n\n"
 read -p "Do you want to make a TAK service user [y/n]? " MAKEUSER
 
-if [[ ${MAKEUSER} =~ ^[Yy]$ ]];then
+if [[ ${MAKEUSER} =~ ^[Yy]$ ]]; then
     printf $warning "\n\n------------ Creating Tak Service User ------------\n\n"
     TAKUSER=tak
     PASS_OMIT="<>/\'\`\""
