@@ -26,7 +26,7 @@ You will be able to access the TAK Server via `https://{WIREGUARD-TAK-SERVER-IP}
 
 ## Zero Tier
 
-- Create an account at zerotier.com
+- Create an account at [zerotier.com](https://www.zerotier.com)
 - Create a new ZeroTier Network via the UI
 
 - Install ZeroTier
