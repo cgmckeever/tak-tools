@@ -24,6 +24,7 @@ fi
 sudo apt -y update
 sudo apt -y install \
     git \
+    iptables-persistent \
     openjdk-${JDK_VERSION}-jre-headless \
     net-tools \
     pwgen \
@@ -45,18 +46,6 @@ printf $warning "\n\n------------ Installing Network Manager ------------\n\n"
 sudo systemctl start NetworkManager.service
 sudo systemctl enable NetworkManager.service
 
-# Firewall Rules
-#
-printf $info "\nAllow 22 [SSH]\n"
-sudo ufw allow OpenSSH
-echo
-sudo ufw enable
-printf $warning "\n\n------------ Current Firewall Rules ------------\n\n"
-sudo ufw status verbose
-
-echo
-pause
-
 printf $warning "\n\n------------ Installing Docker ------------\n\n"
 # Docker
 #
@@ -71,6 +60,22 @@ echo '{ "iptables" : false }' | sudo tee -a /etc/docker/daemon.json
 
 sudo systemctl restart docker
 sudo systemctl enable docker
+
+# Firewall Rules
+#
+printf $info "\nAllow 22 [SSH]\n"
+sudo ufw allow OpenSSH
+echo
+sudo ufw enable
+printf $warning "\n\n------------ Current Firewall Rules ------------\n\n"
+sudo ufw status verbose
+printf $info "\nAllow Allow Docker Outbound \n"
+DOCKER_HOST_IP=$(docker network inspect bridge --format='{{(index .IPAM.Config 0).Gateway}}')
+sudo sed -i -e 's/DEFAULT_FORWARD_POLICY="DROP"/DEFAULT_FORWARD_POLICY="ACCEPT"/g' /etc/default/ufw
+sudo iptables -t nat -A POSTROUTING ! -o docker0 -s ${DOCKER_HOST_IP} -j MASQUERADE
+sudo iptables-save > /etc/iptables/rules.v4
+echo
+pause
 
 HW=$(uname -m)
 if [[ $HW == "armv71" ]];then
