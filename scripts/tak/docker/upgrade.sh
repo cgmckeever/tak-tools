@@ -45,7 +45,7 @@ mkdir -p tak-server/tak/certs/files/
 cp -R ${BACKUP_PATH}/cert-files/* tak-server/tak/certs/files/
 ls -la tak-server/tak/certs/files/
 
-printf $info "Restarting Server \n\n"
+printf $info "Restarting Server with latest version \n\n"
 docker-compose -f core-files/docker-compose.yml up  --build  -d
 
 echo
