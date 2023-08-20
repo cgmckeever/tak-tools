@@ -237,59 +237,17 @@ tools/client-data-package.sh
 
 ## Upgrade
 
-Not all persisted data has been tested across upgrade.
-
-- Copy new `docker` zip to the `release/` directory
-
-- Unzip the docker zip
-```
-unzip release/{NEW-DOCKER-VERSION}.zip -d release/
-```
-
-- Run a config/cert backup
-```
-tools/backup.sh n
-```
-
-- Stop the currrent docker
-```
-docker-compose -f core-files/docker-compose.yml stop
-```
-
-- Remove the current existing docker tree
-```
-rm -rf tak-server
-```
-
-- Create the link to the new docker tree
-```
-ln -s release/{NEW-DOCKER-VERSION} tak-server
-```
-
-- Copy backed up configs to new docker tree
+Not all persisted data has been tested across upgrade. Original working directory should
+remain peristed in the `release/` directory for reference.
 
 ```
-cp backups/{NEW-BACKUP}/* tak-server/tak; \
-cat tak-server/tak/CoreConfig.xml; \
-cat tak-server/tak/UserAuthenticationFile.xml
+tool/upgrade.sh
 ```
 
-- Copy cert-files to new docker tree
-```
-mkdir -p tak-server/tak/certs/files/; \
-cp -R backups/{NEW-BACKUP}/cert-files/* tak-server/tak/certs/files/; \
-ls -la tak-server/tak/certs/files/
-```
-
-- Link the env file
-```
-cp core-files/.env tak-server/.env
-```
-
-- Force build of new docker
-```
-docker-compose -f core-files/docker-compose.yml up  --build  -d
-```
+- Will ask for name of the new release package
+- Backup configs/certs
+- Copy new TAK files over
+- Restart TAK
 
 ## Tear down
 

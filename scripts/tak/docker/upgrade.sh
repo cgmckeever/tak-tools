@@ -40,12 +40,12 @@ cp ${CORE_FILES}/.env tak-server/.env
 cat tak-server/tak/CoreConfig.xml
 cat tak-server/tak/UserAuthenticationFile.xml
 
-printf $info "Copying certs \n\n"
+printf $info "\n\nsCopying certs \n\n"
 mkdir -p tak-server/tak/certs/files/
 cp -R ${BACKUP_PATH}/cert-files/* tak-server/tak/certs/files/
 ls -la tak-server/tak/certs/files/
 
-printf $info "Restarting Server with latest version \n\n"
+printf $info "\n\nRestarting Server with latest version \n\n"
 docker-compose -f core-files/docker-compose.yml up  --build  -d
 
 echo
