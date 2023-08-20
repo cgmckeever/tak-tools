@@ -16,6 +16,16 @@ sudo apt -y install git; \
 sudo git clone https://github.com/cgmckeever/tak-tools.git /opt/tak-tools
 ```
 
+# VPN [optional]
+
+## Wireguard
+
+[Simple Wireguard Setup](https://github.com/cgmckeever/wireguard-tools)
+
+## Zero Tier
+
+TBD
+
 # LetsEncrypt [optional]
 
 ```
@@ -233,7 +243,7 @@ Not all persisted data has been tested across upgrade.
 
 - Unzip the docker zip
 ```
-unzip release/`NEW-DOCKER-VERSION`.zip -d release/
+unzip release/{NEW-DOCKER-VERSION}.zip -d release/
 ```
 
 - Run a config/cert backup
