@@ -8,7 +8,9 @@ source ${SCRIPT_PATH}/shared.inc.sh
 source ${SCRIPT_PATH}/env.inc.sh
 
 printf $warning "\n\nAvailable Releases: \n\n"
-ls -l release/*.zip
+cd release
+ls -l *.zip
+cd ~
 
 echo; echo
 UPGRADE=""
