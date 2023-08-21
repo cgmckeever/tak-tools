@@ -12,7 +12,6 @@ source ${TOOLS_PATH}/scripts/tak/shared/vars.inc.sh
 CORE_FILES=~/core-files
 BACKUPS=~/backups
 
-DOCKER_CERT_PATH="/opt/tak/certs"
 DOCKER_COMPOSE_YML="${CORE_FILES}/docker-compose.yml"
 
 DOCKER_COMPOSE="docker-compose"

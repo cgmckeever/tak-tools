@@ -13,20 +13,19 @@ if [[ -f ~/letsencrypt.txt ]]; then
     URL=$FQDN
     CERT_NAME=le-${FQDN//\./-}
     LE_PATH="/etc/letsencrypt/live/$FQDN"
-    sudo mkdir -p ${CERT_PATH}/letsencrypt
 
     sudo openssl pkcs12 -export \
         -in ${LE_PATH}/fullchain.pem \
         -inkey ${LE_PATH}/privkey.pem \
         -name ${CERT_NAME} \
-        -out ${CERT_PATH}/letsencrypt/${CERT_NAME}.p12 \
+        -out ${FILE_PATH}/${CERT_NAME}.p12 \
         -passout pass:${CAPASS}
 
     sudo keytool -importkeystore \
         -deststorepass ${CAPASS} \
         -srcstorepass ${CAPASS} \
-        -destkeystore ${CERT_PATH}/letsencrypt/${CERT_NAME}.jks \
-        -srckeystore ${CERT_PATH}/letsencrypt/${CERT_NAME}.p12 \
+        -destkeystore ${FILE_PATH}/${CERT_NAME}.jks \
+        -srckeystore ${FILE_PATH}/${CERT_NAME}.p12 \
         -srcstoretype PKCS12
 
     sudo keytool -import \
@@ -36,10 +35,10 @@ if [[ -f ~/letsencrypt.txt ]]; then
         -deststorepass ${CAPASS} \
         -srcstorepass ${CAPASS} \
         -file ${LE_PATH}/fullchain.pem \
-        -keystore ${CERT_PATH}/letsencrypt/${CERT_NAME}.jks
+        -keystore ${FILE_PATH}/${CERT_NAME}.jks
 
     printf $info "Setting LetsEncrypt on Port:8446\n\n"
-    SSL_CERT_INFO="keystore=\"JKS\" keystoreFile=\"${DOCKER_CERT_PATH}/letsencrypt/${CERT_NAME}.jks\" keystorePass=\"__CAPASS\" truststore=\"JKS\" truststoreFile=\"${DOCKER_CERT_PATH}/files/truststore-__TAK_CA.jks\" truststorePass=\"__CAPASS\""
+    SSL_CERT_INFO="keystore=\"JKS\" keystoreFile=\"/opt/tak/cert/files/${CERT_NAME}.jks\" keystorePass=\"__CAPASS\" truststore=\"JKS\" truststoreFile=\"/opt/tak/cert/files/truststore-__TAK_CA.jks\" truststorePass=\"__CAPASS\""
     echo; echo
 fi
 

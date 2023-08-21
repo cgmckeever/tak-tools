@@ -59,7 +59,7 @@ URL=$URL
 TAK_COT_PORT=$TAK_COT_PORT
 IP=$IP
 TAK_PATH=/opt/tak
-CERT_PATH=$DOCKER_CERT_PATH
+CERT_PATH=/opt/tak/certs
 EOF
 
 ln -s ${CORE_FILES}/.env ${WORK_PATH}/.env
