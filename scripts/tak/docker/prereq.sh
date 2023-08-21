@@ -45,6 +45,7 @@ echo; echo
 read -p "Allow Network Manager to manage Wifi [Y/n]? " NETMAN
 if [[ ${NETMAN} =~ ^[Yy]$ ]]; then
     printf $warning "\n\n------------ Installing Network Manager ------------\n\n"
+    sudo touch /etc/netplan/50-cloud-init.yaml
     sudo systemctl start NetworkManager.service
     sudo systemctl enable NetworkManager.service
     sudo sed -i \
@@ -67,7 +68,7 @@ echo '{ "iptables" : false }' | sudo tee -a /etc/docker/daemon.json
 sudo systemctl restart docker
 sudo systemctl enable docker
 
-printf $warning "\n\n------------ Updaating FireWall ------------\n\n"
+printf $warning "\n\n------------ Updating FireWall ------------\n\n"
 # Firewall Rules
 #
 printf $info "\nAllow 22 [SSH]\n"
