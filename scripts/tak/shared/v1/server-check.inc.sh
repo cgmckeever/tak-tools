@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo; echo
+echo;
 START_TIME="$(date -u +%s)"
 while true; do
     printf $warning "------------ Waiting for Server to start --------------\n"

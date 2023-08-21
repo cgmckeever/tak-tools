@@ -95,7 +95,7 @@ else
     printf $info "\nTAK Server auto-start disabled\n\n"
 fi
 
-printf $info "\n\n------------ Restarting TAK Server ------------\n\n"
+printf $info "\n\n------------ Restarting TAK Server ------------\n"
 sudo systemctl daemon-reload
 sudo systemctl restart takserver
 
