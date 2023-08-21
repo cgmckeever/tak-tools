@@ -116,6 +116,8 @@ while true;do
     sleep 10
 done
 
+## This should be fixed
+TAK_URL=${URL}
 source ${TAK_SCRIPT_PATH}/v1/autoenroll-data-package.inc.sh
 
 printf $success "\n\n----------------- Installation Complete -----------------\n\n"
