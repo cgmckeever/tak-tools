@@ -334,3 +334,20 @@ sudo git -C /opt/tak-tools pull
 echo; read -p "New Admin Password: " TAKADMIN_PASS; docker-compose -f tak-server/docker-compose.yml exec tak-server bash -c "java -jar \${TAK_PATH}/utils/UserManager.jar usermod -A -p \"${TAKADMIN_PASS}\" tak-admin"
 ```
 
+## NetworkManager
+
+- Update renderer in `/etc/netplan/50-cloud-init.yaml` from `networkd` to `NetworkManager`
+
+```
+network:
+    version: 2
+    wifis:
+        renderer: NetworkManager
+```
+
+- Change wifi
+
+```
+sudo nmcli device wifi --ask connect {SSID-TO-CONNECT}
+```
+

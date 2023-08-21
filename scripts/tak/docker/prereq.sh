@@ -39,12 +39,18 @@ sudo apt -y install \
     wget \
     zip
 
-
-printf $warning "\n\n------------ Installing Network Manager ------------\n\n"
+echo; echo
 ## Network Manager
 #
-sudo systemctl start NetworkManager.service
-sudo systemctl enable NetworkManager.service
+read -p "Allow Network Manager to manage Wifi [Y/n]? " NETMAN
+if [[ ${NETMAN} =~ ^[Yy]$ ]]; then
+    printf $warning "\n\n------------ Installing Network Manager ------------\n\n"
+    sudo systemctl start NetworkManager.service
+    sudo systemctl enable NetworkManager.service
+    sudo sed -i \
+    -e "s/networkd/NetworkManagerg" /etc/netplan/50-cloud-init.yaml
+    sudo netplan apply
+fi
 
 printf $warning "\n\n------------ Installing Docker ------------\n\n"
 # Docker
@@ -61,6 +67,7 @@ echo '{ "iptables" : false }' | sudo tee -a /etc/docker/daemon.json
 sudo systemctl restart docker
 sudo systemctl enable docker
 
+printf $warning "\n\n------------ Updaating FireWall ------------\n\n"
 # Firewall Rules
 #
 printf $info "\nAllow 22 [SSH]\n"
