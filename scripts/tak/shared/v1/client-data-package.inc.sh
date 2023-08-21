@@ -52,7 +52,7 @@ EOF
 
 echo; echo
 cd ${FILE_PATH}/clients/${USERNAME}/
-zip -j ${USERNAME}-${TAK_ALIAS}.zip \
+zip -j ${USERNAME}-${TAK_ALIAS}-${CONNECTION_STRING}.zip \
     ${FILE_PATH}/${USERNAME}.p12 \
     ${FILE_PATH}/${USERNAME}.pem \
     ${FILE_PATH}/truststore-${TAK_CA}.p12 \
