@@ -48,7 +48,6 @@ You will be able to access the TAK Server via `https://{ZEROTIER-TAK-SERVER-IP}:
 # LetsEncrypt [optional]
 
 ```
-su - tak
 /opt/tak-tools/scripts/letsencrypt.sh
 ```
 
