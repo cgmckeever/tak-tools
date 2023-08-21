@@ -14,15 +14,9 @@ color danger 91m    # red
 #
 sudo apt install -y certbot
 
-printf $warning "\nOpening Port 80 (you should remove this after)...\n"
-sudo ufw allow http
-echo
-read -p "Press Enter to resume setup... "
-
 echo; echo
-printf $warning "Requesting a new certificate... "
+printf $warning "Requesting a new certificate...\n\n"
 
-echo; echo
 read -p  "What is your domain name? [ex: atakhq.com or tak.foo.com] " FQDN
 NAME=${FQDN//\./-}
 
@@ -33,7 +27,6 @@ echo
 if sudo certbot certonly --standalone -d $FQDN -m $EMAIL --agree-tos --non-interactive; then
   printf $success "Certificate obtained successfully!\n\n"
   echo $FQDN > ~/letsencrypt.txt
-  printf $warning "Remember to remove the Port:80 UFW Rule\n\n"
 else
   printf $warning "Error obtaining certificate: $(sudo certbot certificates)"
 fi
