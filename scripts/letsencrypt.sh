@@ -14,7 +14,9 @@ color danger 91m    # red
 #
 sudo apt install -y certbot
 
-printf $warning "\n\nReminder you need a Port:80 UFW Rule\n\n"
+printf $warning "\nOpening Port 80 (you should remove this after)...\n"
+sudo ufw allow http
+echo
 read -p "Press Enter to resume setup... "
 
 echo; echo
