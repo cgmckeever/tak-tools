@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export IP=$($DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} exec tak-server bash -c "echo \$IP" | tr -d '\r')
-export URL=$($DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} exec tak-server bash -c "echo \$URL" | tr -d '\r')
+export TAK_URL=$($DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} exec tak-server bash -c "echo \$URL" | tr -d '\r')
 
 export CAPASS=$($DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} exec tak-server bash -c "echo \$CAPASS" | tr -d '\r')
 export PASS=$($DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} exec tak-server bash -c "echo \$PASS" | tr -d '\r')

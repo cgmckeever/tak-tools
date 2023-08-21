@@ -2,8 +2,8 @@
 
 printf $warning "\n\n------------ Creating TAK Auto-Enroll Data Package ------------ \n\n"
 
-read -p "Server Connection String [${URL}]: " CONNECTION_STRING
-CONNECTION_STRING=${CONNECTION_STRING:-${URL}}
+read -p "Server Connection String [${TAK_URL}]: " CONNECTION_STRING
+CONNECTION_STRING=${CONNECTION_STRING:-${TAK_URL}}
 
 mkdir -p ${FILE_PATH}/clients
 UUID=$(uuidgen -r)

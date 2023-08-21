@@ -10,8 +10,8 @@ rm -rf ${FILE_PATH}/clients/${USERNAME}
 mkdir -p ${FILE_PATH}/clients/${USERNAME}
 
 echo; echo
-read -p "Server Connection String [${URL}]: " CONNECTION_STRING
-CONNECTION_STRING=${CONNECTION_STRING:-${URL}}
+read -p "Server Connection String [${TAK_URL}]: " CONNECTION_STRING
+CONNECTION_STRING=${CONNECTION_STRING:-${TAK_URL}}
 
 UUID=$(uuidgen -r)
 
