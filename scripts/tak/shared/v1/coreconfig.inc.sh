@@ -37,7 +37,7 @@ if [[ -f ~/letsencrypt.txt ]]; then
         -file ${LE_PATH}/fullchain.pem \
         -keystore ${FILE_PATH}/${CERT_NAME}.jks
 
-    printf $info "Setting LetsEncrypt on Port:8446\n\n"
+    printf $info "Enabaling LetsEncrypt on Port:8446\n\n"
     SSL_CERT_INFO="keystore=\"JKS\" keystoreFile=\"/opt/tak/certs/files/${CERT_NAME}.jks\" keystorePass=\"__CAPASS\" truststore=\"JKS\" truststoreFile=\"/opt/tak/certs/files/truststore-__TAK_CA.jks\" truststorePass=\"__CAPASS\""
     echo
 fi
