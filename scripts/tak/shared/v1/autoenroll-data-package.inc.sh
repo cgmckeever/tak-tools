@@ -8,7 +8,7 @@ CONNECTION_STRING=${CONNECTION_STRING:-${URL}}
 mkdir -p ${FILE_PATH}/clients
 UUID=$(uuidgen -r)
 
-tee ${FILE_PATH}/clients/manifest.xml >/dev/null << EOF
+sudo tee ${FILE_PATH}/clients/manifest.xml >/dev/null << EOF
 <MissionPackageManifest version="2">
     <Configuration>
         <Parameter name="uid" value="${UUID}"/>
@@ -23,7 +23,7 @@ tee ${FILE_PATH}/clients/manifest.xml >/dev/null << EOF
 EOF
 
 
-tee ${FILE_PATH}/clients/server.pref >/dev/null << EOF
+sudo tee ${FILE_PATH}/clients/server.pref >/dev/null << EOF
 <?xml version='1.0' encoding='ASCII' standalone='yes'?>
 <preferences>
     <preference version="1" name="cot_streams">
