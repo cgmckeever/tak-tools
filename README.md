@@ -345,6 +345,10 @@ network:
         renderer: NetworkManager
 ```
 
+```
+sudo netplan apply
+```
+
 - Find SSIDs
 
 ```
