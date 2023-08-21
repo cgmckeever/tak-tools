@@ -52,11 +52,12 @@ EOF
 
 echo; echo
 cd ${FILE_PATH}/clients/${USERNAME}/
-zip -j ${USERNAME}-${TAK_ALIAS}-${CONNECTION_STRING}.zip \
+ZIP=${USERNAME}-${TAK_ALIAS}-${CONNECTION_STRING}
+zip -j ${ZIP}.zip \
     ${FILE_PATH}/${USERNAME}.p12 \
     ${FILE_PATH}/${USERNAME}.pem \
     ${FILE_PATH}/truststore-${TAK_CA}.p12 \
     manifest.xml \
     server.pref
 
-printf $info "\n\nUser Data Package Created: ${FILE_PATH}/clients/${USERNAME}/${USERNAME}-${TAK_ALIAS}.zip\n\n"
+printf $info "\n\nUser Data Package Created: ${FILE_PATH}/clients/${USERNAME}/${ZIP}.zip\n\n"

@@ -46,9 +46,10 @@ EOF
 
 echo; echo
 cd ${FILE_PATH}/clients/
-sudo zip -j ${TAK_ALIAS}-${CONNECTION_STRING}.zip \
+ZIP=${TAK_ALIAS}-${CONNECTION_STRING}
+sudo zip -j ${ZIP}.zip \
     ${FILE_PATH}/truststore-${TAK_CA}.p12 \
     manifest.xml \
     server.pref
 
-printf $info "\n\nAuto-Enroll Data Package Created: ${FILE_PATH}/clients/${TAK_ALIAS}-${CONNECTION_STRING}.zip\n\n"
+printf $info "\n\nAuto-Enroll Data Package Created: ${FILE_PATH}/clients/${ZIP}.zip\n\n"
