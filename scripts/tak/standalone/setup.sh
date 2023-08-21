@@ -116,7 +116,7 @@ while true;do
     sleep 10
 done
 
-## This should be fixed
+## This should be fixed - script uses the ENV variable name
 TAK_URL=${URL}
 source ${TAK_SCRIPT_PATH}/v1/autoenroll-data-package.inc.sh
 
