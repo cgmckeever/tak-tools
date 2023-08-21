@@ -110,7 +110,7 @@ if [[ ${MAKEUSER} =~ ^[Yy]$ ]]; then
     sudo usermod -aG docker $TAKUSER
 
     if [[ -f ~/letsencrypt.txt  ]]; then
-        sudo cp ~/letsencrypt.txt /home/tak
+        sudo cp ~/letsencrypt.txt /home/tak/
     fi
 
     printf $success "\n\nCreated user: ${TAKUSER}\n"
