@@ -40,6 +40,7 @@ if [[ -f ~/letsencrypt.txt ]]; then
 
     printf $info "Setting LetsEncrypt on Port:8446\n\n"
     SSL_CERT_INFO="keystore=\"JKS\" keystoreFile=\"${DOCKER_CERT_PATH}/letsencrypt/${CERT_NAME}.jks\" keystorePass=\"__CAPASS\" truststore=\"JKS\" truststoreFile=\"${DOCKER_CERT_PATH}/files/truststore-__TAK_CA.jks\" truststorePass=\"__CAPASS\""
+    echo; echo
 fi
 
 DATABASE_HOST=$1
