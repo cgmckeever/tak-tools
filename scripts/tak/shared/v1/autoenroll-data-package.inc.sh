@@ -46,7 +46,7 @@ EOF
 
 echo; echo
 cd ${FILE_PATH}/clients/
-zip -j ${TAK_ALIAS}-${CONNECTION_STRING}.zip \
+sudo zip -j ${TAK_ALIAS}-${CONNECTION_STRING}.zip \
     ${FILE_PATH}/truststore-${TAK_CA}.p12 \
     manifest.xml \
     server.pref
