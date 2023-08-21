@@ -57,7 +57,7 @@ if [[ ${NETMAN} =~ ^[Yy]$ ]]; then
     sudo systemctl start NetworkManager.service
     sudo systemctl enable NetworkManager.service
     sudo sed -i \
-    -e "s/networkd/NetworkManagerg" /etc/netplan/50-cloud-init.yaml
+    -e "s/networkd/NetworkManager/g" /etc/netplan/50-cloud-init.yaml
     sudo netplan apply
 fi
 
