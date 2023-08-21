@@ -20,7 +20,7 @@ printf $info "\n-------- Installing Ddependencies --------\n\n"
 
 sudo apt -y install curl gnupg gnupg2
 
-sudo mkdir /etc/apt/keyrings/
+sudo mkdir -p /etc/apt/keyrings/
 sudo curl https://www.postgresql.org/media/keys/ACCC4CF8.asc --output /etc/apt/keyrings/postgresql.asc
 
 sudo rm -f /etc/apt/sources.list.d/postgresql.list

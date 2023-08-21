@@ -14,7 +14,7 @@ TAK_CA=${TAK_ALIAS}-Intermediary-CA-01
 echo; echo
 ip link show
 echo; echo
-DEFAULT_NIC=$(route | grep default | awk '{print $8}')
+DEFAULT_NIC=$(route | grep default | awk 'NR==1{print $8}')
 read -p "Which Network Interface? Default [${DEFAULT_NIC}] : " NIC
 NIC=${NIC:-${DEFAULT_NIC}}
 
