@@ -345,6 +345,12 @@ network:
         renderer: NetworkManager
 ```
 
+- Find SSIDs
+
+```
+sudo nmcli dev wifi
+```
+
 - Change wifi
 
 ```
