@@ -189,11 +189,10 @@ su - tak
 
 - Copy and change the config settings
 ```
-sudo cp /opt/tak-tools/scripts/tak/docker/config.inc.example.sh \
-    /opt/tak-tools/scripts/tak/docker/config.inc.sh; \
-cat /opt/tak-tools/scripts/tak/docker/config.inc.sh
+sudo ln -s /opt/tak-tools/scripts/tak/docker/ ~/tools; \
+sudo cp tools/config.inc.example.sh tools/config.inc.sh; \
+cat tools/config.inc.sh
 
-ln -s /opt/tak-tools/scripts/tak/docker/ ~/tools
 ```
 
 - Kick off setup

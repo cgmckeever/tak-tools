@@ -27,7 +27,6 @@ sudo rm -f /etc/apt/sources.list.d/postgresql.list
 echo "deb [signed-by=/etc/apt/keyrings/postgresql.asc] http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" | sudo tee -a /etc/apt/sources.list.d/postgresql.list
 
 sudo apt-get -y update
-
 sudo apt-get -y install \
     apt-transport-https \
     ca-certificates \

@@ -21,6 +21,9 @@ if [[ "$arch" == *"arm"* ]]; then
     DOCKER=docker.io
 fi
 
+echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
+echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
+
 sudo apt -y update
 sudo apt -y install \
     git \
@@ -39,9 +42,9 @@ sudo apt -y install \
     wget \
     zip
 
-echo; echo
 ## Network Manager
 #
+echo; echo
 read -p "Allow Network Manager to manage Wifi [Y/n]? " NETMAN
 if [[ ${NETMAN} =~ ^[Yy]$ ]]; then
     printf $warning "\n\n------------ Installing Network Manager ------------\n\n"
@@ -77,7 +80,7 @@ echo
 sudo ufw enable
 printf $warning "\n\n------------ Current Firewall Rules ------------\n\n"
 sudo ufw status verbose
-printf $info "\nAllow Allow Docker Outbound \n"
+printf $info "\nAllowing Allow Docker Outbound \n"
 # https://www.mkubaczyk.com/2017/09/05/force-docker-not-bypass-ufw-rules-ubuntu-16-04/
 DOCKER_HOST_IP=$(docker network inspect bridge --format='{{(index .IPAM.Config 0).Gateway}}')
 sudo sed -i -e 's/DEFAULT_FORWARD_POLICY="DROP"/DEFAULT_FORWARD_POLICY="ACCEPT"/g' /etc/default/ufw
