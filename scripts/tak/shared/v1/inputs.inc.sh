@@ -29,11 +29,11 @@ VPN=${VPN:-y}
 TRAFFIC_SOURCE="0.0.0.0/0"
 if [[ ${VPN} =~ ^[Yy]$ ]];then
     IFS='.' read A B C D <<< ${IP}
-    TRAFFIC_SOURCE=${A}.${B}.${C}.0/24
+    NETWORK=${A}.${B}.${C}.0/24
 
     echo; echo
-    read -p "VPN Traffic Range [${VPN_RANGE}]: " TRAFFIC_SOURCE
-    TRAFFIC_SOURCE=${TRAFFIC_SOURCE:-${VPN_RANGE}}
+    read -p "VPN Traffic Range [${NETWORK}]: " TRAFFIC_SOURCE
+    TRAFFIC_SOURCE=${TRAFFIC_SOURCE:-${NETWORK}}
 fi
 
 printf $warning "\n\n------------ Certificate Subject Info --------------\n\n"
