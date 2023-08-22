@@ -12,7 +12,7 @@
 
 ```
 sudo apt -y update; \
-sudo apt -y install git; \
+sudo apt -y install curl git; \
 sudo git clone https://github.com/cgmckeever/tak-tools.git /opt/tak-tools
 ```
 
