@@ -124,7 +124,7 @@ while true;do
     sleep 10
 done
 
-source ${TAK_SCRIPT_PATH}/v1/autoenroll-data-package.inc.sh
+source ${SCRIPT_PATH}/autoenroll-data-package.inc.sh
 
 printf $success "\n\n ----------------- Installation Complete -----------------\n\n"
 
