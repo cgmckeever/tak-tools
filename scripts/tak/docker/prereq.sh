@@ -49,11 +49,17 @@ read -p "Allow Network Manager to manage Wifi [Y/n]? " NETMAN
 if [[ ${NETMAN} =~ ^[Yy]$ ]]; then
     printf $warning "\n\n------------ Installing Network Manager ------------\n\n"
     sudo touch /etc/netplan/50-cloud-init.yaml
+    sudo cp /etc/netplan/50-cloud-init.yaml /etc/netplan/50-cloud-init.yaml.install
     sudo systemctl start NetworkManager.service
     sudo systemctl enable NetworkManager.service
     sudo sed -i \
         -e "s/networkd/NetworkManager/g" /etc/netplan/50-cloud-init.yaml
     sudo netplan apply
+
+    sudo cp ${TEMPLATE_PATH}/cloud-init.yaml.tmpl /etc/netplan/50-cloud-init.yaml.wired
+    DEFAULT_NIC=$(route | grep default | awk 'NR==1{print $8}')
+    sudo sed -i \
+        -e "s/__WIRED_NIC/${DEFAULT_NIC}/g" /etc/netplan/50-cloud-init.yaml.wired
 fi
 
 printf $warning "\n\n------------ Installing Docker ------------\n\n"
