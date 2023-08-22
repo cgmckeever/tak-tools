@@ -124,7 +124,7 @@ while true;do
     sleep 10
 done
 
-source ${SCRIPT_PATH}/autoenroll-data-package.inc.sh
+source ${SCRIPT_PATH}/autoenroll-data-package.sh
 
 printf $success "\n\n ----------------- Installation Complete -----------------\n\n"
 
