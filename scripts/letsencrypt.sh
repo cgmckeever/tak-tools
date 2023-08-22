@@ -24,7 +24,7 @@ echo
 read -p "What is your email? [Needed for LetsEncrypt Alerts] : " EMAIL
 
 echo
-if sudo certbot certonly --standalone -d $FQDN -m $EMAIL --agree-tos --non-interactive; then
+if sudo certbot certonly --standalone -d ${FQDN} -m ${EMAIL} --agree-tos --non-interactive; then
   printf $success "Certificate obtained successfully!\n\n"
   echo $FQDN > ~/letsencrypt.txt
 else
