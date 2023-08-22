@@ -26,9 +26,14 @@ printf $warning "Answering [y]es to the next prompt will restrict access to a VP
 read -p "Is the TAK Server behind a VPN [Y/n]? " VPN
 VPN=${VPN:-y}
 
-TRAFFIC_SOURCE=${IP}/24
-if [[ ${VPN} =~ ^[Nn]$ ]];then
-    TRAFFIC_SOURCE="0.0.0.0/0"
+TRAFFIC_SOURCE="0.0.0.0/0"
+if [[ ${VPN} =~ ^[Yy]$ ]];then
+    IFS='.' read A B C D <<< ${IP}
+    TRAFFIC_SOURCE=${A}.${B}.${C}.0/24
+
+    echo; echo
+    read -p "VPN Traffic Range [${VPN_RANGE}]: " TRAFFIC_SOURCE
+    TRAFFIC_SOURCE=${TRAFFIC_SOURCE:-${VPN_RANGE}}
 fi
 
 printf $warning "\n\n------------ Certificate Subject Info --------------\n\n"
