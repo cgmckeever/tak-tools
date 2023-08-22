@@ -27,3 +27,5 @@ while true; do
     fi
     sleep 10
 done
+
+source ${TAK_SCRIPT_PATH}/v1/letsencrypt-import.inc.sh
