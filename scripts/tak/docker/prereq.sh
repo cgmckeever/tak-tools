@@ -62,8 +62,6 @@ if [[ ${NETMAN} =~ ^[Yy]$ ]]; then
         -e "s/__WIRED_NIC/${DEFAULT_NIC}/g" /etc/netplan/50-cloud-init.yaml.wired
 fi
 
-pause
-
 printf $warning "\n\n------------ Installing Docker ------------\n\n"
 # Docker
 #
