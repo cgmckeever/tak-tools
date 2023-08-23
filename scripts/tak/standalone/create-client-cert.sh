@@ -30,9 +30,4 @@ printf $info "\nCreated Client Certificate ${FILE_PATH}/${USERNAME}.p12\n\n"
 
 source ${TAK_SCRIPT_PATH}/v1/client-data-package.inc.sh ${USERNAME}
 
-printf $warning "TAK needs to restart to enable changes.\n\n"
-read -p "Restart TAK [y/n]? " RESTART
-
-if [[ $RESTART =~ ^[Yy]$ ]];then
-    sudo systemctl restart takserver
-fi
+source ${SCRIPT_PATH}/restart-prompt.inc.sh
