@@ -5,4 +5,4 @@ source ${SCRIPT_PATH}/shared.inc.sh
 
 # =======================
 
-source ${SCRIPT_PATH}/firewall.sh
+source ${TAK_SCRIPT_PATH}/v1/firewall.inc.sh
