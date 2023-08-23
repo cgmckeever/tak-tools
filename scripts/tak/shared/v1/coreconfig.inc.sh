@@ -30,9 +30,14 @@ printf $info "Setting TAK Server Alias: ${TAK_ALIAS}\n"
 printf $info "Setting HOST IP: ${IP}\n"
 printf $info "Setting API Port: ${TAK_COT_PORT}\n\n"
 
-if [[ ${ACTIVE_SSL} == "LE_SSL" ]]; then
-    printf $info "Enabling LetsEncrypt on Port:8446\n\n"
-fi
+case ${ACTIVE_SSL} in
+  "LE_SSL")
+    printf $info "Enabling LetsEncrypt SSL on Port:8446\n\n"
+    ;;
+  *)
+    printf $info "Enabling Self-Signed SSL on Port:8446\n\n"
+    ;;
+esac
 
 printf $info "Setting CA: ${TAK_CA}\n"
 printf $info "Setting CA Cert Password\n"
