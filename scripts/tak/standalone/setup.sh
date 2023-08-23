@@ -20,6 +20,7 @@ echo
 pause
 
 ## CoreConfig
+#  Must come before install as DB update will look for config
 #
 sudo rm -rf ${TAK_PATH}/
 sudo mkdir -p ${TAK_PATH}/certs/files/clients
@@ -71,17 +72,17 @@ sudo chmod 755 /etc/profile.d/tak.profile.sh
 sudo sed -i \
     -e "s#__TAK_PATH#${TAK_PATH}#g" \
     -e "s/__TAK_ALIAS/${TAK_ALIAS}/g" \
-    -e "s/__NIC/${NIC}/g" \
-    -e "s/__CAPASS/${CAPASS}/g" \
-    -e "s/__PASS/${CERTPASS}/g" \
+    -e "s/__TAK_NIC/${NIC}/g" \
+    -e "s/__TAK_CAPASS/${CAPASS}/g" \
+    -e "s/__TAK_PASS/${CERTPASS}/g" \
     -e "s/__TAK_CA/${TAK_CA}/g" \
-    -e "s/__CITY/${CITY}/g" \
-    -e "s/__STATE/${STATE}/g" \
-    -e "s/__ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" \
-    -e "s/__ORGANIZATION/${ORGANIZATION}/g" \
-    -e "s/__IP/${IP}/g" \
+    -e "s/__TAK_CITY/${CITY}/g" \
+    -e "s/__TAK_STATE/${STATE}/g" \
+    -e "s/__TAK_ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" \
+    -e "s/__TAK_ORGANIZATION/${ORGANIZATION}/g" \
     -e "s/__TAK_COT_PORT/${TAK_COT_PORT}/" \
-    -e "s/__URL/${URL}/" /etc/profile.d/tak.profile.sh
+    -e "s/__TAK_IP/${IP}/g" \
+    -e "s/__TAK_URL/${URL}/" /etc/profile.d/tak.profile.sh
 
 cat /etc/profile.d/tak.profile.sh
 
