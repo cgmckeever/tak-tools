@@ -5,6 +5,8 @@ source ${SCRIPT_PATH}/shared.inc.sh
 
 # =======================
 
+source ${SCRIPT_PATH}/env.inc.sh
+
 printf $warning "\n\nRequesting a certificate renewal...\n\n"
 source ${TOOLS_PATH}/scripts/shared/letsencrypt.inc.sh
 
