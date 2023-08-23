@@ -4,7 +4,7 @@ while [ -z "${FQDN}" ]; do
     if [[ -z "$1" ]]; then
         PROMPT="[ex: atakhq.com or tak.foo.com]"
     else
-        PROMPT="default [$1]: "
+        PROMPT="default [$1]:"
     fi
     read -p  "What is your domain name? ${PROMPT} " FQDN
     FQDN=${FQDN:-$1}
@@ -14,10 +14,10 @@ while [ -z "${EMAIL}" ]; do
     if [[ -z "$2" ]]; then
         PROMPT="[Needed for LetsEncrypt Alerts]"
     else
-        PROMPT="last used [$2]: "
+        PROMPT="last used [$2]:"
     fi
     echo
-    read -p "What is your email? ${PROMPT} : " EMAIL
+    read -p "What is your email? ${PROMPT} " EMAIL
     EMAIL=${EMAIL:-$2}
 done
 
