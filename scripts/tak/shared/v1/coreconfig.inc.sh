@@ -6,12 +6,8 @@ sudo touch ${TAK_PATH}/CoreConfig.xml
 sudo cp ${TAK_PATH}/CoreConfig.xml ${TAK_PATH}/CoreConfig.xml.install
 sudo cp ${TEMPLATE_PATH}/tak/CoreConfig-${VERSION}.xml.tmpl ${TAK_PATH}/CoreConfig.xml
 
-ACTIVE_SSL=SELF_SSL
-if [[ -f ~/letsencrypt.txt ]]; then
+if [[ ${ACTIVE_SSL} != "SELF_SSL" ]]; then
     printf $info "Enabling LetsEncrypt on Port:8446\n\n"
-    ACTIVE_SSL=LE_SSL
-    IFS=':' read -ra LE_INFO <<< $(cat ~/letsencrypt.txt)
-    URL=${LE_INFO[0]}
 fi
 
 DATABASE_HOST=$1

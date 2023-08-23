@@ -21,6 +21,13 @@ NIC=${NIC:-${DEFAULT_NIC}}
 IP=$(ip addr show $NIC | grep -m 1 "inet " | awk '{print $2}' | cut -d "/" -f1)
 URL=$IP
 
+ACTIVE_SSL=SELF_SSL
+if [[ -f ~/letsencrypt.txt ]]; then
+    ACTIVE_SSL=LE_SSL
+    IFS=':' read -ra LE_INFO <<< $(cat ~/letsencrypt.txt)
+    URL=${LE_INFO[0]}
+fi
+
 echo; echo
 printf $warning "Answering [y]es to the next prompt will restrict access to a VPN network.\n\n"
 read -p "Is the TAK Server behind a VPN [Y/n]? " VPN
