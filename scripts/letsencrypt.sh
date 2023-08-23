@@ -8,8 +8,7 @@ source ${TOOLS_PATH}/scripts/shared/functions.inc.sh
 #
 sudo apt install -y certbot
 
-echo; echo
-printf $warning "Requesting a new certificate...\n\n"
+printf $warning "\n\nRequesting a new certificate...\n\n"
 source ${TOOLS_PATH}/scripts/shared/letsencrypt.inc.sh
 
 
