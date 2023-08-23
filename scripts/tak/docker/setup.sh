@@ -12,7 +12,7 @@ source ${TAK_SCRIPT_PATH}/v1/inputs.inc.sh "release/takserver*.zip"
 
 ## Set firewall rules
 #
-source ${TAK_SCRIPT_PATH}/v1/firewall.inc.sh ${TRAFFIC_SOURCE}
+source ${TAK_SCRIPT_PATH}/v1/firewall-update.inc.sh ${TRAFFIC_SOURCE}
 printf $info "\nAllow Docker 5432 [postgres]\n"
 sudo ufw allow proto tcp from ${DOCKER_SUBNET} to any port 5432
 sudo ufw route allow from ${DOCKER_SUBNET} to ${DOCKER_SUBNET}
