@@ -35,17 +35,6 @@ if [ ! -f /usr/bin/systemctl ]; then
     sudo ln -s /bin/systemctl /usr/bin/systemctl
 fi
 
-## Generate Certs
-#
-sudo chown -R $USER:$USER ${CERT_PATH}
-source ${TAK_SCRIPT_PATH}/v1/cert-gen.inc.sh
-
-## User cleanup
-#
-sudo usermod --shell /bin/bash tak
-sudo ln -s ${TAK_SCRIPTS}/ ${TAK_PATH}/tools
-sudo chown -R tak:tak ${TAK_PATH}
-
 ## Database Setup
 #
 DB_SETUP="No"
@@ -63,6 +52,17 @@ esac
 if [[ ${DB_SETUP} == "Yes" ]]; then
     sudo ${TAK_PATH}/db-utils/takserver-setup-db.sh
 fi
+
+## Generate Certs
+#
+sudo chown -R $USER:$USER ${CERT_PATH}
+source ${TAK_SCRIPT_PATH}/v1/cert-gen.inc.sh
+
+## User cleanup
+#
+sudo usermod --shell /bin/bash tak
+sudo ln -s ${TAK_SCRIPTS}/ ${TAK_PATH}/tools
+sudo chown -R tak:tak ${TAK_PATH}
 
 printf $warning "\n\n------------ Creating ENV variable file  ------------\n\n"
 
