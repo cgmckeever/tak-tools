@@ -28,6 +28,4 @@ if [[ -f ~/letsencrypt.txt ]]; then
         -srcstorepass ${CAPASS} \
         -file ${LE_PATH}/fullchain.pem \
         -keystore ${FILE_PATH}/letsencrypt.jks
-
-    printf $info "Enabling LetsEncrypt on Port:8446\n\n"
 fi

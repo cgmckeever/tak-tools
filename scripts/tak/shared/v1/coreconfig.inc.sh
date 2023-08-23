@@ -8,6 +8,7 @@ sudo cp ${TEMPLATE_PATH}/tak/CoreConfig-${VERSION}.xml.tmpl ${TAK_PATH}/CoreConf
 
 ACTIVE_SSL=SELF_SSL
 if [[ -f ~/letsencrypt.txt ]]; then
+    printf $info "Enabling LetsEncrypt on Port:8446\n\n"
     ACTIVE_SSL=LE_SSL
     FQDN=$(cat ~/letsencrypt.txt)
     URL=$FQDN
