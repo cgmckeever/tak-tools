@@ -10,8 +10,8 @@ ACTIVE_SSL=SELF_SSL
 if [[ -f ~/letsencrypt.txt ]]; then
     printf $info "Enabling LetsEncrypt on Port:8446\n\n"
     ACTIVE_SSL=LE_SSL
-    FQDN=$(cat ~/letsencrypt.txt)
-    URL=$FQDN
+    IFS=':' read -ra LE_INFO <<< $(cat ~/letsencrypt.txt)
+    URL=${LE_INFO[0]}
 fi
 
 DATABASE_HOST=$1
@@ -44,6 +44,6 @@ printf $info "Setting CA Organization Info O: ${ORGANIZATION} OU: ${ORGANIZATION
 printf $info "Setting CA Revocation List: ${TAK_CA}.crl\n\n"
 
 printf $info "Setting PostGres URL: ${DATABASE_HOST}\n"
-printf $info "Setting PostGres Password: ${PG_PASS}\n\n"
+printf $info "Setting PostGres Password: ${PG_PASS}\n"
 
 pause

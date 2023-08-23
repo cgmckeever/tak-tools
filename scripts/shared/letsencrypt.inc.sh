@@ -10,8 +10,16 @@ while [ -z "${FQDN}" ]; do
     FQDN=${FQDN:-$1}
 done
 
-echo
-read -p "What is your email? [Needed for LetsEncrypt Alerts] : " EMAIL
+while [ -z "${EMAIL}" ]; do
+    if [[ -z "$2" ]]; then
+        PROMPT="[Needed for LetsEncrypt Alerts]"
+    else
+        PROMPT="last used [$2]: "
+    fi
+    echo
+    read -p "What is your email? ${PROMPT} : " EMAIL
+    EMAIL=${EMAIL:-$2}
+done
 
 echo
 read -p "Validate using [w]eb (must have port 80 exposed) or [d]ns: " VALIDATOR
@@ -34,7 +42,7 @@ esac
 
 if [[ "${CERT}" == "issued" ]]; then
   printf $success "Certificate obtained successfully!\n\n"
-  echo $FQDN > ~/letsencrypt.txt
+  echo "${FQDN}:${EMAIL}" > ~/letsencrypt.txt
 else
   printf $warning "Error obtaining certificate: $(sudo certbot certificates)"
 fi

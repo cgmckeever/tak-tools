@@ -20,7 +20,7 @@ $DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} exec tak-server bash -c "java -jar \${T
 # Admin Priv
 # $DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} exec tak-server bash -c "java -jar \${TAK_PATH}/utils/UserManager.jar certmod -A \${TAK_PATH}/certs/files/${USERNAME}.pem"
 
-printf $info "\nCreated Client Certificate ${FILE_PATH}/${USERNAME}.p12\n\n"
+printf $info "\nCreated Client Certificate ${FILE_PATH}/${USERNAME}.p12\n"
 
 source ${TAK_SCRIPT_PATH}/v1/client-data-package.inc.sh ${USERNAME}
 

@@ -1,7 +1,8 @@
 #!/bin/bash
 
 printf $warning "\n\nRequesting a certificate renewal...\n\n"
-source ${TOOLS_PATH}/scripts/shared/letsencrypt.inc.sh $(cat ~/letsencrypt.txt)
+IFS=':' read -ra LE_INFO <<< $(cat ~/letsencrypt.txt)
+source ${TOOLS_PATH}/scripts/shared/letsencrypt.inc.sh ${LE_INFO[0]}
 
 BACKUP_NAME=$(date +"%Y.%m.%d-%H.%M.%S")
 sudo cp ${FILE_PATH}/letsencrypt.jks ${FILE_PATH}/letsencrypt.${BACKUP_NAME}jks

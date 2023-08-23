@@ -60,4 +60,4 @@ zip -j ${ZIP}.zip \
     manifest.xml \
     server.pref
 
-printf $info "\n\nUser Data Package Created: ${FILE_PATH}/clients/${USERNAME}/${ZIP}.zip\n\n"
+printf $info "\n\nUser Data Package Created: ${FILE_PATH}/clients/${USERNAME}/${ZIP}.zip\n"
