@@ -16,7 +16,6 @@ source ${TAK_SCRIPT_PATH}/v1/inputs.inc.sh ${PACKAGE}
 ## Set firewall rules
 #
 source ${TAK_SCRIPT_PATH}/v1/firewall.inc.sh
-echo
 pause
 
 ## CoreConfig

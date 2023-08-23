@@ -15,5 +15,6 @@ color warning 93m   # yellow
 color danger 91m    # red
 
 pause () {
+    echo
     read -s -p "Press Enter to resume setup... "
 }

@@ -92,7 +92,6 @@ DOCKER_HOST_IP=$(docker network inspect bridge --format='{{(index .IPAM.Config 0
 sudo sed -i -e 's/DEFAULT_FORWARD_POLICY="DROP"/DEFAULT_FORWARD_POLICY="ACCEPT"/g' /etc/default/ufw
 sudo iptables -t nat -A POSTROUTING ! -o docker0 -s ${DOCKER_HOST_IP} -j MASQUERADE
 sudo iptables-save > /etc/iptables/rules.v4
-echo
 pause
 
 HW=$(uname -m)
