@@ -1,6 +1,5 @@
 #!/bin/bash
 
-ACTIVE_SSL=SELF_SSL
 if [[ -f ~/letsencrypt.txt ]]; then
     printf $info "\nUsing LetsEncrypt Certificate\n"
     FQDN=$(cat ~/letsencrypt.txt)
@@ -31,6 +30,4 @@ if [[ -f ~/letsencrypt.txt ]]; then
         -keystore ${FILE_PATH}/letsencrypt.jks
 
     printf $info "Enabling LetsEncrypt on Port:8446\n\n"
-    URL=$FQDN
-    ACTIVE_SSL=LE_SSL
 fi

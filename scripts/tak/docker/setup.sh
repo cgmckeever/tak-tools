@@ -27,13 +27,13 @@ VERSION=$(cat ${TAK_PATH}/version.txt | sed 's/\(.*\)-.*-.*/\1/')
 mkdir -p ${CORE_FILES}
 mkdir -p ${BACKUPS}
 
-## Generate Certs
-#
-source ${TAK_SCRIPT_PATH}/v1/cert-gen.inc.sh
-
 ## CoreConfig
 #
 source ${TAK_SCRIPT_PATH}/v1/coreconfig.inc.sh ${DATABASE_ALIAS}
+
+## Generate Certs
+#
+source ${TAK_SCRIPT_PATH}/v1/cert-gen.inc.sh
 
 # Better memory allocation:
 # By default TAK server allocates memory based upon the *total* on a machine.
