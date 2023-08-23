@@ -1,6 +1,14 @@
 #!/bin/bash
 
-read -p  "What is your domain name? [ex: atakhq.com or tak.foo.com] " FQDN
+while [ -z "${FQDN}" ]; do
+    if [[ -z "$1" ]]; then
+        PROMPT="[ex: atakhq.com or tak.foo.com]"
+    else
+        PROMPT="default [$1]"
+    fi
+    read -p  "What is your domain name? ${PROMPT} " FQDN
+    FQDN=${FQDN:-$1}
+done
 
 echo
 read -p "What is your email? [Needed for LetsEncrypt Alerts] : " EMAIL
