@@ -33,14 +33,14 @@ sudo sed -i \
     -e "s/__DATABASE_HOST/${DATABASE_HOST}/" \
     -e "s/__PG_PASS/${PG_PASS}/" ${TAK_PATH}/CoreConfig.xml
 
-printf $info "Setting CA: ${TAK_CA}\n\n"
-printf $info "Setting Cert Password\n\n"
-printf $info "Setting Organization Info O: ${ORGANIZATION} OU: ${ORGANIZATIONAL_UNIT}\n\n"
-printf $info "Setting Revocation List: ${TAK_CA}.crl\n\n"
-printf $info "Setting TAK Server Alias: ${TAK_ALIAS}\n\n"
-printf $info "Setting HOST IP: ${IP}\n\n"
+printf $info "Setting TAK Server Alias: ${TAK_ALIAS}\n"
+printf $info "Setting HOST IP: ${IP}\n"
 printf $info "Setting API Port: ${TAK_COT_PORT}\n\n"
-printf $info "Setting PostGres URL: ${DATABASE_HOST}\n\n"
+printf $info "Setting CA: ${TAK_CA}\n"
+printf $info "Setting CA Cert Password\n"
+printf $info "Setting CA Organization Info O: ${ORGANIZATION} OU: ${ORGANIZATIONAL_UNIT}\n"
+printf $info "Setting CA Revocation List: ${TAK_CA}.crl\n\n"
+printf $info "Setting PostGres URL: ${DATABASE_HOST}\n"
 printf $info "Setting PostGres Password: ${PG_PASS}\n\n"
 
 pause
