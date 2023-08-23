@@ -32,10 +32,10 @@ printf $info "Setting API Port: ${TAK_COT_PORT}\n\n"
 
 case ${ACTIVE_SSL} in
   "LE_SSL")
-    printf $info "Enabling LetsEncrypt SSL on Port:8446\n\n"
+    printf $info "Enabling LetsEncrypt SSL on Port:${TAK_COT_PORT}\n\n"
     ;;
   *)
-    printf $info "Enabling Self-Signed SSL on Port:8446\n\n"
+    printf $info "Enabling Self-Signed SSL on Port:${TAK_COT_PORT}\n\n"
     ;;
 esac
 
