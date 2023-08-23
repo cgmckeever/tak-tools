@@ -11,7 +11,7 @@ VALIDATOR=${VALIDATOR:-w}
 
 echo
 CERT="failed"
-case $(VALIDATOR) in
+case ${VALIDATOR} in
   "d")
     if sudo certbot certonly --manual --preferred-challenges dns -d ${FQDN} -m ${EMAIL}; then
       CERT="issued"
