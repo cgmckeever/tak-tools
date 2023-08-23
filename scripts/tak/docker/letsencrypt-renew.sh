@@ -10,4 +10,5 @@ source ${SCRIPT_PATH}/env.inc.sh
 printf $warning "\n\nRequesting a certificate renewal...\n\n"
 source ${TOOLS_PATH}/scripts/shared/letsencrypt.inc.sh
 
+sudo rm -rf ${FILE_PATH}/letsencrypt*
 source ${TOOLS_PATH}/scripts/tak/shared/v1/letsencrypt-import.inc.sh
