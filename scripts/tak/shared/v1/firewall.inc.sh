@@ -3,7 +3,8 @@
 printf $warning "\n\n------------ Updating UFW Firewall Rules ------------\n\n"
 
 while [ -z "${1}" ]; do
-    read -p "What is the ip/range for the traffic source? " 1
+    read -p "What is the ip/range for the traffic source? " SOURCE
+    1=${SOURCE}
 done
 
 printf $info "Allow 22 [SSH]\n"
