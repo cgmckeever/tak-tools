@@ -6,10 +6,6 @@ sudo touch ${TAK_PATH}/CoreConfig.xml
 sudo cp ${TAK_PATH}/CoreConfig.xml ${TAK_PATH}/CoreConfig.xml.install
 sudo cp ${TEMPLATE_PATH}/tak/CoreConfig-${VERSION}.xml.tmpl ${TAK_PATH}/CoreConfig.xml
 
-if [[ ${ACTIVE_SSL} != "SELF_SSL" ]]; then
-    printf $info "Enabling LetsEncrypt on Port:8446\n\n"
-fi
-
 DATABASE_HOST=$1
 SIGNING_KEY=${TAK_CA}-signing
 PG_PASS=${PAD2}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD1}
@@ -33,6 +29,10 @@ sudo sed -i \
 printf $info "Setting TAK Server Alias: ${TAK_ALIAS}\n"
 printf $info "Setting HOST IP: ${IP}\n"
 printf $info "Setting API Port: ${TAK_COT_PORT}\n\n"
+
+if [[ ${ACTIVE_SSL} != "SELF_SSL" ]]; then
+    printf $info "Enabling LetsEncrypt on Port:8446\n\n"
+fi
 
 printf $info "Setting CA: ${TAK_CA}\n"
 printf $info "Setting CA Cert Password\n"
