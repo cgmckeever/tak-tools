@@ -16,6 +16,7 @@ case $(VALIDATOR) in
     if sudo certbot certonly --manual --preferred-challenges dns -d ${FQDN} -m ${EMAIL}; then
       CERT="issued"
     fi
+    ;;
   *)
     if sudo certbot certonly --standalone -d ${FQDN} -m ${EMAIL} --agree-tos --non-interactive; then
       CERT="issued"
