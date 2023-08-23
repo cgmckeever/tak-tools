@@ -2,6 +2,7 @@
 
 SCRIPT_PATH="$(dirname "$(readlink -f "$0")")"
 TOOLS_PATH=$(dirname $(dirname $SCRIPT_PATH))
+echo $TOOLS_PATH
 source ${TOOLS_PATH}/scripts/shared/functions.inc.sh
 
 # install certbot
