@@ -36,10 +36,12 @@ sudo sed -i \
 printf $info "Setting TAK Server Alias: ${TAK_ALIAS}\n"
 printf $info "Setting HOST IP: ${IP}\n"
 printf $info "Setting API Port: ${TAK_COT_PORT}\n\n"
+
 printf $info "Setting CA: ${TAK_CA}\n"
 printf $info "Setting CA Cert Password\n"
 printf $info "Setting CA Organization Info O: ${ORGANIZATION} OU: ${ORGANIZATIONAL_UNIT}\n"
 printf $info "Setting CA Revocation List: ${TAK_CA}.crl\n\n"
+
 printf $info "Setting PostGres URL: ${DATABASE_HOST}\n"
 printf $info "Setting PostGres Password: ${PG_PASS}\n\n"
 
