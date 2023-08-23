@@ -64,6 +64,7 @@ EOF
 
 ln -s ${CORE_FILES}/.env ${WORK_PATH}/.env
 cat ${WORK_PATH}/.env
+pause
 
 printf $warning "\n\n------------ Configuration Complete. Starting Containers --------------\n\n"
 cp ${TEMPLATE_PATH}/tak/docker/docker-compose.yml.tmpl ${DOCKER_COMPOSE_YML}
