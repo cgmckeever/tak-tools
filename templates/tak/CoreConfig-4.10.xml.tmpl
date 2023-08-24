@@ -8,14 +8,14 @@
         <input _name="stdssl" protocol="tls" port="__TAK_COT_PORT"/>
         <connector port="8443" _name="https" crlFile="/opt/tak/certs/files/__CRL.crl"/>
         <connector port="8444" useFederationTruststore="true" _name="fed_https"/>
-        <!--SELF_SSL
+        <!-- Self-Signed
         <connector
             port="8446"
             clientAuth="false"
             _name="cert_https"
         />
-        SELF_SSL-->
-        <!--LE_SSL
+        Self-Signed -->
+        <!-- LetsEncrypt
         <connector
             port="8446"
             clientAuth="false"
@@ -27,7 +27,7 @@
             truststoreFile="/opt/tak/certs/files/truststore-__TAK_CA.jks"
             truststorePass="__CAPASS"
         />
-        LE_SSL-->
+        LetsEncrypt -->
         <announce/>
     </network>
     <auth x509groups="true" x509addAnonymous="false" x509useGroupCache="true" x509checkRevocation="true">

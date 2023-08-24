@@ -21,9 +21,9 @@ NIC=${NIC:-${DEFAULT_NIC}}
 IP=$(ip addr show $NIC | grep -m 1 "inet " | awk '{print $2}' | cut -d "/" -f1)
 URL=$IP
 
-ACTIVE_SSL=SELF_SSL
+ACTIVE_SSL="Self-Signed"
 if [[ -f ~/letsencrypt.txt ]]; then
-    ACTIVE_SSL=LE_SSL
+    ACTIVE_SSL="LetsEncrypt"
     IFS=':' read -ra LE_INFO <<< $(cat ~/letsencrypt.txt)
     URL=${LE_INFO[0]}
 fi

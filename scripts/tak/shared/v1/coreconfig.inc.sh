@@ -10,8 +10,8 @@ DATABASE_HOST=$1
 SIGNING_KEY=${TAK_CA}-signing
 PG_PASS=${PAD2}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD1}
 sudo sed -i \
-    -e "/<!--${ACTIVE_SSL}/d" \
-    -e "/${ACTIVE_SSL}-->/d" \
+    -e "/<!-- ${ACTIVE_SSL}/d" \
+    -e "/${ACTIVE_SSL} -->/d" \
     -e "s/__CAPASS/${CAPASS}/g" \
     -e "s/__PASS/${CERTPASS}/g" \
     -e "s/__ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" \
@@ -30,14 +30,7 @@ printf $info "Setting TAK Server Alias: ${TAK_ALIAS}\n"
 printf $info "Setting HOST IP: ${IP}\n"
 printf $info "Setting API Port: ${TAK_COT_PORT}\n\n"
 
-case ${ACTIVE_SSL} in
-  "LE_SSL")
-    printf $info "Enabling LetsEncrypt SSL on Port:${TAK_COT_PORT}\n\n"
-    ;;
-  *)
-    printf $info "Enabling Self-Signed SSL on Port:${TAK_COT_PORT}\n\n"
-    ;;
-esac
+printf $info "Enabling ${ACTIVE_SSL} SSL on Port:${TAK_COT_PORT}\n\n"
 
 printf $info "Setting CA: ${TAK_CA}\n"
 printf $info "Setting CA Cert Password\n"

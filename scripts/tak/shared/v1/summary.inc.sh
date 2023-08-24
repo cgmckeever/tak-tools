@@ -8,8 +8,8 @@
 printf $info "Certificates and *CERT DATA PACKAGES* are in ${FILE_PATH}\n"
 printf $warning "Import the ${FILE_PATH}/$TAKADMIN.p12 certificate to your browser\n\n"
 
-printf $success "Login at https://$URL:8443 with your admin account certificate.\n\n"
-printf $success "Login at https://$URL:8446 with your admin account user/pass.\n"
+printf $success "Login at https://${URL}:8443 with your admin account certificate.\n\n"
+printf $success "Login at https://${URL}:${TAK_COT_PORT} with your admin account user/pass.\n"
 printf $success "No need to run the /setup step as this has been done.\n\n"
 
 INFO=${1}/info.txt
