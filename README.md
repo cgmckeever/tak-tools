@@ -5,16 +5,36 @@
 
 ## Tools
 
-- `autoenroll-data-package` - Builds ATAK autoenroll data package
-- `backup` - basic backup [docker only]
-- `create-client-cert` - creates basic TAK user, matching filesystem cert, and data-package (requires TAK restart [autoenroll is recommended])
-- `letsencrypt` - LetsEncrypt certificate request (needed for iTAK autoenroll)
-- `letsencrypt-renew` - prompts for a LetsEncrypt renewal (requires TAK restart)
-- `prereq` - Installs basic required packages
-- `remove-client-cert` - revokes filesystem cert and changes user password (requires TAK restart)
-- `setup` - Starts the TAK Server setup
-- `tear-down` - Wipes system of dockerized TAK Server; will prompt to keep containers; Does not prompt for data backups
-- `upgrade` = performs basic backup and server upgrade [docker only]
+- `autoenroll-data-package`
+    - Builds ATAK autoenroll data package
+- `backup`
+    - basic backup
+    - **docker only**
+- `create-client-cert`
+    - Creates basic TAK user
+    - Creates matching filesystem cert
+    - Creates user/client data-package
+    - **Requires TAK restart** [autoenroll is recommended]
+- `letsencrypt`
+    - LetsEncrypt certificate request
+    - **Required for iTAK autoenroll**
+- `letsencrypt-renew`
+    - Prompts for a LetsEncrypt renewal
+    - **Requires TAK restart**
+- `prereq`
+    - Installs basic required packages
+- `remove-client-cert`
+    - Revokes filesystem cert and changes user password
+    - **Requires TAK restart**
+- `setup`
+    - Starts the TAK Server setup
+- `tear-down`
+    - Wipes system of dockerized TAK Server
+    - Prompts to keep containers
+    - Does not prompt for data backups
+- `upgrade`
+    - Performs basic backup and server upgrade
+    - **docker only**
 
 ## Inspiration
 
