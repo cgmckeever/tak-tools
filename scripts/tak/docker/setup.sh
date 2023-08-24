@@ -78,7 +78,7 @@ $DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} up tak-db -d
 
 printf $info "\n\n------------ Building TAK Server ------------\n\n"
 $DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} up tak-server -d
-pause
+pause "docker user test"
 GID=$(id -g)
 $DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} exec tak-server bash -c "addgroup --gid ${GID} ${USER} && adduser --uid ${UID} --gid ${GID} --gecos \"\" --disabled-password $USER && chown -R $USER:$USER /opt/tak/"
 
