@@ -51,6 +51,24 @@
 - https://github.com/Cloud-RF/tak-server
 - https://github.com/atakhq/tak-server-install-scripts
 
+# Start
+
+- Run the `Prep this repository` code
+- Optionally install/configure
+    - VPN (isolated TAK traffic)
+    - LetsEncrypt SSL Certificate
+        - otherwise it will still be encrypted, just using a self-signed cert
+        - Read more [here](https://mytecknet.com/lets-sign-our-tak-server/)
+- Choose your install
+    - [Standalone](#standalone): Less overhead, cleaner for most installations
+    - [Docker](#docker): Dockerized and allows for other services to run cleaner
+- Run the corresponding `prereq` script
+- Copy the default config
+    - You can use the default, they work
+    - You can change them as needed. YMMV.
+- Run the `setup` script
+- Login and validate its functional
+
 # Prep this repository
 
 ```
