@@ -30,7 +30,7 @@
 - `setup`
     - Starts the TAK Server setup
 - `tear-down`
-    - Wipes system of dockerized TAK Server
+    - Wipes dockerized TAK Server
     - Prompts to keep containers
     - Does not prompt for data backups
     - *Recommended for a clean docker re-install*
