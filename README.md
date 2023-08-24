@@ -42,9 +42,9 @@
 
  - Requires either the docker-zip or deb-installer be [downloaded](https://tak.gov/products/tak-server) to the target server
  - Server requires access to to the internet for package install
- - Prereqs install user needs `sudo`
- - Docker install user needs `docker` and `sudo`
- - Standalone install user needs `sudo`
+ - Prereqs installer needs `sudo`
+ - Docker installer needs `docker` and `sudo`
+ - Standalone installer needs `sudo`
 
 ## Inspiration
 
