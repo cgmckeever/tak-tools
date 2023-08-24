@@ -109,15 +109,14 @@ fi
 source ${TAK_SCRIPT_PATH}/v1/server-check.inc.sh
 
 printf $warning "------------ Create Admin --------------\n\n"
-## printf $info "You may see several JAVA warnings. This is expected.\n\n"
-## This is where things get sketch, as the the server needs to be up and happy
-## or everything goes sideways
-
 TAKADMIN_PASS=${PAD1}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD2}
 
 while true;do
     printf $info "\n------------ Enabling Admin User [password and certificate] --------------\n"
-
+    ## printf $info "You may see several JAVA warnings. This is expected.\n\n"
+    ## This is where things get sketch, as the the server needs to be up and happy
+    ## or everything goes sideways
+    #
     $DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} exec tak-server bash -c "java -jar \${TAK_PATH}/utils/UserManager.jar usermod -A -p \"${TAKADMIN_PASS}\" ${TAKADMIN}"
     if [ $? -eq 0 ]; then
         $DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} exec tak-server bash -c "java -jar \${TAK_PATH}/utils/UserManager.jar certmod -A \${CERT_PATH}/files/${TAKADMIN}.pem"
