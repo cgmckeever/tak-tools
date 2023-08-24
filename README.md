@@ -62,6 +62,9 @@
 - Choose your install
     - [Standalone](#standalone): Less overhead, cleaner for most installations
     - [Docker](#docker): Dockerized and allows for other services to run cleaner
+- Download the proper installer from [TAK.gov](https://tak.gov/)
+    - Standalone goes in `/tmp/`
+    - Docker goes in a `release/` directory in the install user's (default `tak`) home
 - Run the corresponding `prereq` script
 - Copy the default config
     - You can use the default, they work
