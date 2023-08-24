@@ -8,7 +8,7 @@ CONNECTION_STRING=${CONNECTION_STRING:-${TAK_URL}}
 mkdir -p ${FILE_PATH}/clients
 UUID=$(uuidgen -r)
 
-sudo tee ${FILE_PATH}/clients/manifest.xml >/dev/null << EOF
+tee ${FILE_PATH}/clients/manifest.xml >/dev/null << EOF
 <MissionPackageManifest version="2">
     <Configuration>
         <Parameter name="uid" value="${UUID}"/>
@@ -23,7 +23,7 @@ sudo tee ${FILE_PATH}/clients/manifest.xml >/dev/null << EOF
 EOF
 
 
-sudo tee ${FILE_PATH}/clients/server.pref >/dev/null << EOF
+tee ${FILE_PATH}/clients/server.pref >/dev/null << EOF
 <?xml version='1.0' encoding='ASCII' standalone='yes'?>
 <preferences>
     <preference version="1" name="cot_streams">
@@ -47,7 +47,7 @@ EOF
 echo; echo
 cd ${FILE_PATH}/clients/
 ZIP=${TAK_ALIAS}-${CONNECTION_STRING}
-sudo zip -j ${ZIP}.zip \
+zip -j ${ZIP}.zip \
     ${FILE_PATH}/truststore-${TAK_CA}.p12 \
     manifest.xml \
     server.pref

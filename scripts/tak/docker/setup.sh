@@ -87,8 +87,8 @@ read -p "Do you want to configure TAK Server auto-start [y/n]? " AUTOSTART
 cp ${TEMPLATE_PATH}/tak/docker/docker.service.tmpl ${CORE_FILES}/tak-server-docker.service
 sed -i \
     -e "s#__WORK_PATH#${WORK_PATH}#g" \
-    -e "s/__DOCKER_COMPOSE/${DOCKER_COMPOSE}/g" \
-    -e "s#__DOCKER_COMPOSE_YML#${DOCKER_COMPOSE_YML}#g" ${CORE_FILES}/tak-server-docker.service
+    -e "s#__DOCKER_COMPOSE_YML#${DOCKER_COMPOSE_YML}#g" \
+    -e "s/__DOCKER_COMPOSE/${DOCKER_COMPOSE}/g" ${CORE_FILES}/tak-server-docker.service
 sudo rm -rf /etc/systemd/system/tak-server-docker.service
 sudo ln -s ${CORE_FILES}/tak-server-docker.service /etc/systemd/system/tak-server-docker.service
 
