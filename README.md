@@ -31,10 +31,11 @@ You will be able to access the TAK Server via `https://{WIREGUARD-TAK-SERVER-IP}
 
 - Install ZeroTier
 ```
-curl -s https://install.zerotier.com | sudo bash
+curl -s https://install.zerotier.com | sudo bash; echo; \
+read -p "network-id: " ZTID; sudo zerotier-cli join ${ZTID}
 ```
 
-- Add TAK Server as ZeroTier Node
+- Join other ZeroTier networks
 ```
 sudo zerotier-cli join {ZEROTIER-NETWORK-ID}
 ```
