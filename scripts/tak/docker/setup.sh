@@ -112,7 +112,7 @@ printf $warning "------------ Create Admin --------------\n\n"
 TAKADMIN_PASS=${PAD1}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD2}
 
 while true;do
-    printf $info "\n------------ Enabling Admin User [password and certificate] --------------\n"
+    printf $info "------------ Enabling Admin User [password and certificate] --------------\n"
     ## printf $info "You may see several JAVA warnings. This is expected.\n\n"
     ## This is where things get sketch, as the the server needs to be up and happy
     ## or everything goes sideways

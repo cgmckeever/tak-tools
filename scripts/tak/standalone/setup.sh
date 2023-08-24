@@ -107,6 +107,11 @@ source ${TAK_SCRIPT_PATH}/v1/server-check.inc.sh
 printf $warning "------------ Create Admin --------------\n\n"
 TAKADMIN_PASS=${PAD1}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD2}
 while true;do
+    printf $info "------------ Enabling Admin User [password and certificate] --------------\n"
+    ## printf $info "You may see several JAVA warnings. This is expected.\n\n"
+    ## This is where things get sketch, as the the server needs to be up and happy
+    ## or everything goes sideways
+    #
     sudo java -jar /opt/tak/utils/UserManager.jar usermod -A -p "${TAKADMIN_PASS}" ${TAKADMIN}
     if [ $? -eq 0 ]; then
         sudo java -jar /opt/tak/utils/UserManager.jar certmod -A /opt/tak/certs/files/${TAKADMIN}.pem
