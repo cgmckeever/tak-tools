@@ -95,9 +95,9 @@ sed -i \
     -e "s/__DOCKER_COMPOSE/${DOCKER_COMPOSE}/g" ${CORE_FILES}/tak-server-docker.service
 sudo rm -rf /etc/systemd/system/tak-server-docker.service
 sudo ln -s ${CORE_FILES}/tak-server-docker.service /etc/systemd/system/tak-server-docker.service
+sudo systemctl daemon-reload
 
 if [[ $AUTOSTART =~ ^[Yy]$ ]]; then
-    sudo systemctl daemon-reload
     sudo systemctl enable tak-server-docker
     printf $info "\nTAK Server auto-start enabled\n"
 else
