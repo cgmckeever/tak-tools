@@ -56,10 +56,10 @@
 - Install Ubuntu
     - 20.04: Works up to TAK 4.8
     - 22.04
-- Run the `Prep this repository` code
+- Run the [Prep this repository](#prep-this-repository) code
 - Optionally install/configure
-    - VPN (isolated TAK traffic)
-    - LetsEncrypt SSL Certificate
+    - [VPN](#vpn-optional) (isolated TAK traffic)
+    - [LetsEncrypt SSL Certificate](#letsencrypt-optional)
         - otherwise it will still be encrypted, just using a self-signed cert
         - Read more [here](https://mytecknet.com/lets-sign-our-tak-server/)
 - Choose your install
