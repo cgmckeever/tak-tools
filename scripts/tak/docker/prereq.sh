@@ -88,7 +88,7 @@ printf $warning "\n\n------------ Current Firewall Rules ------------\n\n"
 sudo ufw status verbose
 printf $info "\nAllowing Allow Docker Outbound \n"
 # https://www.mkubaczyk.com/2017/09/05/force-docker-not-bypass-ufw-rules-ubuntu-16-04/
-DOCKER_HOST_IP=$(docker network inspect bridge --format='{{(index .IPAM.Config 0).Gateway}}')
+DOCKER_HOST_IP=$(sudo docker network inspect bridge --format='{{(index .IPAM.Config 0).Gateway}}')
 sudo sed -i -e 's/DEFAULT_FORWARD_POLICY="DROP"/DEFAULT_FORWARD_POLICY="ACCEPT"/g' /etc/default/ufw
 sudo iptables -t nat -A POSTROUTING ! -o docker0 -s ${DOCKER_HOST_IP} -j MASQUERADE
 sudo iptables-save > /etc/iptables/rules.v4
