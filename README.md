@@ -14,7 +14,8 @@
     - Creates basic TAK user
     - Creates matching filesystem cert
     - Creates user/client data-package
-    - **Requires TAK restart** [autoenroll is recommended]
+    - **Requires TAK restart**
+    - *autoenroll is recommended*
 - `letsencrypt`
     - LetsEncrypt certificate request
     - **Required for iTAK autoenroll**
