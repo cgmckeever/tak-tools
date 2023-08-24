@@ -3,6 +3,19 @@
 - [Standalone](#standalone)
 - [Docker](#docker)
 
+## Tools
+
+- `autoenroll-data-package` - Builds ATAK autoenroll data package
+- `backup` - basic backup [docker only]
+- `create-client-cert` - creates basic TAK user, matching filesystem cert, and data-package (requires TAK restart [autoenroll is recommended])
+- `letsencrypt` - LetsEncrypt certificate request (needed for iTAK autoenroll)
+- `letsencrypt-renew` - prompts for a LetsEncrypt renewal (requires TAK restart)
+- `prereq` - Installs basic required packages
+- `remove-client-cert` - revokes filesystem cert and changes user password (requires TAK restart)
+- `setup` - Starts the TAK Server setup
+- `tear-down` - Wipes system of dockerized TAK Server; will prompt to keep containers; Does not prompt for data backups
+- `upgrade` = performs basic backup and server upgrade [docker only]
+
 ## Inspiration
 
 - https://github.com/Cloud-RF/tak-server
@@ -30,6 +43,7 @@ You will be able to access the TAK Server via `https://{WIREGUARD-TAK-SERVER-IP}
 - Create a new ZeroTier Network via the UI
 
 - Install ZeroTier
+
 ```
 curl -s https://install.zerotier.com | sudo bash; echo; \
 read -p "network-id: " ZTID; sudo zerotier-cli join ${ZTID}

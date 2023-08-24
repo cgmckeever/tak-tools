@@ -8,6 +8,7 @@ source ${SCRIPT_PATH}/config.inc.sh
 
 ## Set inputs
 #
+mkdir -p ~/release
 source ${TAK_SCRIPT_PATH}/v1/inputs.inc.sh "release/takserver*.zip"
 
 ## Set firewall rules
