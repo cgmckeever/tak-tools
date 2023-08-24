@@ -70,7 +70,7 @@
     - Docker goes in a `release/` directory in the install user's (default `tak`) home
 - Run the corresponding `prereq` script
 - Copy the default config
-    - You can use the default, they work
+    - You can use the defaults, they work
     - You can change them as needed. YMMV.
 - Run the `setup` script
 - Login and validate its functional
