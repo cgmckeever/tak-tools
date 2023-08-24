@@ -33,6 +33,7 @@
     - Wipes system of dockerized TAK Server
     - Prompts to keep containers
     - Does not prompt for data backups
+    - *Recommended for a clean docker re-install*
 - `upgrade`
     - Performs basic backup and server upgrade
     - **docker only**
