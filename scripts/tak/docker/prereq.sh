@@ -49,7 +49,7 @@ read -p "Allow Network Manager to manage Wifi [Y/n]? " NETMAN
 if [[ ${NETMAN} =~ ^[Yy]$ ]]; then
     printf $warning "\n\n------------ Installing Network Manager ------------\n\n"
     sudo touch /etc/netplan/50-cloud-init.yaml
-    sudo cp /etc/netplan/50-cloud-init.yaml /etc/netplan/50-cloud-init.yaml.install
+    sudo cp /etc/netplan/50-cloud-init.yaml /etc/netplan/50-cloud-init.yaml.${NOW}.install
     sudo systemctl start NetworkManager.service
     sudo systemctl enable NetworkManager.service
     sudo sed -i \
@@ -71,7 +71,7 @@ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubun
 sudo apt-cache policy docker-ce
 sudo apt -y install $DOCKER
 sudo touch /etc/docker/daemon.json
-sudo mv /etc/docker/daemon.json /etc/docker/daemon.json.$(date "+%Y.%m.%d-%H.%M.%S").tak.install
+sudo mv /etc/docker/daemon.json /etc/docker/daemon.json.${NOW}.tak.install
 echo '{ "iptables" : false }' | sudo tee -a /etc/docker/daemon.json
 
 sudo systemctl restart docker
