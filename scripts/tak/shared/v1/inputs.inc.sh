@@ -30,8 +30,8 @@ fi
 
 echo; echo
 printf $warning "Answering [y]es to the next prompt will restrict access to a VPN network.\n\n"
-read -p "Is the TAK Server behind a VPN [Y/n]? " VPN
-VPN=${VPN:-y}
+read -p "Is the TAK Server behind a VPN [y/N]? " VPN
+VPN=${VPN:-n}
 
 TRAFFIC_SOURCE="0.0.0.0/0"
 if [[ ${VPN} =~ ^[Yy]$ ]];then
