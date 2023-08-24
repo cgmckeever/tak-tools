@@ -60,7 +60,7 @@
 - Optionally install/configure
     - [VPN](#vpn-optional) (isolated TAK traffic)
     - [LetsEncrypt SSL Certificate](#letsencrypt-optional)
-        - otherwise it will still be encrypted, just using a self-signed cert
+        - Server will still be encrypted without this using a [Self-Signed SSL certificate](https://www.entrust.com/resources/faq/what-is-a-self-signed-certificate)
         - Read more [here](https://mytecknet.com/lets-sign-our-tak-server/)
 - Choose your install
     - [Standalone](#standalone): Less overhead, cleaner for most installations
