@@ -17,7 +17,7 @@ color danger 91m    # red
 pause () {
     echo
     if [[ ! -z $1 ]]; then
-        printf $info "\nThis is a break pause; should be removed\n\n"
+        printf $info "\nThis is a break pause; should be removed $1\n\n"
     fi
     read -s -p "Press Enter to resume setup... "
 }
