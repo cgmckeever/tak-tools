@@ -91,7 +91,7 @@ printf $info "\nAllowing Allow Docker Outbound \n"
 DOCKER_HOST_IP=$(sudo docker network inspect bridge --format='{{(index .IPAM.Config 0).Gateway}}')
 sudo sed -i -e 's/DEFAULT_FORWARD_POLICY="DROP"/DEFAULT_FORWARD_POLICY="ACCEPT"/g' /etc/default/ufw
 sudo iptables -t nat -A POSTROUTING ! -o docker0 -s ${DOCKER_HOST_IP} -j MASQUERADE
-sudo iptables-save > /etc/iptables/rules.v4
+sudo sh -c "iptables-save > /etc/iptables/rules.v4"
 pause
 
 HW=$(uname -m)

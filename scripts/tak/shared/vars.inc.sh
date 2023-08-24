@@ -3,6 +3,8 @@
 CERT_PATH="${TAK_PATH}/certs"
 FILE_PATH="${CERT_PATH}/files"
 
+NOW=$(date "+%Y.%m.%d-%H.%M.%S")
+
 TAK_SCRIPT_PATH=$(dirname "${BASH_SOURCE[0]}")
 
 # TAK symbols from this list [-_!@#$%^&*(){}[]+=~`|:;<>,./?]
