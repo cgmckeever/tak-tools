@@ -38,6 +38,14 @@
     - Performs basic backup and server upgrade
     - **docker only**
 
+## Requirements
+
+ - Requires either the docker-zip or deb-installer be [downloaded](https://tak.gov/products/tak-server) to the target server
+ - Server requires access to to the internet for package install
+ - Prereqs install user needs `sudo`
+ - Docker install user needs `docker` and `sudo`
+ - Standalone install user needs `sudo`
+
 ## Inspiration
 
 - https://github.com/Cloud-RF/tak-server
@@ -134,7 +142,7 @@ cat /opt/tak-tools/scripts/tak/standalone/config.inc.sh
 
 Wrapper Script: `/opt/tak-tools/scripts/tak/standalone/start.sh`
 
-- Will look for the install package as `/tmp/takserver*.zip`
+- Will look for the install package as `/tmp/takserver*.deb`
 - Follow the prompts...its not perfect
 
 ## Start/Stop
@@ -213,8 +221,7 @@ tools/client-data-package.sh
 
 ### TAK Docker Package
 
-- Download the docker package from https://tak.gov/products/tak-server
-- Transfer it to your server in the `/home/tak/release/` directory
+- Transfer it to your server in the `/home/{INSTALLATION_USER}/release/` directory
 
 
 ## Setup
