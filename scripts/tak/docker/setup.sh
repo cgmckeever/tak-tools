@@ -79,7 +79,7 @@ $DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} up tak-db -d
 printf $info "\n\n------------ Building TAK Server ------------\n\n"
 $DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} up tak-server -d
 GID=$(id -g)
-$DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} exec tak-server bash -c "addgroup --gid $GID ${USER} && add --uid ${UID} --gid ${GID} --disabled-password $USER && chown -R $USER:$USER /opt/tak/"
+$DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} exec tak-server bash -c "addgroup --gid $GID ${USER} s&& adduser --uid ${UID} --gid ${GID} --gecos \"\" --disabled-password $USER && chown -R $USER:$USER /opt/tak/"
 
 ln -s ${TAK_PATH}/logs ~/logs
 
