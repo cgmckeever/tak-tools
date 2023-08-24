@@ -87,6 +87,8 @@ cat /etc/profile.d/tak.profile.sh
 
 echo; echo
 read -p "Do you want to configure TAK Server auto-start [y/n]? " AUTOSTART
+sudo cp ${TEMPLATE_PATH}/tak/standalone/tak.tmpl /etc/sudoers.d/tak
+sudo systemctl daemon-reload
 
 if [[ $AUTOSTART =~ ^[Yy]$ ]]; then
     sudo systemctl enable takserver
@@ -96,7 +98,6 @@ else
 fi
 
 printf $info "------------ Restarting TAK Server ------------\n"
-sudo systemctl daemon-reload
 sudo systemctl restart takserver
 
 ## Check Server Status
