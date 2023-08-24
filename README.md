@@ -53,6 +53,9 @@
 
 # Start
 
+- Install Ubuntu
+    - 20.04: Works up to TAK 4.8
+    - 22.04
 - Run the `Prep this repository` code
 - Optionally install/configure
     - VPN (isolated TAK traffic)
