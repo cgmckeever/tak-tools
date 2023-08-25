@@ -45,7 +45,10 @@ fi
 
 printf $warning "\n\n------------ Certificate Subject Info --------------\n\n"
 
-printf $warning "------------ SSL setup. Hit enter (x4) to accept the defaults ------------\n\n"
+printf $warning "------------ SSL setup. Hit enter (x5) to accept the defaults ------------\n\n"
+
+read -p "Country (for cert generation). Default [US] : " COUNTRY
+export COUNTRY=${COUNTRY:-US}
 
 read -p "State (for cert generation). Default [state] : " STATE
 export STATE=${STATE:-state}

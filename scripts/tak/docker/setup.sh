@@ -46,6 +46,7 @@ printf $warning "\n\n------------ Creating ENV variable file ${WORK_PATH}/.env -
 #
 
 cat << EOF > ${CORE_FILES}/.env
+COUNTRY=$COUNTRY
 STATE=$STATE
 CITY=$CITY
 ORGANIZATION=$ORGANIZATION

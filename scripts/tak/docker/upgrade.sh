@@ -48,5 +48,10 @@ ls -la tak-server/tak/certs/files/
 printf $info "\n\nRestarting Server with latest version \n\n"
 docker-compose -f core-files/docker-compose.yml up  --build  -d
 
+# https://www.joyfulbikeshedding.com/blog/2021-03-15-docker-and-the-host-filesystem-owner-matching-problem.html
+GID=$(id -g)
+$DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} \
+    exec tak-server bash -c "addgroup --gid ${GID} ${USER} && adduser --uid ${UID} --gid ${GID} --gecos \"\" --disabled-password $USER && chown -R $USER:$USER /opt/tak/"
+
 echo
 source ${TAK_SCRIPT_PATH}/v1/server-check.inc.sh

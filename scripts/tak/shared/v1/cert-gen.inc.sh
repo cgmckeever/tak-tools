@@ -1,6 +1,10 @@
 #!/bin/bash
 
 cd ${CERT_PATH}
+
+sed -i \
+    -e "s/=US/=\${COUNTRY}/g" cert-metadata.sh
+
 mkdir -p files
 sudo echo "unique_subject=no" > files/crl_index.txt.attr
 while true; do

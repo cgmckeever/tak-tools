@@ -36,6 +36,7 @@ sudo apt-get -y install \
     network-manager \
     net-tools \
     openjdk-11-jdk \
+    openssh-server \
     openssl \
     software-properties-common \
     pwgen \
