@@ -5,8 +5,9 @@ source ${SCRIPT_PATH}/shared.inc.sh
 
 # =======================
 
-export CITY=${TAK_CITY}
+export COUNTRY=${TAK_COUNTRY}
 export STATE=${TAK_STATE}
+export CITY=${TAK_CITY}
 export ORGANIZATION=${TAK_ORGANIZATION}
 export ORGANIZATIONAL_UNIT=${TAK_ORGANIZATIONAL_UNIT}
 

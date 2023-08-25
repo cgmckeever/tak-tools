@@ -34,6 +34,7 @@ sudo apt -y install \
     libxml2-utils \
     nano \
     network-manager \
+    openssh-server \
     qrencode\
     ufw \
     unzip \

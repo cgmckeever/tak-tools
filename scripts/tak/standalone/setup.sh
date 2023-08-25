@@ -75,8 +75,9 @@ sudo sed -i \
     -e "s/__TAK_CAPASS/${CAPASS}/g" \
     -e "s/__TAK_PASS/${CERTPASS}/g" \
     -e "s/__TAK_CA/${TAK_CA}/g" \
-    -e "s/__TAK_CITY/${CITY}/g" \
+    -e "s/__TAK_COUNTRY/${COUNTRY}/g" \
     -e "s/__TAK_STATE/${STATE}/g" \
+    -e "s/__TAK_CITY/${CITY}/g" \
     -e "s/__TAK_ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" \
     -e "s/__TAK_ORGANIZATION/${ORGANIZATION}/g" \
     -e "s/__TAK_COT_PORT/${TAK_COT_PORT}/" \
