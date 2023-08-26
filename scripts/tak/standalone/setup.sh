@@ -1,17 +1,40 @@
 #!/bin/bash
 
 SCRIPT_PATH=$(dirname "${BASH_SOURCE[0]}")
-source ${SCRIPT_PATH}/shared.inc.sh
+source ${SCRIPT_PATH}/shared.inc.sh priv
 source ${SCRIPT_PATH}/config.inc.sh
 
 # =======================
 
 ## Set inputs
 #
+source ${TAK_SCRIPT_PATH}/v1/inputs.inc.sh "${PACKAGE_PATH}/takserver_*.deb"
 cd ${PACKAGE_PATH}/
-PACKAGE=$(ls takserver*.deb)
+PACKAGE=$(ls takserver_*.deb)
 VERSION=$(echo ${PACKAGE} | sed 's/takserver_\(.*\)-RELEASE.*/\1/')
-source ${TAK_SCRIPT_PATH}/v1/inputs.inc.sh ${PACKAGE}
+
+printf $warning "\n\n------------ Creating ENV variable file  ------------\n\n"
+
+sudo cp ${TEMPLATE_PATH}/tak/standalone/tak.profile.sh.tmpl /etc/profile.d/tak.profile.sh
+sudo chmod 755 /etc/profile.d/tak.profile.sh
+
+sudo sed -i \
+    -e "s#__TAK_PATH#${TAK_PATH}#g" \
+    -e "s/__TAK_ALIAS/${TAK_ALIAS}/g" \
+    -e "s/__TAK_NIC/${NIC}/g" \
+    -e "s/__TAK_CAPASS/${CAPASS}/g" \
+    -e "s/__TAK_PASS/${CERTPASS}/g" \
+    -e "s/__TAK_CA/${TAK_CA}/g" \
+    -e "s/__TAK_COUNTRY/${COUNTRY}/g" \
+    -e "s/__TAK_STATE/${STATE}/g" \
+    -e "s/__TAK_CITY/${CITY}/g" \
+    -e "s/__TAK_ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" \
+    -e "s/__TAK_ORGANIZATION/${ORGANIZATION}/g" \
+    -e "s/__TAK_COT_PORT/${TAK_COT_PORT}/" \
+    -e "s/__TAK_IP/${IP}/g" \
+    -e "s/__TAK_URL/${URL}/" /etc/profile.d/tak.profile.sh
+
+cat /etc/profile.d/tak.profile.sh
 
 ## Set firewall rules
 #
@@ -22,8 +45,8 @@ pause
 #  Must come before install as DB update will look for config
 #
 sudo rm -rf ${TAK_PATH}/
-sudo mkdir -p ${TAK_PATH}/certs/files/clients
-source ${TAK_SCRIPT_PATH}/v1/coreconfig.inc.sh "127.0.0.1"
+sudo mkdir -p ${CERT_PATH}/files/clients
+source ${TAK_SCRIPT_PATH}/v1/coreconfig.inc.sh "127.0.0.1" priv
 
 printf $warning "\n\n------------ Unpacking TAK Installer ------------\n\n"
 sudo apt install -y ./${PACKAGE}
@@ -54,37 +77,13 @@ fi
 
 ## Generate Certs
 #
-sudo chown -R $USER:$USER ${CERT_PATH}
-source ${TAK_SCRIPT_PATH}/v1/cert-gen.inc.sh
+source ${TAK_SCRIPT_PATH}/v1/cert-gen.inc.sh priv
+sudo chown -R tak:tak ${TAK_PATH}
 
 ## User cleanup
 #
 sudo usermod --shell /bin/bash tak
 sudo ln -s ${TAK_SCRIPTS}/ ${TAK_PATH}/tools
-sudo chown -R tak:tak ${TAK_PATH}
-
-printf $warning "\n\n------------ Creating ENV variable file  ------------\n\n"
-
-sudo cp ${TEMPLATE_PATH}/tak/standalone/tak.profile.sh.tmpl /etc/profile.d/tak.profile.sh
-sudo chmod 755 /etc/profile.d/tak.profile.sh
-
-sudo sed -i \
-    -e "s#__TAK_PATH#${TAK_PATH}#g" \
-    -e "s/__TAK_ALIAS/${TAK_ALIAS}/g" \
-    -e "s/__TAK_NIC/${NIC}/g" \
-    -e "s/__TAK_CAPASS/${CAPASS}/g" \
-    -e "s/__TAK_PASS/${CERTPASS}/g" \
-    -e "s/__TAK_CA/${TAK_CA}/g" \
-    -e "s/__TAK_COUNTRY/${COUNTRY}/g" \
-    -e "s/__TAK_STATE/${STATE}/g" \
-    -e "s/__TAK_CITY/${CITY}/g" \
-    -e "s/__TAK_ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" \
-    -e "s/__TAK_ORGANIZATION/${ORGANIZATION}/g" \
-    -e "s/__TAK_COT_PORT/${TAK_COT_PORT}/" \
-    -e "s/__TAK_IP/${IP}/g" \
-    -e "s/__TAK_URL/${URL}/" /etc/profile.d/tak.profile.sh
-
-cat /etc/profile.d/tak.profile.sh
 
 echo; echo
 read -p "Do you want to configure TAK Server auto-start [y/n]? " AUTOSTART
@@ -99,6 +98,7 @@ else
 fi
 
 printf $info "------------ Restarting TAK Server ------------\n"
+printf $info "  ------ Could take 80 - 200+ seconds -------\n"
 sudo systemctl restart takserver
 
 ## Check Server Status
@@ -124,8 +124,10 @@ while true;do
 done
 
 ## This should be fixed - script uses the ENV variable name
+#
 TAK_URL=${URL}
-source ${TAK_SCRIPT_PATH}/v1/autoenroll-data-package.inc.sh
+source ${TAK_SCRIPT_PATH}/v1/autoenroll-data-package.inc.sh priv
+sudo chown -R tak:tak ${TAK_PATH}
 
 printf $success "\n\n----------------- Installation Complete -----------------\n\n"
 

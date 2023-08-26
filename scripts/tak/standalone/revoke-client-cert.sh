@@ -28,12 +28,7 @@ if [[ -f ${FILE_PATH}/${USERNAME}.p12 ]]; then
 
     printf $info "\nRevoked Client Certificate ${FILE_PATH}/${USERNAME}.p12\n\n"
 
-    printf $warning "TAK needs to restart to enable changes.\n\n"
-    read -p "Restart TAK [y/n]? " RESTART
-
-    if [[ $RESTART =~ ^[Yy]$ ]];then
-        sudo systemctl restart takserver
-    fi
+    source ${SCRIPT_PATH}/restart-prompt.inc.sh
 else
     printf $warning "\nClient Certificate ${FILE_PATH}/${USERNAME}.p12 not found\n\n"
 fi
