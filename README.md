@@ -27,6 +27,8 @@
 - `remove-client-cert`
     - Revokes filesystem cert and changes user password
     - **Requires TAK restart**
+- `restart`
+    - Restarts TAK and watches till online
 - `setup`
     - Starts the TAK Server setup
 - `tear-down`
