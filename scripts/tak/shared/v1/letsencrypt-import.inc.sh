@@ -7,6 +7,13 @@ if [[ -f ~/letsencrypt.txt ]]; then
     #LE_CERT_NAME=le-${FQDN//\./-}
     LE_PATH="/etc/letsencrypt/live/$FQDN"
 
+    BACKUP_NAME=${NOW}
+    sudo touch ${FILE_PATH}/letsencrypt.jks
+    sudo cp ${FILE_PATH}/letsencrypt.jks ${FILE_PATH}/letsencrypt.${BACKUP_NAME}.jks
+    sudo touch ${FILE_PATH}/letsencrypt.p12
+    sudo cp ${FILE_PATH}/letsencrypt.p12 ${FILE_PATH}/letsencrypt.${BACKUP_NAME}.p12
+    sudo rm ${FILE_PATH}/letsencrypt*
+
     sudo openssl pkcs12 -export \
         -in ${LE_PATH}/fullchain.pem \
         -inkey ${LE_PATH}/privkey.pem \
