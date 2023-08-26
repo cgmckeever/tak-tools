@@ -12,7 +12,8 @@ if [[ -f ~/letsencrypt.txt ]]; then
     sudo cp ${FILE_PATH}/letsencrypt.jks ${FILE_PATH}/letsencrypt.${BACKUP_NAME}.jks
     sudo touch ${FILE_PATH}/letsencrypt.p12
     sudo cp ${FILE_PATH}/letsencrypt.p12 ${FILE_PATH}/letsencrypt.${BACKUP_NAME}.p12
-    sudo rm ${FILE_PATH}/letsencrypt*
+    sudo rm ${FILE_PATH}/letsencrypt.jks
+    sudo rm ${FILE_PATH}/letsencrypt.p12
 
     sudo openssl pkcs12 -export \
         -in ${LE_PATH}/fullchain.pem \
