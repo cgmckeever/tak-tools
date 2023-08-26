@@ -46,10 +46,24 @@ EOF
 
 echo; echo
 cd ${FILE_PATH}/clients/
-ZIP=${TAK_ALIAS}-${CONNECTION_STRING}
-zip -j ${ZIP}.zip \
+ZIP="${FILE_PATH}/clients/${TAK_ALIAS}-${CONNECTION_STRING}.zip"
+zip -j ${ZIP} \
     ${FILE_PATH}/truststore-${TAK_CA}.p12 \
     manifest.xml \
     server.pref
 
-printf $info "\n\nAuto-Enroll Data Package Created: ${FILE_PATH}/clients/${ZIP}.zip\n\n"
+ITAK_CONN="${TAK_ALIAS},${CONNECTION_STRING},8089,SSL"
+echo ${ITAK_CONN} | qrencode -t UTF8
+ITAK_QR="${FILE_PATH}/clients/itak-${TAK_ALIAS}-${CONNECTION_STRING}-QR.png"
+echo ${ITAK_CONN} | qrencode -s 10 -o ${ITAK_QR}
+
+printf $info "\n\nAuto-Enroll Data Package Created: ${ZIP}\n"
+printf $info "Transfer File: scp ${USER}@${IP}:${ZIP} .\n"
+
+printf $info "ITAK QR Saved: ${ITAK_QR}\n"
+printf $info "Transfer File: scp ${USER}@${IP}:${ITAK_QR} .\n\n"
+
+printf $info "Transfer Both: scp ${USER}@${IP}:"${FILE_PATH}/clients/*${CONNNECTION_STRING}*" .\n\n"
+
+
+
