@@ -20,14 +20,7 @@ if [[ -f ${FILE_PATH}/${USERNAME}.p12 ]]; then
 
     rm -rf ${FILE_PATH}/clients/$USERNAME
 
-    printf $info "\nRevoked Client Certificate ${FILE_PATH}/${USERNAME}.p12\n\n"
-
-    printf $warning "TAK needs to restart to enable changes.\n\n"
-    read -p "Restart TAK [y/n]? " RESTART
-
-    if [[ $RESTART =~ ^[Yy]$ ]];then
-        $DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} restart tak-server
-    fi
+    source ${SCRIPT_PATH}/restart-prompt.inc.sh
 else
     printf $warning "\nClient Certificate ${FILE_PATH}/${USERNAME}.p12 not found\n\n"
 fi

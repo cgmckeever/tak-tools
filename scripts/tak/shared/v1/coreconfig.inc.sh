@@ -1,5 +1,10 @@
 #!/bin/bash
 
+SUDO=""
+if [[ "$2" == "priv" ]]; then
+    SUDO="sudo"
+fi
+
 printf $warning "\n\n------------ Updating CoreConfig.xml ------------\n\n"
 
 sudo touch ${TAK_PATH}/CoreConfig.xml
@@ -9,7 +14,7 @@ sudo cp ${TEMPLATE_PATH}/tak/CoreConfig-${VERSION}.xml.tmpl ${TAK_PATH}/CoreConf
 DATABASE_HOST=$1
 SIGNING_KEY=${TAK_CA}-signing
 PG_PASS=${PAD2}$(pwgen -cvy1 -r ${PASS_OMIT} 25)${PAD1}
-sudo sed -i \
+${SUDO} sed -i \
     -e "/<!-- ${ACTIVE_SSL}/d" \
     -e "/${ACTIVE_SSL} -->/d" \
     -e "s/__CAPASS/${CAPASS}/g" \

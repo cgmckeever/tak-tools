@@ -10,30 +10,14 @@ source ${SCRIPT_PATH}/config.inc.sh
 #
 mkdir -p ~/release
 source ${TAK_SCRIPT_PATH}/v1/inputs.inc.sh "release/takserver*.zip"
-
-## Set firewall rules
-#
-source ${TAK_SCRIPT_PATH}/v1/firewall-update.inc.sh ${TRAFFIC_SOURCE}
-printf $info "\nAllow Docker 5432 [postgres]\n"
-sudo ufw allow proto tcp from ${DOCKER_SUBNET} to any port 5432
-sudo ufw route allow from ${DOCKER_SUBNET} to ${DOCKER_SUBNET}
-pause
+mkdir -p ${CORE_FILES}
+mkdir -p ${BACKUPS}
 
 printf $warning "\n\n------------ Unpacking Docker Release ------------\n\n"
 unzip ~/release/takserver*.zip -d ~/release/
 sudo rm -rf $WORK_PATH
 ln -s ~/release/takserver*/ ${WORK_PATH}
 VERSION=$(cat ${TAK_PATH}/version.txt | sed 's/\(.*\)-.*-.*/\1/')
-mkdir -p ${CORE_FILES}
-mkdir -p ${BACKUPS}
-
-## CoreConfig
-#
-source ${TAK_SCRIPT_PATH}/v1/coreconfig.inc.sh ${DATABASE_ALIAS}
-
-## Generate Certs
-#
-source ${TAK_SCRIPT_PATH}/v1/cert-gen.inc.sh
 
 # Better memory allocation:
 # By default TAK server allocates memory based upon the *total* on a machine.
@@ -66,6 +50,22 @@ EOF
 ln -s ${CORE_FILES}/.env ${WORK_PATH}/.env
 cat ${WORK_PATH}/.env
 pause
+
+## Set firewall rules
+#
+source ${TAK_SCRIPT_PATH}/v1/firewall-update.inc.sh ${TRAFFIC_SOURCE}
+printf $info "\nAllow Docker 5432 [postgres]\n"
+sudo ufw allow proto tcp from ${DOCKER_SUBNET} to any port 5432
+sudo ufw route allow from ${DOCKER_SUBNET} to ${DOCKER_SUBNET}
+pause
+
+## CoreConfig
+#
+source ${TAK_SCRIPT_PATH}/v1/coreconfig.inc.sh ${DATABASE_ALIAS}
+
+## Generate Certs
+#
+source ${TAK_SCRIPT_PATH}/v1/cert-gen.inc.sh
 
 printf $warning "\n\n------------ Configuration Complete. Starting Containers --------------\n\n"
 cp ${TEMPLATE_PATH}/tak/docker/docker-compose.yml.tmpl ${DOCKER_COMPOSE_YML}
@@ -100,10 +100,13 @@ sudo systemctl daemon-reload
 
 if [[ $AUTOSTART =~ ^[Yy]$ ]]; then
     sudo systemctl enable tak-server-docker
-    printf $info "\nTAK Server auto-start enabled\n"
+    printf $info "\nTAK Server auto-start enabled\n\n"
 else
-    printf $info "\nTAK Server auto-start disabled\n"
+    printf $info "\nTAK Server auto-start disabled\n\n"
 fi
+
+printf $info "------------ Starting TAK Server ------------\n"
+printf $info " ------ Could take 80 - 200+ seconds ------\n"
 
 ## Check Server Status
 #

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if ! compgen -G "${1}" > /dev/null; then
-    printf $warning "\n\n------------ No TAK Server Package found in ${1} ------------\n\n"
+    printf $warning "\n\n------------ No TAK Server Package found matching ${1} ------------\n\n"
     exit
 fi
 

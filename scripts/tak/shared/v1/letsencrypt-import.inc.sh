@@ -1,5 +1,8 @@
 #!/bin/bash
 
+## Note: Should always be run as a user with `sudo`
+#        as is needs to access `/etc/letsencrypt/`
+
 if [[ -f ~/letsencrypt.txt ]]; then
     IFS=':' read -ra LE_INFO <<< $(cat ~/letsencrypt.txt)
     FQDN=${LE_INFO[0]}
@@ -15,21 +18,21 @@ if [[ -f ~/letsencrypt.txt ]]; then
     sudo rm ${FILE_PATH}/letsencrypt.jks
     sudo rm ${FILE_PATH}/letsencrypt.p12
 
-    sudo openssl pkcs12 -export \
+    sudo -E openssl pkcs12 -export \
         -in ${LE_PATH}/fullchain.pem \
         -inkey ${LE_PATH}/privkey.pem \
         -name letsencrypt \
         -out ${FILE_PATH}/letsencrypt.p12 \
         -passout pass:${CAPASS}
 
-    sudo keytool -importkeystore \
+    sudo -E keytool -importkeystore \
         -deststorepass ${CAPASS} \
         -srcstorepass ${CAPASS} \
         -destkeystore ${FILE_PATH}/letsencrypt.jks \
         -srckeystore ${FILE_PATH}/letsencrypt.p12 \
         -srcstoretype PKCS12
 
-    sudo keytool -import \
+    sudo -E keytool -import \
         -noprompt \
         -alias bundle \
         -trustcacerts \
