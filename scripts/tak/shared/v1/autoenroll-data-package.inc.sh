@@ -58,7 +58,7 @@ echo ${ITAK_CONN} | qrencode -t UTF8
 ITAK_QR="${FILE_PATH}/clients/itak-${TAK_ALIAS}--${CONNECTION_STRING}-QR.png"
 echo ${ITAK_CONN} | qrencode -s 10 -o ${ITAK_QR}
 
-printf $success "\n\nAuto-Enroll Data Package Created: ${ZIP}\n"
+printf $success "\n\nAuto-Enroll Data Package File: ${ZIP}\n"
 printf $info "Transfer File: scp ${USER}@${IP}:${ZIP} .\n\n"
 
 printf $success "ITAK QR File: ${ITAK_QR}\n"
