@@ -8,5 +8,3 @@ BACKUP_NAME=${NOW}
 sudo cp ${FILE_PATH}/letsencrypt.jks ${FILE_PATH}/letsencrypt.${BACKUP_NAME}.jks
 sudo cp ${FILE_PATH}/letsencrypt.p12 ${FILE_PATH}/letsencrypt.${BACKUP_NAME}.p12
 sudo rm ${FILE_PATH}/letsencrypt*
-
-source ${TOOLS_PATH}/scripts/tak/shared/v1/letsencrypt-import.inc.sh

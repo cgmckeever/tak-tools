@@ -1,9 +1,9 @@
 #!/bin/bash
 
 if [[ -f ~/letsencrypt.txt ]]; then
-    printf $info "\nUsing LetsEncrypt Certificate\n"
     IFS=':' read -ra LE_INFO <<< $(cat ~/letsencrypt.txt)
     FQDN=${LE_INFO[0]}
+    printf $info "\nUsing LetsEncrypt Certificate ${FQDN}\n"
     #LE_CERT_NAME=le-${FQDN//\./-}
     LE_PATH="/etc/letsencrypt/live/$FQDN"
 
