@@ -49,7 +49,7 @@ ${SUDO} tee ${FILE_PATH}/clients/server.pref >/dev/null << EOF
 </preferences>
 EOF
 
-echo; echo
+echo
 cd ${FILE_PATH}/clients/
 ZIP="${FILE_PATH}/clients/${TAK_ALIAS}--${CONNECTION_STRING}.zip"
 ${SUDO} zip -j ${ZIP} \
