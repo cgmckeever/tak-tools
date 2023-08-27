@@ -16,7 +16,7 @@ if [[ "$version" != "20.04" &&  "$version" != "22.04" ]]; then
     exit
 fi
 
-printf $info "\n-------- Installing Ddependencies --------\n\n"
+printf $info "\n-------- Installing Dependencies --------\n\n"
 
 sudo apt -y install curl gnupg gnupg2
 
