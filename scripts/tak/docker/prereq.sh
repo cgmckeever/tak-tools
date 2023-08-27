@@ -77,6 +77,13 @@ sudo touch /etc/docker/daemon.json
 sudo mv /etc/docker/daemon.json /etc/docker/daemon.json.${NOW}.tak.install
 echo '{ "iptables" : false }' | sudo tee -a /etc/docker/daemon.json
 
+HW=$(uname -m)
+if [[ $HW == "armv71" ]]; then
+    HW=armv7
+fi
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-$(uname -s | tr '[A-Z]' '[a-z]')-${HW}" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
 sudo systemctl restart docker
 sudo systemctl enable docker
 
@@ -96,14 +103,6 @@ sudo sed -i -e 's/DEFAULT_FORWARD_POLICY="DROP"/DEFAULT_FORWARD_POLICY="ACCEPT"/
 sudo iptables -t nat -A POSTROUTING ! -o docker0 -s ${DOCKER_HOST_IP} -j MASQUERADE
 sudo sh -c "iptables-save > /etc/iptables/rules.v4"
 pause
-
-HW=$(uname -m)
-if [[ $HW == "armv71" ]]; then
-    HW=armv7
-fi
-sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-$(uname -s | tr '[A-Z]' '[a-z]')-${HW}" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-
 
 printf $info "\n\nYou can install TAK with any user that has 'sudo' and can run 'docker' without sudo\n\n"
 read -p "Do you want to make a TAK service user [y/n]? " MAKEUSER
