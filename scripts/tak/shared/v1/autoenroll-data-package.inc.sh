@@ -57,7 +57,7 @@ ${SUDO} zip -j ${ZIP} \
     manifest.xml \
     server.pref
 
-if [[ "${ACtIVE_SSL}" == "Self-Signed" ]]; then
+if [[ "${ACTIVE_SSL}" == "Self-Signed" ]]; then
     printf $warning "\n\nSelf-Signed SSL. Skipping ITAK QR Enrollment.\n"
 else
 
