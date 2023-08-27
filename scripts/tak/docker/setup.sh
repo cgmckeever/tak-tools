@@ -30,6 +30,7 @@ printf $warning "\n\n------------ Creating ENV variable file ${WORK_PATH}/.env -
 #
 
 cat << EOF > ${CORE_FILES}/.env
+ACTIVE_SSL=$ACTIVE_SSL
 COUNTRY=$COUNTRY
 STATE=$STATE
 CITY=$CITY

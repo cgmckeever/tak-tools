@@ -19,6 +19,7 @@ sudo cp ${TEMPLATE_PATH}/tak/standalone/tak.profile.sh.tmpl /etc/profile.d/tak.p
 sudo chmod 755 /etc/profile.d/tak.profile.sh
 
 sudo sed -i \
+    -e "s#__TAK_ACTIVE_SSL#${ACTIVE_SSL}#g" \
     -e "s#__TAK_PATH#${TAK_PATH}#g" \
     -e "s/__TAK_ALIAS/${TAK_ALIAS}/g" \
     -e "s/__TAK_NIC/${NIC}/g" \

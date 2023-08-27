@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export ACTIVE_SSL=$($DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} exec tak-server bash -c "echo \$ACTIVE_SSL" | tr -d '\r')
+
 export IP=$($DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} exec tak-server bash -c "echo \$IP" | tr -d '\r')
 export TAK_URL=$($DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} exec tak-server bash -c "echo \$URL" | tr -d '\r')
 
