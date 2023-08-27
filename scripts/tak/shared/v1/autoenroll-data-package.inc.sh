@@ -58,7 +58,7 @@ ${SUDO} zip -j ${ZIP} \
     server.pref
 
 if [[ "${ACTIVE_SSL}" == "Self-Signed" ]]; then
-    printf $warning "\n\nSelf-Signed SSL. Skipping ITAK QR Enrollment.\n"
+    printf $warning "\n\nSelf-Signed SSL. Skipping ITAK QR Enrollment.\n\n"
 else
     printf $warning "\n\n       ITAK Connection QR\n"
     ITAK_CONN="${TAK_ALIAS},${CONNECTION_STRING},8089,SSL"
