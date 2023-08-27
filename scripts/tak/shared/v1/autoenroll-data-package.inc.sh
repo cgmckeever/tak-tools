@@ -60,17 +60,17 @@ ${SUDO} zip -j ${ZIP} \
 if [[ "${ACTIVE_SSL}" == "Self-Signed" ]]; then
     printf $warning "\n\nSelf-Signed SSL. Skipping ITAK QR Enrollment.\n"
 else
-
     printf $warning "\n\n       ITAK Connection QR\n"
     ITAK_CONN="${TAK_ALIAS},${CONNECTION_STRING},8089,SSL"
     echo ${ITAK_CONN} | qrencode -t UTF8
     ITAK_QR="${FILE_PATH}/clients/itak-${TAK_ALIAS}--${CONNECTION_STRING}-QR.png"
     echo ${ITAK_CONN} | ${SUDO} qrencode -s 10 -o ${ITAK_QR}
+    printf $success "\n\nITAK QR File: ${ITAK_QR}\n\n"
 fi
 
-printf $success "ITAK QR File: ${ITAK_QR}\n\n"
 
-printf $success "\n\nAuto-Enroll Data Package File [ATAK]: ${ZIP}\n\n"
+
+printf $success "Auto-Enroll Data Package File [ATAK]: ${ZIP}\n\n"
 
 printf $info "Transfer Data Package: scp ${USER}@${IP}:"${FILE_PATH}/clients/*${CONNECTION_STRING}*" .\n\n"
 
