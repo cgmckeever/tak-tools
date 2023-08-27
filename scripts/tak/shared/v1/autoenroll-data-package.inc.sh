@@ -57,19 +57,22 @@ ${SUDO} zip -j ${ZIP} \
     manifest.xml \
     server.pref
 
-printf $warning "\n\n       ITAK Connection QR\n"
-ITAK_CONN="${TAK_ALIAS},${CONNECTION_STRING},8089,SSL"
-echo ${ITAK_CONN} | qrencode -t UTF8
-ITAK_QR="${FILE_PATH}/clients/itak-${TAK_ALIAS}--${CONNECTION_STRING}-QR.png"
-echo ${ITAK_CONN} | ${SUDO} qrencode -s 10 -o ${ITAK_QR}
+if [[ "${ACtIVE_SSL}" == "Self-Signed" ]]; then
+    printf $warning "\n\nSelf-Signed SSL. Skipping ITAK QR Enrollment.\n"
+else
 
-printf $success "ITAK QR File: ${ITAK_QR}\n"
-printf $info "Transfer File: scp ${USER}@${IP}:${ITAK_QR} .\n\n"
+    printf $warning "\n\n       ITAK Connection QR\n"
+    ITAK_CONN="${TAK_ALIAS},${CONNECTION_STRING},8089,SSL"
+    echo ${ITAK_CONN} | qrencode -t UTF8
+    ITAK_QR="${FILE_PATH}/clients/itak-${TAK_ALIAS}--${CONNECTION_STRING}-QR.png"
+    echo ${ITAK_CONN} | ${SUDO} qrencode -s 10 -o ${ITAK_QR}
+fi
 
-printf $success "\n\nAuto-Enroll Data Package File [ATAK]: ${ZIP}\n"
-printf $info "Transfer File: scp ${USER}@${IP}:${ZIP} .\n\n"
+printf $success "ITAK QR File: ${ITAK_QR}\n\n"
 
-printf $info "Transfer Both: scp ${USER}@${IP}:"${FILE_PATH}/clients/*${CONNECTION_STRING}*" .\n\n"
+printf $success "\n\nAuto-Enroll Data Package File [ATAK]: ${ZIP}\n\n"
+
+printf $info "Transfer Data Package: scp ${USER}@${IP}:"${FILE_PATH}/clients/*${CONNECTION_STRING}*" .\n\n"
 
 
 
