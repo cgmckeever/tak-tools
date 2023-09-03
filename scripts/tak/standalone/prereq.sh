@@ -28,6 +28,7 @@ echo "deb [signed-by=/etc/apt/keyrings/postgresql.asc] http://apt.postgresql.org
 
 sudo apt-get -y update
 sudo apt-get -y install \
+    apache2-utils \
     apt-transport-https \
     ca-certificates \
     dirmngr \

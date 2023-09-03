@@ -13,6 +13,8 @@ services:
       - "__WORK_PATH/ssl.conf:/etc/nginx/ssl.conf"
       - "__WORK_PATH/logs/:/var/log/nginx/"
       - "__WORK_PATH/ssl/:/etc/nginx/ssl/"
+      # - "/home/tak/tak-server/tak/certs/files/clients/:/usr/share/nginx/html/clients/"
+      # - "__WORK_PATH/nginx/.htpasswd:/etc/nginx/.htpasswd"
     ports:
       - "__NGINX_PORT:__NGINX_PORT"
     restart: always

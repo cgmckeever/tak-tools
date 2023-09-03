@@ -1,4 +1,5 @@
 FROM nginx
 RUN touch /etc/nginx/ssl.conf
+RUN touch /etc/nginx/.htpasswd
 RUN mkdir -p /etc/nginx/ssl
 CMD ["nginx", "-g", "daemon off;"]

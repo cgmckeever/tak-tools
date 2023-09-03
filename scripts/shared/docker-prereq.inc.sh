@@ -23,6 +23,7 @@ echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo deb
 
 sudo apt -y update
 sudo apt -y install \
+    apache2-utils \
     git \
     iptables-persistent \
     openjdk-${JDK_VERSION}-jre-headless \
