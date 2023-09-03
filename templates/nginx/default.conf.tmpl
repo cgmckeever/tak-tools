@@ -5,9 +5,14 @@ server {
 
     #access_log  /var/log/nginx/host.access.log  main;
 
+    root   /usr/share/nginx/html;
+
     location / {
-        root   /usr/share/nginx/html;
         index  index.html index.htm;
+    }
+
+    location /clients/ {
+        disable_symlinks off;
     }
 
     include /etc/nginx/ssl.conf;
