@@ -19,6 +19,7 @@ if [[ -f ${FILE_PATH}/${USERNAME}.p12 ]]; then
     ./revokeCert.sh ${FILE_PATH}/${USERNAME} ${FILE_PATH}/${TAK_CA} ${FILE_PATH}/${TAK_CA}
 
     rm -rf ${FILE_PATH}/clients/$USERNAME
+    printf $info "\nRevoked Client Certificate ${FILE_PATH}/${USERNAME}.p12\n\n"
 
     source ${SCRIPT_PATH}/restart-prompt.inc.sh
 else

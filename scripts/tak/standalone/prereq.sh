@@ -68,7 +68,7 @@ if [[ ${NETMAN} =~ ^[Yy]$ ]]; then
         -e "s/__WIRED_NIC/${DEFAULT_NIC}/g" /etc/netplan/50-cloud-init.yaml.wired
 fi
 
-printf $warning "\n\n------------ Updaating FireWall ------------\n\n"
+printf $warning "\n\n------------ Updating FireWall ------------\n\n"
 # Firewall Rules
 #
 printf $info "\nAllow 22 [SSH]\n"

@@ -5,6 +5,8 @@
 
 ## Tools
 
+### Tak Server
+
 - `autoenroll-data-package`
     - Builds ATAK autoenroll data package
 - `backup`
@@ -39,6 +41,23 @@
 - `upgrade`
     - Performs basic backup and server upgrade
     - **docker only**
+
+### Tak Docs [Optional]
+
+Simple nginx server to allow static HTML files to be served (such as registration QR or data packages)
+
+- `prereq`
+    - Installs basic required packages for a docker install
+- `restart`
+    - Restarts TAK-Docs
+- `setup`
+    - Starts the TAK-Docs Server setup
+- `tear-down`
+    - Wipes dockerized TAK-Docs Server
+    - Prompts to keep containers
+    - Does not prompt for data backups
+    - *Recommended for a clean docker re-install*
+
 
 ## Requirements
 
