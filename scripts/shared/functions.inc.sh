@@ -14,6 +14,8 @@ color success 92m   # green
 color warning 93m   # yellow
 color danger 91m    # red
 
+NOW=$(date "+%Y.%m.%d-%H.%M.%S")
+
 pause () {
     echo
     if [[ ! -z $1 ]]; then

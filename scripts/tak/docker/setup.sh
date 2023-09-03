@@ -13,6 +13,8 @@ source ${TAK_SCRIPT_PATH}/v1/inputs.inc.sh "release/takserver*.zip"
 mkdir -p ${CORE_FILES}
 mkdir -p ${BACKUPS}
 
+sudo usermod -aG docker $USER
+
 printf $warning "\n\n------------ Unpacking Docker Release ------------\n\n"
 unzip ~/release/takserver*.zip -d ~/release/
 sudo rm -rf $WORK_PATH
@@ -90,17 +92,17 @@ ln -s ${TAK_PATH}/logs ~/logs
 
 echo; echo
 read -p "Do you want to configure TAK Server auto-start [y/n]? " AUTOSTART
-cp ${TEMPLATE_PATH}/tak/docker/docker.service.tmpl ${CORE_FILES}/tak-server-docker.service
+cp ${TEMPLATE_PATH}/tak/docker/docker.service.tmpl ${CORE_FILES}/${DOCKER_SERVICE}-docker.service
 sed -i \
     -e "s#__WORK_PATH#${CORE_FILES}#g" \
     -e "s#__DOCKER_COMPOSE_YML#${DOCKER_COMPOSE_YML}#g" \
-    -e "s/__DOCKER_COMPOSE/${DOCKER_COMPOSE}/g" ${CORE_FILES}/tak-server-docker.service
-sudo rm -rf /etc/systemd/system/tak-server-docker.service
-sudo ln -s ${CORE_FILES}/tak-server-docker.service /etc/systemd/system/tak-server-docker.service
+    -e "s/__DOCKER_COMPOSE/${DOCKER_COMPOSE}/g" ${CORE_FILES}/${DOCKER_SERVICE}-docker.service
+sudo rm -rf /etc/systemd/system/${DOCKER_SERVICE}-docker.service
+sudo ln -s ${CORE_FILES}/${DOCKER_SERVICE}-docker.service /etc/systemd/system/${DOCKER_SERVICE}-docker.service
 sudo systemctl daemon-reload
 
 if [[ $AUTOSTART =~ ^[Yy]$ ]]; then
-    sudo systemctl enable tak-server-docker
+    sudo systemctl enable ${DOCKER_SERVICE}-docker
     printf $info "\nTAK Server auto-start enabled\n\n"
 else
     printf $info "\nTAK Server auto-start disabled\n\n"

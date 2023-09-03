@@ -1,0 +1,18 @@
+version: "3.3"
+
+services:
+  tak-docs:
+    build:
+      context: __WORK_PATH
+      dockerfile: ./Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - "__WORK_PATH/html:/usr/share/nginx/html"
+      - "__WORK_PATH/default.conf:/etc/nginx/conf.d/default.conf"
+      - "__WORK_PATH/ssl.conf:/etc/nginx/ssl.conf"
+      - "__WORK_PATH/logs/:/var/log/nginx/"
+      - "__WORK_PATH/ssl/:/etc/nginx/ssl/"
+    ports:
+      - "__NGINX_PORT:__NGINX_PORT"
+    restart: always
