@@ -36,7 +36,7 @@ tee ${FILE_PATH}/clients/${USERNAME}/server.pref >/dev/null << EOF
 <preferences>
     <preference version="1" name="cot_streams">
         <entry key="count" class="class java.lang.Integer">1</entry>
-        <entry key="description0" class="class java.lang.String">${USERNAME}-${TAK_ALIAS}</entry>
+        <entry key="description0" class="class java.lang.String">${USERNAME}-${TAK_ALIAS}-${CONNECTION_STRING}</entry>
         <entry key="enabled0" class="class java.lang.Boolean">true</entry>
         <entry key="connectString0" class="class java.lang.String">${CONNECTION_STRING}:${TAK_COT_PORT}:ssl</entry>
     </preference>
