@@ -8,6 +8,7 @@ export SSL_PORT=443
 # =======================
 
 mkdir -p ${CORE_FILES}
+touch ${CORE_FILES}/.${DOCKER_SERVICE}-env
 mkdir -p ${WORK_PATH}/logs
 mkdir -p ${WORK_PATH}/html
 cp ${TEMPLATE_PATH}/nginx/index.html.tmpl ${WORK_PATH}/html/index.html

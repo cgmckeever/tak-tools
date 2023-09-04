@@ -6,7 +6,7 @@ services:
       context: __WORK_PATH
       dockerfile: ./Dockerfile
     env_file:
-      - .env
+      - .tak-doc-env
     volumes:
       - "__WORK_PATH/html:/usr/share/nginx/html"
       - "__WORK_PATH/default.conf:/etc/nginx/conf.d/default.conf"

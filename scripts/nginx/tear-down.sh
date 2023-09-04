@@ -18,3 +18,4 @@ sudo rm -rf /etc/systemd/system/${DOCKER_SERVICE}-docker.service
 
 sudo rm -rf ${WORK_PATH}
 sudo rm -rf ${CORE_FILES}/${DOCKER_SERVICE}*
+sudo rm -rf ${CORE_FILES}/.${DOCKER_SERVICE}-env
