@@ -23,6 +23,7 @@ if [[ -f ~/letsencrypt.txt ]]; then
 else
     printf $info "\nGenerating Self-Signed Certificate \n\n"
     printf $warning "Enter in your certificate options at the prompts\n\n"
+    pause
     mkdir -p ${WORK_PATH}/ssl
     openssl req -newkey rsa:2048 \
         -new -nodes -x509 \
