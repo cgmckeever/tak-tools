@@ -22,4 +22,5 @@ pause () {
         printf $info "\nThis is a break pause; should be removed: $1\n\n"
     fi
     read -s -p "Press Enter to resume setup... "
+    echo
 }

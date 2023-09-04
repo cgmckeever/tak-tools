@@ -79,7 +79,10 @@ Simple nginx server to allow static HTML files to be served (such as registratio
     - 22.04
 - Run the [Prep this repository](#prep-this-repository) code
 - Optionally install/configure
-    - [VPN](#vpn-optional) (isolated TAK traffic)
+    - [Docs Server](#documentation-and=-data-package-server-optional)
+        - Provides a lightweight http server to publish QR codes or Data Packages
+    - [VPN](#vpn-optional)
+        - isolated TAK traffic
     - [LetsEncrypt SSL Certificate](#letsencrypt-optional)
         - Server will still be encrypted without this using a [Self-Signed SSL certificate](https://www.entrust.com/resources/faq/what-is-a-self-signed-certificate)
         - Read more [here](https://mytecknet.com/lets-sign-our-tak-server/)
@@ -103,6 +106,26 @@ sudo apt -y update; \
 sudo apt -y install curl git; \
 sudo git clone https://github.com/cgmckeever/tak-tools.git /opt/tak-tools
 ```
+
+# Documentation and Data Package Server [optional]
+
+Provides resources to spin-up a lights wait `http` server that can be used to serve QR codes or Data Packages to end users.
+
+## Prereq
+
+```
+/opt/tak-tools/scripts/nginx/prereq.sh
+```
+
+Not required if TAK is running as a Docker Container
+
+## Setup
+
+```
+/opt/tak-tools/scripts/nginx/setup.sh
+```
+
+Follow the prompts, your should have a web server running on port `443` when finished
 
 # VPN [optional]
 
