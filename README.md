@@ -79,7 +79,7 @@ Simple nginx server to allow static HTML files to be served (such as registratio
     - 22.04
 - Run the [Prep this repository](#prep-this-repository) code
 - Optionally install/configure
-    - [Docs Server](#documentation-and=-data-package-server-optional)
+    - [Docs Server](#documentation-and-data-package-server-optional)
         - Provides a lightweight http server to publish QR codes or Data Packages
     - [VPN](#vpn-optional)
         - isolated TAK traffic
