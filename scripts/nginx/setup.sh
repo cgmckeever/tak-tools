@@ -14,12 +14,20 @@ cp ${TEMPLATE_PATH}/nginx/index.html.tmpl ${WORK_PATH}/html/index.html
 
 sudo usermod -aG docker $USER
 
-FQDN=""
-NGINX_PORT=80
+NGINX_PORT=${SSL_PORT}
 if [[ -f ~/letsencrypt.txt ]]; then
     IFS=':' read -ra LE_INFO <<< $(cat ~/letsencrypt.txt)
     FQDN=${LE_INFO[0]}
-    NGINX_PORT=${SSL_PORT}
+    sudo ln -s /etc/letsencrypt/live/${FQDN}/ ${WORK_PATH}/ssl
+else
+    printf $info "\nGenerating Self-Signed Certificate \n\n"
+    printf $warning "Enter in your certificate options at the prompts\n\n"
+    mkdir -p ${WORK_PATH}/ssl
+    openssl req -newkey rsa:2048 \
+        -new -nodes -x509 \
+        -days 3650 \
+        -keyout ${WORK_PATH}/ssl/privkey.pem \
+        -out ${WORK_PATH}/ssl/fullchain.pem
 fi
 
 ## Set firewall rules
@@ -31,21 +39,12 @@ pause
 printf $warning "\n\n------------ Configuring Tak Doc --------------\n\n"
 cp ${TEMPLATE_PATH}/nginx/Dockerfile.tmpl ${WORK_PATH}/Dockerfile
 cp ${TEMPLATE_PATH}/nginx/default.conf.tmpl ${WORK_PATH}/default.conf
+
+cp ${TEMPLATE_PATH}/nginx/ssl.conf.tmpl ${WORK_PATH}/ssl.conf
+sed -i \
+    -e "s/__NGINX_PORT/${NGINX_PORT}/g" ${WORK_PATH}/ssl.conf
+
 cp ${TEMPLATE_PATH}/nginx/docker-compose.yml.tmpl ${DOCKER_COMPOSE_YML}
-
-if [[ ${FQDN} == "" ]]; then
-    sed -i \
-        -e "#WORK_PATH/ssl#d" ${DOCKER_COMPOSE_YML}
-
-    touch ${WORK_PATH}/ssl.conf
-else
-    cp ${TEMPLATE_PATH}/nginx/ssl.conf.tmpl ${WORK_PATH}/ssl.conf
-    sed -i \
-        -e "s/__NGINX_PORT/${NGINX_PORT}/g" ${WORK_PATH}/ssl.conf
-
-    sudo ln -s /etc/letsencrypt/live/${FQDN}/ ${WORK_PATH}/ssl
-fi
-
 sed -i \
     -e "s/__NGINX_PORT/${NGINX_PORT}/g" \
     -e "s#__WORK_PATH#${WORK_PATH}#" ${DOCKER_COMPOSE_YML}
