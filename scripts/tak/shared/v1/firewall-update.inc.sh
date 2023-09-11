@@ -9,8 +9,8 @@ done
 
 printf $info "Allow 22 [SSH]\n"
 sudo ufw allow OpenSSH;
-printf $info "\nAllow 8089 [API]\n"
-sudo ufw allow proto tcp from ${SOURCE} to any port 8089
+printf $info "\nAllow ${TAK_COT_PORT} [API]\n"
+sudo ufw allow proto tcp from ${SOURCE} to any port ${TAK_COT_PORT}
 printf $info "\nAllow 8443 [certificate auth]\n"
 sudo ufw allow proto tcp from ${SOURCE} to any port 8443
 printf $info "\nAllow 8446 [user/pass auth]\n"

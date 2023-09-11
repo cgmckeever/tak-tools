@@ -76,6 +76,7 @@ cp ${TEMPLATE_PATH}/tak/docker/docker-compose.yml.tmpl ${DOCKER_COMPOSE_YML}
 sed -i \
     -e "s#__DOCKER_SUBNET#${DOCKER_SUBNET}#g" \
     -e "s/__DATABASE_ALIAS/${DATABASE_ALIAS}/" \
+    -e "s/__TAK_COT_PORT/${TAK_COT_PORT}/" \
     -e "s#__WORK_PATH#${WORK_PATH}#" ${DOCKER_COMPOSE_YML}
 
 printf $info "------------ Building TAK DB ------------\n\n"
