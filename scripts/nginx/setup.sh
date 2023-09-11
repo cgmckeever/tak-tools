@@ -53,7 +53,7 @@ sed -i \
 
 
 printf $info "------------ Building Tak Docs ------------\n\n"
-$DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} up ${DOCKER_SERVICE} -d
+$DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} -d up ${DOCKER_SERVICE}
 
 echo; echo
 read -p "Do you want to configure Tak Docs auto-start [y/n]? " AUTOSTART
