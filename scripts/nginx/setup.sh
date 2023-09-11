@@ -15,7 +15,9 @@ cp ${TEMPLATE_PATH}/nginx/index.html.tmpl ${WORK_PATH}/html/index.html
 
 sudo usermod -aG docker $USER
 
-NGINX_PORT=${SSL_PORT}
+read -p "What port should nginx listen [${SSL_PORT}]? " NGINX_PORT
+NGINX_PORT=${NGINX_PORT:-${SSL_PORT}}
+
 if [[ -f ~/letsencrypt.txt ]]; then
     IFS=':' read -ra LE_INFO <<< $(cat ~/letsencrypt.txt)
     FQDN=${LE_INFO[0]}
