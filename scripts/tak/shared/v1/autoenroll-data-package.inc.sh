@@ -61,7 +61,7 @@ if [[ "${ACTIVE_SSL}" == "Self-Signed" ]]; then
     printf $warning "\n\nSelf-Signed SSL. Skipping ITAK QR Enrollment.\n\n"
 else
     printf $warning "\n\n       ITAK Connection QR\n"
-    ITAK_CONN="${TAK_ALIAS}--${CONNECTION_STRING},${CONNECTION_STRING},8089,SSL"
+    ITAK_CONN="${TAK_ALIAS}--${CONNECTION_STRING},${CONNECTION_STRING},${TAK_COT_PORT},SSL"
     echo ${ITAK_CONN} | qrencode -t UTF8
     ITAK_QR="${FILE_PATH}/clients/itak-${TAK_ALIAS}--${CONNECTION_STRING}-QR.png"
     echo ${ITAK_CONN} | ${SUDO} qrencode -s 10 -o ${ITAK_QR}
