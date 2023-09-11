@@ -40,4 +40,6 @@ if [[ -f ~/letsencrypt.txt ]]; then
         -srcstorepass ${CAPASS} \
         -file ${LE_PATH}/fullchain.pem \
         -keystore ${FILE_PATH}/letsencrypt.jks
+
+    sudo chmod 644 ${FILE_PATH}/letsencrypt.*
 fi
