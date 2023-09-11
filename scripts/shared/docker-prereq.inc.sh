@@ -18,9 +18,6 @@ fi
 
 printf $info "\n-------- Installing Docker Dependencies --------\n\n"
 
-echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
-echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
-
 sudo apt -y update
 sudo apt -y install \
     apache2-utils \
@@ -40,6 +37,9 @@ sudo apt -y install \
     vim \
     wget \
     zip
+
+echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
+echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
 
 printf $warning "\n\n------------ Installing Docker ------------\n\n"
 # Docker
