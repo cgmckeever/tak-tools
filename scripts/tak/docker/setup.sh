@@ -79,10 +79,10 @@ sed -i \
     -e "s#__WORK_PATH#${WORK_PATH}#" ${DOCKER_COMPOSE_YML}
 
 printf $info "------------ Building TAK DB ------------\n\n"
-$DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} -d up tak-db
+$DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} up -d tak-db
 
 printf $info "\n\n------------ Building TAK Server ------------\n\n"
-$DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} -d up tak-server
+$DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} up  -d tak-server
 # https://www.joyfulbikeshedding.com/blog/2021-03-15-docker-and-the-host-filesystem-owner-matching-problem.html
 GID=$(id -g)
 $DOCKER_COMPOSE -f ${DOCKER_COMPOSE_YML} \

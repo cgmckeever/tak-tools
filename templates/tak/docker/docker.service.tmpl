@@ -7,7 +7,7 @@ After=docker.service
 Type=oneshot
 RemainAfterExit=yes
 WorkingDirectory=__WORK_PATH
-ExecStart=/usr/local/bin/__DOCKER_COMPOSE -f __DOCKER_COMPOSE_YML -d up
+ExecStart=/usr/local/bin/__DOCKER_COMPOSE -f __DOCKER_COMPOSE_YML up -d
 ExecStop=/usr/local/bin/__DOCKER_COMPOSE -f __DOCKER_COMPOSE_YML down
 TimeoutStartSec=0
 
