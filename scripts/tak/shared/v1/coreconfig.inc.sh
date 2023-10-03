@@ -18,7 +18,7 @@ ${SUDO} sed -i \
     -e "/<!-- ${ACTIVE_SSL}/d" \
     -e "/${ACTIVE_SSL} -->/d" \
     -e "s/__CAPASS/${CAPASS}/g" \
-    -e "s/__PASS/${CERTPASS}/g" \
+    -e "s/__CERTPASS/${CERTPASS}/g" \
     -e "s/__ORGANIZATIONAL_UNIT/${ORGANIZATIONAL_UNIT}/g" \
     -e "s/__ORGANIZATION/${ORGANIZATION}/g" \
     -e "s/__TAK_CA/${TAK_CA}/g" \
