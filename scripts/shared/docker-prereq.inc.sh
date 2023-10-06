@@ -11,10 +11,7 @@ case $(lsb_release -r -s) in
     ;;
 esac
 
-DOCKER=docker-ce
-if [[ "$arch" == *"arm"* ]]; then
-    DOCKER=docker.io
-fi
+DOCKER=docker.io
 
 printf $info "\n-------- Installing Docker Dependencies --------\n\n"
 
