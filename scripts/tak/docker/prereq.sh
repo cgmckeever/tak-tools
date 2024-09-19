@@ -50,5 +50,5 @@ if [[ ${MAKEUSER} =~ ^[Yy]$ ]]; then
     printf $success "\n\nCreated user: ${TAKUSER}\n"
     printf $success "Password    : ${TAKUSER_PASS}\n\n"
 
-    printf $info "Switch to the ${TAKUSER} [su - ${TAKUSER}] and run the 'opt/tak-tools/scripts/docker/setup.sh' script\n\n"
+    printf $info "Switch to the ${TAKUSER} [su - ${TAKUSER}] and run the '/opt/tak-tools/scripts/tak/docker/setup.sh' script\n\n"
 fi
