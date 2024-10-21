@@ -1,1 +1,8 @@
+jdk/*
+release/*
+tak-pack/*
+
+zulu*
 config.inc.sh
+
+scripts/post-install*
