@@ -1,0 +1,42 @@
+networks:
+  taknet:
+    ipam:
+      driver: default
+      config:
+        - subnet: __DOCKER_SUBNET
+
+volumes:
+  tak_data:
+
+services:
+  tak-db:
+    build:
+      context: __WORK_PATH
+      dockerfile: ./docker/Dockerfile.takserver-db
+    volumes:
+      - "tak_data:/var/lib/postgresql"
+      - "__WORK_PATH/tak:/opt/tak:z"
+    networks:
+      taknet:
+        aliases:
+          - __TAK_DB_ALIAS
+    ports:
+      - "5432:5432"
+    restart: always
+  tak-server:
+    build:
+      context: __WORK_PATH
+      dockerfile: ./docker/Dockerfile.takserver
+    volumes:
+      - "__WORK_PATH/tak:/opt/tak:z"
+    ports:
+      - "8443:8443"
+      - "8446:8446"
+      - "__TAK_COT_PORT:__TAK_COT_PORT"
+      - "9000:9000"
+      - "9001:9001"
+    networks:
+      taknet:
+    depends_on:
+      - tak-db
+    restart: always  
