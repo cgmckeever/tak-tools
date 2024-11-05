@@ -30,6 +30,7 @@ msg $info "\nCreating TAK CA"
 echo y | ./makeCert.sh ca ${TAK_CA}
 
 rename_files ${CA_PREFIX} takserver ${CERT_FILE_PATH}
+cp files/truststore-${TAK_CA_FILE}.p12 files/truststore-${TAK_CA_FILE}-bundle.p12
 
 msg $info "\nCreating Database Certs"
 ./makeCert.sh server ${DB_CN}
@@ -55,7 +56,6 @@ if [ "$LETSENCRYPT" = "true" ] && [ -d "/etc/letsencrypt/live/${TAK_URI}" ];then
     echo ${ITAK_CONN} | qrencode -s 10 -o ${ITAK_QR_FILE}
 
 else 
-    cp files/truststore-${TAK_CA_FILE}.p12 files/truststore-${TAK_CA_FILE}-bundle.p12
     msg $info "\nSkipping LetsEncrypt\n"
 fi
 
