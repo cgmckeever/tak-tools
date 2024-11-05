@@ -53,7 +53,9 @@ if [ "$LETSENCRYPT" = "true" ] && [ -d "/etc/letsencrypt/live/${TAK_URI}" ];then
     msg $info "Connection String: ${ITAK_CONN}"
     msg $success "iTAK Connection QR ${ITAK_QR_FILE}"
     echo ${ITAK_CONN} | qrencode -s 10 -o ${ITAK_QR_FILE}
+
 else 
+    cp files/truststore-${TAK_CA_FILE}.p12 files/truststore-${TAK_CA_FILE}-bundle.p12
     msg $info "\nSkipping LetsEncrypt\n"
 fi
 
@@ -66,19 +68,19 @@ gen_uuid
 sed -e "s/__UUID/${UUID}/g" \
     -e "s/__TAK_ALIAS/${TAK_ALIAS}/g" \
     -e "s/__TAK_URI/${TAK_URI}/g" \
-    -e "s/__TRUSTSTORE/${TAK_CA_FILE}/g" \
+    -e "s/__TRUSTSTORE/${TAK_CA_FILE}-bundle/g" \
     ${ROOT_PATH}/tak-conf/manifest.autoenroll.xml.tmpl > files/clients/manifest.xml
 
 sed -e "s/__TAK_ALIAS/${TAK_ALIAS}/g" \
     -e "s/__TAK_URI/${TAK_URI}/g" \
     -e "s/__TAK_COT_PORT/${TAK_COT_PORT}/g" \
     -e "s/__CA_PASS/${CA_PASS}/g" \
-    -e "s/__TRUSTSTORE/${TAK_CA_FILE}/g" \
+    -e "s/__TRUSTSTORE/${TAK_CA_FILE}-bundle/g" \
     -e "s/__TRUSTED_ENROLL/true/g" \
     ${ROOT_PATH}/tak-conf/server.autoenroll.pref.tmpl > files/clients/server.pref
 
 zip -j "${ENROLL_PACKAGE}" \
-    files/truststore-${TAK_CA_FILE}.p12 \
+    files/truststore-${TAK_CA_FILE}-bundle.p12 \
     files/clients/manifest.xml \
     files/clients/server.pref
 

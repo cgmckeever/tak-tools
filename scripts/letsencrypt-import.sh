@@ -39,4 +39,12 @@ keytool -import \
     -file files/letsencrypt.pem  \
     -keystore files/letsencrypt.jks
 
+keytool -import \
+    -noprompt \
+    -alias letsencrypt \
+    -file files/letsencrypt.pem \
+    -keystore truststore-${TAK_CA_FILE}-bundle.p12 \
+    -storetype PKCS12 \
+    -storepass ${CA_PASS}
+
 chmod 644 files/letsencrypt.*

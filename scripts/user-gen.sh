@@ -21,7 +21,7 @@ CLIENT_PATH=${CERT_PATH}/files/clients/${2}
 
 CERT_BUNDLE=${CLIENT_PATH}/${2}.${TAK_ALIAS}-${TAK_URI}.zip
 zip -j "${CERT_BUNDLE}" \
-    ${CERT_PATH}/files/truststore-${TAK_CA_FILE}.p12 \
+    ${CERT_PATH}/files/truststore-${TAK_CA_FILE}-bundle.p12 \
     ${CERT_PATH}/files/${2}.p12 \
     ${CLIENT_PATH}/manifest.xml \
     ${CLIENT_PATH}/server.pref
