@@ -31,13 +31,6 @@ letsencrypt (){
 }
 
 takconf (){
-    mkdir -p ${TAK_PATH}/tak-tools/conf
-
-	cp tak-scripts/* ${TAK_PATH}/tak-tools/
-	cp tak-conf/*client* ${TAK_PATH}/tak-tools/conf
-	cp tak-conf/setenv.sh ${TAK_PATH}/
-	cp ${RELEASE_PATH}/config.inc.sh ${TAK_PATH}/tak-tools/config.inc.sh
-	
 	## Check for specific Version config template
 	#
 	CONFIG_TMPL="tak-conf/coreconfig/CoreConfig.${VERSION}.xml.tmpl"
@@ -61,6 +54,17 @@ takconf (){
 		-e "s/__TAK_URI/${TAK_URI}/g" \
 		-e "s/__TAK_COT_PORT/${TAK_COT_PORT}/g" \
 		${CONFIG_TMPL} > ${TAK_PATH}/CoreConfig.xml
+}
+
+filesync (){
+	mkdir -p ${TAK_PATH}/tak-tools/conf
+
+	cp tak-scripts/* ${TAK_PATH}/tak-tools/
+	cp tak-conf/*client* ${TAK_PATH}/tak-tools/conf
+	
+	cp tak-conf/setenv.sh ${TAK_PATH}/
+
+	cp ${RELEASE_PATH}/config.inc.sh ${TAK_PATH}/tak-tools/config.inc.sh
 }
 
 ###########
@@ -203,13 +207,15 @@ takconf
 ## Install
 #
 if [[ "${INSTALLER}" == "docker" ]];then 
+	filesync
 	scripts/cert-gen.sh ${TAK_ALIAS}
 	scripts/docker/compose.sh ${TAK_ALIAS}
 else
 	apt install -y ${TAK_PACKAGE}
-    usermod --shell /bin/bash tak
+  usermod --shell /bin/bash tak
 
-    scripts/cert-gen.sh ${TAK_ALIAS}
+  filesync
+  scripts/cert-gen.sh ${TAK_ALIAS}
 
 	chown -R tak:tak /opt/tak
 	systemctl enable takserver

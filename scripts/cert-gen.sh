@@ -52,8 +52,8 @@ if [ "$LETSENCRYPT" = "true" ] && [ -d "/etc/letsencrypt/live/${TAK_URI}" ];then
     ITAK_QR_FILE="files/clients/${TAK_ALIAS}.itak-autoenroll.${TAK_URI}.qr.png"
     ITAK_CONN="${TAK_ALIAS}:${TAK_URI},${TAK_URI},${TAK_COT_PORT},SSL"
     msg $info "Connection String: ${ITAK_CONN}"
-    msg $success "iTAK Connection QR ${ITAK_QR_FILE}"
     echo ${ITAK_CONN} | qrencode -s 10 -o ${ITAK_QR_FILE}
+    msg $success "iTAK Connection QR ${ITAK_QR_FILE}"
 
 else 
     msg $info "\nSkipping LetsEncrypt\n"
