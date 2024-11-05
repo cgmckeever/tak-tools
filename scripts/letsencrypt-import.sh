@@ -43,7 +43,7 @@ keytool -import \
     -noprompt \
     -alias letsencrypt \
     -file files/letsencrypt.pem \
-    -keystore truststore-${TAK_CA_FILE}-bundle.p12 \
+    -keystore files/truststore-${TAK_CA_FILE}-bundle.p12 \
     -storetype PKCS12 \
     -storepass ${CA_PASS}
 
