@@ -33,6 +33,7 @@ rename_files ${CA_PREFIX} takserver ${CERT_FILE_PATH}
 
 ## No CA is included in Trustsore [??]
 #
+msg $info "\nCreating Bundled Truststore "
 openssl x509 \
     -in files/${TAK_CA_FILE}-trusted.pem \
     -out files/${TAK_CA_FILE}-trusted.x509.pem
@@ -69,6 +70,9 @@ if [ "$LETSENCRYPT" = "true" ] && [ -d "/etc/letsencrypt/live/${TAK_URI}" ];then
 else 
     msg $info "\nSkipping LetsEncrypt\n"
 fi
+
+## TEMP
+cp files/truststore-${TAK_CA_FILE}.p12 files/truststore-${TAK_CA_FILE}-bundle.p12
 
 ## Create autoenroll package
 #
