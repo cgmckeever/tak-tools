@@ -71,9 +71,6 @@ else
     msg $info "\nSkipping LetsEncrypt\n"
 fi
 
-## TEMP
-cp files/truststore-${TAK_CA_FILE}.p12 files/truststore-${TAK_CA_FILE}-bundle.p12
-
 ## Create autoenroll package
 #
 ENROLL_PACKAGE=files/clients/${TAK_ALIAS}.atak-autoenroll.${TAK_URI}.zip
