@@ -26,6 +26,19 @@ fi
 msg $info "\nCreating Root CA"
 ./makeRootCa.sh --ca-name ${TAK_ROOT_CA}
 
+## No CA is included in Trustsore [??]
+#
+msg $info "\nCreating Bundled Root CA Truststore "
+openssl x509 \
+    -in files/root-ca-trusted.pem \
+    -out files/root-ca-trusted.x509.pem
+
+keytool -importcert -noprompt -alias tak-root-ca \
+    -file files/root-ca-trusted.x509.pem \
+    -keystore files/truststore-${TAK_CA_FILE}-bundle.p12 \
+    -storetype PKCS12 \
+    -storepass ${CA_PASS}
+
 msg $info "\nCreating TAK CA"
 echo y | ./makeCert.sh ca ${TAK_CA}
 
@@ -33,12 +46,12 @@ rename_files ${CA_PREFIX} takserver ${CERT_FILE_PATH}
 
 ## No CA is included in Trustsore [??]
 #
-msg $info "\nCreating Bundled Truststore "
+msg $info "\nAdding CA to Bundled Truststore"
 openssl x509 \
     -in files/${TAK_CA_FILE}-trusted.pem \
     -out files/${TAK_CA_FILE}-trusted.x509.pem
 
-keytool -importcert -noprompt -alias intermediary-ca \
+keytool -importcert -noprompt -alias tak-intermediary-ca \
     -file files/${TAK_CA_FILE}-trusted.x509.pem \
     -keystore files/truststore-${TAK_CA_FILE}-bundle.p12 \
     -storetype PKCS12 \
@@ -66,13 +79,9 @@ if [ "$LETSENCRYPT" = "true" ] && [ -d "/etc/letsencrypt/live/${TAK_URI}" ];then
     msg $info "Connection String: ${ITAK_CONN}"
     echo ${ITAK_CONN} | qrencode -s 10 -o ${ITAK_QR_FILE}
     msg $success "iTAK Connection QR ${ITAK_QR_FILE}"
-
 else 
     msg $info "\nSkipping LetsEncrypt\n"
 fi
-
-## TEMP
-cp files/truststore-${TAK_CA_FILE}.p12 files/truststore-${TAK_CA_FILE}-bundle.p12
 
 ## Create autoenroll package
 #
