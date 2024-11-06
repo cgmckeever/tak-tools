@@ -30,7 +30,18 @@ msg $info "\nCreating TAK CA"
 echo y | ./makeCert.sh ca ${TAK_CA}
 
 rename_files ${CA_PREFIX} takserver ${CERT_FILE_PATH}
-cp files/truststore-${TAK_CA_FILE}.p12 files/truststore-${TAK_CA_FILE}-bundle.p12
+
+## No CA is included in Trustsore [??]
+#
+openssl x509 \
+    -in files/${TAK_CA_FILE}-trusted.pem \
+    -out files/${TAK_CA_FILE}-trusted.x509.pem
+
+keytool -importcert -noprompt -alias intermediary-ca \
+    -file files/${TAK_CA_FILE}-trusted.x509.pem \
+    -keystore files/truststore-${TAK_CA_FILE}-bundle.p12 \
+    -storetype PKCS12 \
+    -storepass ${CA_PASS}
 
 msg $info "\nCreating Database Certs"
 ./makeCert.sh server ${DB_CN}
@@ -46,7 +57,7 @@ rename_files ${TAK_CN} takserver ${CERT_FILE_PATH}
 if [ "$LETSENCRYPT" = "true" ] && [ -d "/etc/letsencrypt/live/${TAK_URI}" ];then
     ${ROOT_PATH}/scripts/letsencrypt-import.sh ${TAK_ALIAS}
 
-    ## Create ITAK autoenroll QR
+    ## Create ITAK autoenroll QR (requires trusted cert)
     #
     msg $info "\nGenerating ITAK Connection QR"
     ITAK_QR_FILE="files/clients/${TAK_ALIAS}.itak-autoenroll.${TAK_URI}.qr.png"

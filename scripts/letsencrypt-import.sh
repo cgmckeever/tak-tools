@@ -41,7 +41,7 @@ keytool -import \
 
 keytool -import \
     -noprompt \
-    -alias letsencrypt \
+    -alias letsencrypt-ca \
     -file files/letsencrypt.pem \
     -keystore files/truststore-${TAK_CA_FILE}-bundle.p12 \
     -storetype PKCS12 \
