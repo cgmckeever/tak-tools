@@ -41,6 +41,7 @@ keytool -import \
 
 msg $info "\nAdding LetsEncrypt Root to Bundled Truststore"
 curl -o files/letsencrypt-root.pem https://letsencrypt.org/certs/isrgrootx1.pem
+# curl -o files/letsencrypt-intermediate.pem https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem
 
 keytool -import \
     -noprompt \
@@ -49,28 +50,5 @@ keytool -import \
     -keystore files/truststore-${TAK_CA_FILE}-bundle.p12 \
     -storetype PKCS12 \
     -storepass ${CA_PASS}
-
-: <<'EOF'
-msg $info "\nAdding LetsEncrypt Intermediate to Bundled Truststore"
-curl -o files/letsencrypt-intermediate.pem https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem
-
-keytool -import \
-    -noprompt \
-    -alias letsencrypt-intermediate \
-    -file files/letsencrypt-intermediate.pem \
-    -keystore files/truststore-${TAK_CA_FILE}-bundle.p12 \
-    -storetype PKCS12 \
-    -storepass ${CA_PASS}
-
-msg $info "\nAdding LetsEncrypt Cert to Bundled Truststore"
-
-keytool -import \
-    -noprompt \
-    -alias letsencrypt-${TAK_ALIAS} \
-    -file files/letsencrypt.pem \
-    -keystore files/truststore-${TAK_CA_FILE}-bundle.p12 \
-    -storetype PKCS12 \
-    -storepass ${CA_PASS}
-EOF
 
 chmod 644 files/letsencrypt.*
