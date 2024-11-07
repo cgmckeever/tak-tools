@@ -5,7 +5,6 @@ ROOT_PATH=$(realpath "${SCRIPT_PATH}/../")
 RELEASE_PATH="${ROOT_PATH}/release/${1}"
 
 source ${SCRIPT_PATH}/functions.inc.sh
-source ${RELEASE_PATH}/config.inc.sh
 
 cd ${RELEASE_PATH}/tak/certs
 
@@ -24,20 +23,20 @@ openssl pkcs12 -export \
     -passout pass:${CA_PASS}
 
 keytool -importkeystore \
-    -deststorepass ${CA_PASS} \
+    -srckeystore files/letsencrypt.p12 \
     -srcstorepass ${CA_PASS} \
     -destkeystore files/letsencrypt.jks \
-    -srckeystore files/letsencrypt.p12 \
+    -deststorepass ${CA_PASS} \
     -srcstoretype PKCS12
 
 keytool -import \
     -noprompt \
     -alias lebundle \
     -trustcacerts \
-    -deststorepass ${CA_PASS} \
-    -srcstorepass ${CA_PASS} \
     -file files/letsencrypt.pem  \
-    -keystore files/letsencrypt.jks
+    -srcstorepass ${CA_PASS} \
+    -keystore files/letsencrypt.jks \
+    -deststorepass ${CA_PASS} 
 
 msg $info "\nAdding LetsEncrypt Root to Bundled Truststore"
 curl -o files/letsencrypt-root.pem https://letsencrypt.org/certs/isrgrootx1.pem

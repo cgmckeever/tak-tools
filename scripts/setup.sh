@@ -64,7 +64,8 @@ filesync (){
 	
 	cp tak-conf/setenv.sh ${TAK_PATH}/
 
-	cp ${RELEASE_PATH}/config.inc.sh ${TAK_PATH}/tak-tools/config.inc.sh
+	cp scripts/functions.inc.sh ${TAK_PATH}/tak-tools/
+	cp ${RELEASE_PATH}/config.inc.sh ${TAK_PATH}/tak-tools/
 }
 
 ###########
@@ -85,7 +86,8 @@ MATCH_PATTERN="*tak*"
 MATCHES=(${MATCH_PATH}/${MATCH_PATTERN})
 
 if [[ ${#MATCHES[@]} -eq 0 || ( ${#MATCHES[@]} -eq 1 && ${MATCHES[0]} == "${MATCH_PATH}/${MATCH_PATTERN}" ) ]]; then
-  msg $danger "No 'tak' files found in directory '${TAK_PACKAGE_PATH}'\n\n"
+  msg $danger "No 'TAK' insallers found ..."
+  msg $danger "Download from tak.gov and transfer to '${TAK_PACKAGE_PATH}'\n\n"
   exit
 fi
 

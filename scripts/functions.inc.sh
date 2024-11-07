@@ -1,32 +1,61 @@
 #!/bin/bash
 
+CALL_TYPE=${1}
+
 NOW=$(date "+%Y.%m.%d-%H.%M.%S")
 
 USER_PASS_OMIT="\"\`'\\"
 DB_PASS_OMIT="|%&+$,.~<>/\:;=?{}()^*[]'\`\""
 
-DOCKER_COMPOSE="docker-compose"
-if [[ ! $(command -v docker-compose) ]];then
-    DOCKER_COMPOSE="docker compose"
-fi
+func_init () {
+    if [ "${CALL_TYPE}" = "tak" ]; then
+        CONF_PATH="/opt/tak/tak-tools"
+    else
+        CONF_PATH="${RELEASE_PATH}"
+        install_init
+    fi
 
-case "$(uname)" in
-    "Linux")
-        OS="linux"
-        DEFAULT_NIC=$(ip route | grep '^default' | awk '{print $5}')
-        IP_ADDRESS=$(ip addr show "${DEFAULT_NIC}" | grep 'inet ' | awk '{print $2}' | cut -d'/' -f1)
-        ;;
-    "Darwin")
-        OS="macosx"
-        HOSTNAME=$(hostname)
-        DEFAULT_NIC=$(route get default | grep 'interface:' | awk '{print $2}')
-        IP_ADDRESS=$(ifconfig "${DEFAULT_NIC}" | grep 'inet ' | awk '{print $2}')
-        ;;
-    *)
-        echo "Unsupported OS: $(uname)"
-        exit 1
-        ;;
-esac
+    if [ -f "${CONF_PATH}/config.inc.sh" ]; then
+        source ${CONF_PATH}/config.inc.sh
+    fi
+}
+
+install_init () {
+    DOCKER_COMPOSE="docker-compose"
+    if [[ ! $(command -v docker-compose) ]];then
+        DOCKER_COMPOSE="docker compose"
+    fi
+
+    case "$(uname)" in
+        "Linux")
+            OS="linux"
+            DEFAULT_NIC=$(ip route | grep '^default' | awk '{print $5}')
+            IP_ADDRESS=$(ip addr show "${DEFAULT_NIC}" | grep 'inet ' | awk '{print $2}' | cut -d'/' -f1)
+            ;;
+        "Darwin")
+            OS="macosx"
+            HOSTNAME=$(hostname)
+            DEFAULT_NIC=$(route get default | grep 'interface:' | awk '{print $2}')
+            IP_ADDRESS=$(ifconfig "${DEFAULT_NIC}" | grep 'inet ' | awk '{print $2}')
+            ;;
+        *)
+            echo "Unsupported OS: $(uname)"
+            exit 1
+            ;;
+    esac
+}
+
+conf_expand() {
+    DB_CN=${TAK_DB_ALIAS}                                            # Database Common Name (should match TAK connection URI)
+    TAK_CN=${TAK_URI}                                                # TAK Common Name (should match connection URL)
+    CA_PREFIX=${TAK_CN}                                              # Used for naming replacement
+    TAK_ROOT_CA=${CA_PREFIX}-Root-CA-01                              # Root CA Name
+    TAK_CA=${CA_PREFIX}-Intermediary-CA-01                           # Intermediate CA for client cert signing
+    TAK_CA_FILE=$(echo "$TAK_CA" | sed "s/${CA_PREFIX}/takserver/g")
+
+    ITAK_QR_FILE="${RELEASE_PATH}/tak/certs/files/clients/${TAK_ALIAS}.itak-autoenroll.${TAK_URI}.qr.png"
+    ITAK_CONN="${TAK_ALIAS}:${TAK_URI},${TAK_URI},${TAK_COT_PORT},SSL"
+}
 
 info () {
     TAK_INFO=${1}/info.txt
@@ -97,3 +126,5 @@ rename_files() {
         echo "Renamed: $(basename ${FILE}) -> $(basename ${NEW_FILE})"
     done
 }
+
+func_init

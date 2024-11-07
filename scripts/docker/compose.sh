@@ -5,7 +5,6 @@ ROOT_PATH=$(realpath "${SCRIPT_PATH}/../../")
 RELEASE_PATH="${ROOT_PATH}/release/${1}"
 
 source ${SCRIPT_PATH}/../functions.inc.sh
-source ${RELEASE_PATH}/config.inc.sh
 
 sed -e "s#__DOCKER_SUBNET#${DOCKER_SUBNET}#g" \
     -e "s/__TAK_DB_ALIAS/${TAK_DB_ALIAS}/" \

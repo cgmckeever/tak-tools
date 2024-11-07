@@ -5,7 +5,6 @@ ROOT_PATH=$(realpath "${SCRIPT_PATH}/../")
 RELEASE_PATH="${ROOT_PATH}/release/${1}"
 
 source ${SCRIPT_PATH}/functions.inc.sh
-source ${RELEASE_PATH}/config.inc.sh
 
 msg $info "\nCreating ${2} user"
 
@@ -13,6 +12,7 @@ if [[ "${INSTALLER}" == "docker" ]];then
     $DOCKER_COMPOSE -f ${RELEASE_PATH}/docker-compose.yml exec tak-server bash -c "/opt/tak/tak-tools/user-gen.sh ${2} \"${3}\" ${4}"
     CERT_PATH=${RELEASE_PATH}/tak/certs
 else 
+    # dont source this!
     /opt/tak/tak-tools/user-gen.sh ${2} "${3}" ${4}
     CERT_PATH=/opt/tak/certs
 fi

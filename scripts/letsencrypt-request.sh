@@ -5,7 +5,6 @@ ROOT_PATH=$(realpath "${SCRIPT_PATH}/../")
 RELEASE_PATH="${ROOT_PATH}/release/${1}"
 
 source ${SCRIPT_PATH}/functions.inc.sh
-source ${RELEASE_PATH}/config.inc.sh
 
 if [ "${LE_VALIDATOR}" = "web" ]; then
     msg $warn "\nRequesting LetsEncrypt: HTTP Validator"

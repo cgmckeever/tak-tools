@@ -5,7 +5,6 @@ ROOT_PATH=$(realpath "${SCRIPT_PATH}/../")
 RELEASE_PATH="${ROOT_PATH}/release/${1}"
 
 source ${SCRIPT_PATH}/functions.inc.sh
-source ${RELEASE_PATH}/config.inc.sh
 
 export PATH=${ROOT_PATH}/jdk/bin:${PATH}
 
@@ -27,6 +26,7 @@ msg $info "\nCreating Root CA"
 ./makeRootCa.sh --ca-name ${TAK_ROOT_CA}
 
 ## No CA is included in Trustsore [??]
+#       https://discord.com/channels/698067185515495436/962362215242022912
 #
 msg $info "\nCreating Bundled Root CA Truststore "
 openssl x509 \
@@ -36,8 +36,8 @@ openssl x509 \
 keytool -importcert -noprompt -alias tak-root-ca \
     -file files/root-ca-trusted.x509.pem \
     -keystore files/truststore-${TAK_CA_FILE}-bundle.p12 \
-    -storetype PKCS12 \
-    -storepass ${CA_PASS}
+    -storepass ${CA_PASS} \
+    -storetype PKCS12 
 
 msg $info "\nCreating TAK CA"
 echo y | ./makeCert.sh ca ${TAK_CA}
@@ -45,6 +45,7 @@ echo y | ./makeCert.sh ca ${TAK_CA}
 rename_files ${CA_PREFIX} takserver ${CERT_FILE_PATH}
 
 ## No CA is included in Trustsore [??]
+#       https://discord.com/channels/698067185515495436/962362215242022912
 #
 msg $info "\nAdding CA to Bundled Truststore"
 openssl x509 \
@@ -54,8 +55,8 @@ openssl x509 \
 keytool -importcert -noprompt -alias tak-intermediary-ca \
     -file files/${TAK_CA_FILE}-trusted.x509.pem \
     -keystore files/truststore-${TAK_CA_FILE}-bundle.p12 \
-    -storetype PKCS12 \
-    -storepass ${CA_PASS}
+    -storepass ${CA_PASS} \
+    -storetype PKCS12 
 
 msg $info "\nCreating Database Certs"
 ./makeCert.sh server ${DB_CN}
@@ -74,8 +75,6 @@ if [ "$LETSENCRYPT" = "true" ] && [ -d "/etc/letsencrypt/live/${TAK_URI}" ];then
     ## Create ITAK autoenroll QR (requires trusted cert)
     #
     msg $info "\nGenerating ITAK Connection QR"
-    ITAK_QR_FILE="files/clients/${TAK_ALIAS}.itak-autoenroll.${TAK_URI}.qr.png"
-    ITAK_CONN="${TAK_ALIAS}:${TAK_URI},${TAK_URI},${TAK_COT_PORT},SSL"
     msg $info "Connection String: ${ITAK_CONN}"
     echo ${ITAK_CONN} | qrencode -s 10 -o ${ITAK_QR_FILE}
     msg $success "iTAK Connection QR ${ITAK_QR_FILE}"
@@ -115,8 +114,4 @@ detail "${MSG}"
 MSG=${CERT_PATH}/${ENROLL_PACKAGE}
 detail "  ${MSG}"
 
-BUNDLE="${RELEASE_PATH}/${TAK_ALIAS}.certs.zip"
-msg $info "\nCreating cert bundle: ${BUNDLE}"
-zip -r "${BUNDLE}" files/*
-
-echo; echo
+echo
