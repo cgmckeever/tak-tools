@@ -1,10 +1,9 @@
 #!/bin/bash
 
-SCRIPT_PATH=$(dirname "${BASH_SOURCE[0]}")
-ROOT_PATH=$(realpath "${SCRIPT_PATH}/../")
-RELEASE_PATH="${ROOT_PATH}/release/${1}"
-
+SCRIPT_PATH=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
 source ${SCRIPT_PATH}/functions.inc.sh
+
+conf ${1}
 
 ##
 #   copy this file to post-install.sh
@@ -12,8 +11,8 @@ source ${SCRIPT_PATH}/functions.inc.sh
 #		Use this to add custom steps after an successful install (ie user-gen)
 
 
-# ${ROOT_PATH}/scripts/user-gen.sh ${TAK_ALIAS} recon-5 "your-super-strong-password"
+# ${SCRIPT_PATH}/user-gen.sh ${TAK_ALIAS} recon-5 "your-super-strong-password"
 #
 # passgen ${USER_PASS_OMIT}
-# ${ROOT_PATH}/scripts/user-gen.sh ${TAK_ALIAS} recon-7 "${PASSGEN}"
+# ${SCRIPT_PATH}/user-gen.sh ${TAK_ALIAS} recon-7 "${PASSGEN}"
 

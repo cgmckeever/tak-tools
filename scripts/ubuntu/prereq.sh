@@ -1,9 +1,9 @@
 #!/bin/bash
 
-export SCRIPT_PATH=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
-export ROOT_PATH=$(realpath ${SCRIPT_PATH}/../..)
+export SCRIPT_PATH=$(realpath "$(dirname "${BASH_SOURCE[0]}")/..")
+source ${SCRIPT_PATH}/functions.inc.sh 
 
-source ${ROOT_PATH}/scripts/functions.inc.sh 
+install_init
 
 if [[ "${OS}" == "linux" ]];then
 	msg $warn "\n-------- Installing Ubuntu Dependencies --------\n"

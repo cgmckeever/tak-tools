@@ -44,7 +44,3 @@ export TAK_URI=__TAK_URI               		# FQDN/Hostname
 export INSTALLER=__INSTALLER				# Installer type ("docker" or "ubuntu")
 export VERSION=__VERSION					# TAK release version; derived from TAK installer
 
-
-## Derived Settings
-#
-conf_expand

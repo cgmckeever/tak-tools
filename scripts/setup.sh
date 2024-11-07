@@ -1,9 +1,9 @@
 #!/bin/bash
 
 export SCRIPT_PATH=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
-export ROOT_PATH=$(realpath ${SCRIPT_PATH}/..)
+source ${SCRIPT_PATH}/functions.inc.sh 
 
-source ${ROOT_PATH}/scripts/functions.inc.sh 
+install_init
 
 ###########
 #
@@ -17,7 +17,7 @@ letsencrypt (){
 		if [[ ! ${TAK_URI} =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ && ${TAK_URI} =~ \. ]];then
 			if [ ! -d "/etc/letsencrypt/live/${TAK_URI}" ];then 
 				msg $info "Requesting LetsEncrypt\n\n"
-	        	${ROOT_PATH}/scripts/letsencrypt-request.sh ${TAK_ALIAS}
+	        	${SCRIPT_PATH}/letsencrypt-request.sh ${TAK_ALIAS}
 	    	else
 	    		msg $success "Found existing LetsEncrypt cert bundle"
 	    	fi 
@@ -30,7 +30,7 @@ letsencrypt (){
     fi
 }
 
-takconf (){
+coreconfig (){
 	## Check for specific Version config template
 	#
 	CONFIG_TMPL="tak-conf/coreconfig/CoreConfig.${VERSION}.xml.tmpl"
@@ -61,6 +61,7 @@ filesync (){
 
 	cp tak-scripts/* ${TAK_PATH}/tak-tools/
 	cp tak-conf/*client* ${TAK_PATH}/tak-tools/conf
+	cp tak-conf/cert-metadata.sh ${TAK_PATH}/certs/
 	
 	cp tak-conf/setenv.sh ${TAK_PATH}/
 
@@ -142,7 +143,6 @@ DB_PASS=${PASSGEN}
 scripts/${INSTALLER}/tear-down.sh ${TAK_ALIAS}
 
 RELEASE_PATH=${ROOT_PATH}/release/${TAK_ALIAS}
-rm -rf ${RELEASE_PATH}
 mkdir ${RELEASE_PATH}
 
 TAK_PATH=${RELEASE_PATH}/tak
@@ -199,12 +199,12 @@ if [[ ${EDIT_CONF} =~ ^[Yy]$ ]];then
 	vi ${RELEASE_PATH}/config.inc.sh
 fi
 
-source ${RELEASE_PATH}/config.inc.sh
+conf ${TAK_ALIAS}
 
 ## LetsEncrypt and CoreConfig Management
 #
 letsencrypt 
-takconf
+coreconfig
 
 ## Install
 #

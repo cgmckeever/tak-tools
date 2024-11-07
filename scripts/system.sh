@@ -1,14 +1,14 @@
 #!/bin/bash
 
-SCRIPT_PATH=$(dirname "${BASH_SOURCE[0]}")
-ROOT_PATH=$(realpath "${SCRIPT_PATH}/../")
-RELEASE_PATH="${ROOT_PATH}/release/${1}"
-
+SCRIPT_PATH=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
 source ${SCRIPT_PATH}/functions.inc.sh
+
+conf ${1}
 
 msg $info "\nPerforming TAK Server ${2}:\n"
 
 if [[ "${INSTALLER}" == "docker" ]];then 
+	docker_compose
 	COMPOSE_FILE="${ROOT_PATH}/release/${1}/docker-compose.yml"
 
 	if [[ "$2" == "start" || "$2" == "restart" ]];then
