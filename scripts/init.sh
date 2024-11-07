@@ -59,5 +59,7 @@ if [ "$STARTED" = "true" ];then
 
 	msg $success "\n\nTAK Server installation completed."
 else
-	msg $warn "\nTAK Server install not successful.\n\n"
+	msg $warn "\nTAK Server install not successful."
 fi
+
+echo;echo
