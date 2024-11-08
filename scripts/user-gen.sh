@@ -22,7 +22,7 @@ CLIENT_PATH=${CERT_PATH}/files/clients/${2}
 
 CERT_BUNDLE=${CLIENT_PATH}/${2}.${TAK_ALIAS}.certs.${TAK_URI}.zip
 
-msg $info "Creating ${1} full cert bundle"  
+msg $info "Creating ${2} full cert bundle"  
 zip -j "${CERT_BUNDLE}" \
     ${CERT_PATH}/files/truststore-${TAK_CA_FILE}-bundle.p12 \
     ${CERT_PATH}/files/${2}.* \
@@ -30,7 +30,7 @@ zip -j "${CERT_BUNDLE}" \
 echo; echo
 
 ENROLL_BUNDLE=${CLIENT_PATH}/${2}.${TAK_ALIAS}.softcert-enroll.${TAK_URI}.zip
-msg $info "Creating ${1} softcert bundle" 
+msg $info "Creating ${2} softcert bundle" 
 zip -j "${ENROLL_BUNDLE}" \
     ${CERT_PATH}/files/truststore-${TAK_CA_FILE}-bundle.p12 \
     ${CERT_PATH}/files/${2}.p12 \
