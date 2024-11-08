@@ -219,6 +219,7 @@ else
   filesync
   scripts/cert-gen.sh ${TAK_ALIAS}
 
+  msg $info "\n\nPerforming TAK Server enable:"
 	chown -R tak:tak /opt/tak
 	systemctl enable takserver
 	systemctl daemon-reload
