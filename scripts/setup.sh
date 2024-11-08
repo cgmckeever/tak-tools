@@ -221,6 +221,7 @@ else
 
 	chown -R tak:tak /opt/tak
 	scripts/ubuntu/system.sh ${TAK_ALIAS} enable
+	systemctl daemon-reload
 fi
 
 ## Init
