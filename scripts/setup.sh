@@ -220,6 +220,7 @@ else
   scripts/cert-gen.sh ${TAK_ALIAS}
 
 	chown -R tak:tak /opt/tak
+	echo;echo
 	systemctl enable takserver
 fi
 
