@@ -220,7 +220,7 @@ else
   scripts/cert-gen.sh ${TAK_ALIAS}
 
 	chown -R tak:tak /opt/tak
-	scripts/docker/system.sh ${TAK_ALIAS} enable
+	scripts/ubuntu/system.sh ${TAK_ALIAS} enable
 fi
 
 ## Init
