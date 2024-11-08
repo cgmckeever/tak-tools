@@ -9,6 +9,7 @@ if apt list --installed 2>/dev/null | grep -q "takserver";then
 	msg $warn "\nTAK Server clean up (takes a moment to stop TAK)"
 	systemctl stop takserver
 	sleep 10
+	systemctl disable takserver
 	apt remove -y takserver
 
 	msg $warn "\nTAK Database clean up"
