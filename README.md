@@ -105,7 +105,7 @@ Simple nginx server to allow static HTML files to be served (such as registratio
 sudo apt -y update; \
 sudo apt -y install curl git; \
 sudo git clone https://github.com/cgmckeever/tak-tools.git /opt/tak-tools;
-checkout v1
+git checkout v1
 ```
 
 # Documentation and Data Package Server [optional]
