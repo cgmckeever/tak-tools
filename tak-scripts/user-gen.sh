@@ -19,11 +19,13 @@ java -jar /opt/tak/utils/UserManager.jar usermod ${3} -p "${2}" ${1}
 if [ "$3" = "-A" ]; then
     msg $info "\n\nModify ${1} certificate to ADMIN role"
 	java -jar /opt/tak/utils/UserManager.jar certmod -A /opt/tak/certs/files/${1}.pem
+else 
+    echo; echo
 fi 
 
 UUID="${1}$(date +%s)"
 
-msg $info "Creating ${1} cert bundle ${CLIENT_PATH}/"
+msg $info "Creating ${1} client TAK files ${CLIENT_PATH}/\n"
 
 sed -e "s/__UUID/${UUID}/g" \
     -e "s/__TAK_ALIAS/${TAK_ALIAS}/g" \
