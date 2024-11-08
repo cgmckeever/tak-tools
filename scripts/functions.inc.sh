@@ -1,31 +1,13 @@
 #!/bin/bash
 
-CALL_TYPE=${1}
+ROOT_PATH=$(realpath "$(dirname "${BASH_SOURCE[0]}")/..")
 
 NOW=$(date "+%Y.%m.%d-%H.%M.%S")
 
 USER_PASS_OMIT="\"\`'\\"
 DB_PASS_OMIT="|%&+$,.~<>/\:;=?{}()^*[]'\`\""
 
-func_init () {
-    if [ "${CALL_TYPE}" = "tak" ]; then
-        CONF_PATH="/opt/tak/tak-tools"
-    else
-        CONF_PATH="${RELEASE_PATH}"
-        install_init
-    fi
-
-    if [ -f "${CONF_PATH}/config.inc.sh" ]; then
-        source ${CONF_PATH}/config.inc.sh
-    fi
-}
-
 install_init () {
-    DOCKER_COMPOSE="docker-compose"
-    if [[ ! $(command -v docker-compose) ]];then
-        DOCKER_COMPOSE="docker compose"
-    fi
-
     case "$(uname)" in
         "Linux")
             OS="linux"
@@ -43,6 +25,19 @@ install_init () {
             exit 1
             ;;
     esac
+}
+
+conf () {
+    if [ -n "${1}" ];then
+        RELEASE_PATH="${ROOT_PATH}/release/${1}"
+    else
+        RELEASE_PATH="/opt/tak/tak-tools"
+    fi
+
+    if [ -f "${RELEASE_PATH}/config.inc.sh" ]; then
+        source ${RELEASE_PATH}/config.inc.sh
+        conf_expand
+    fi
 }
 
 conf_expand() {
@@ -63,6 +58,13 @@ conf_expand() {
     #
     ITAK_QR_FILE="${RELEASE_PATH}/tak/certs/files/clients/${TAK_ALIAS}.itak-autoenroll.${TAK_URI}.qr.png"
     ITAK_CONN="${TAK_ALIAS}:${TAK_URI},${TAK_URI},${TAK_COT_PORT},SSL"
+}
+
+docker_compose () {
+    DOCKER_COMPOSE="docker-compose"
+    if [[ ! $(command -v docker-compose) ]];then
+        DOCKER_COMPOSE="docker compose"
+    fi
 }
 
 info () {
@@ -134,5 +136,3 @@ rename_files() {
         echo "Renamed: $(basename ${FILE}) -> $(basename ${NEW_FILE})"
     done
 }
-
-func_init

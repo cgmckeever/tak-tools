@@ -62,6 +62,30 @@ scripts/firewall.sh
 
 ## Utilities
 
+### TAK Utilities
+
+#### Certificate Bundler/Backup
+
+Create a zip-bundle of the `certs/files` as backup
+
+```
+scripts/cert-bundler.sh
+```
+
+#### System Manager
+
+Perform a `start`, `stop`, `status`, or `restart`
+
+```
+scripts/system.sh {TAK_ALIAS} {start|stop|status|restart}
+```
+
+#### Tear-Down
+
+```
+scripts/{docker|ubuntu}/tear-down.sh {TAK_ALIAS}
+```
+
 ### User Management
 
 #### Create 
@@ -93,19 +117,6 @@ scripts/letsencrypt-import.sh {TAK_ALIAS}
 \*Requires `CoreConfig.xml` to be properly configured to use LetsEncrypt [handled during install]
 \*Requires a reboot to take effect
 
-### System Manager
-
-Perform a `start`, `stop`, `status`, or `restart`
-
-```
-scripts/system.sh {TAK_ALIAS} {start|stop|status|restart}
-```
-
-### Tear-Down
-
-```
-scripts/{docker|ubuntu}/tear-down.sh {TAK_ALIAS}
-```
 
 ## Validated
 

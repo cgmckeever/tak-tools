@@ -1,9 +1,9 @@
 #!/bin/bash
 
-SCRIPT_PATH=$(dirname "${BASH_SOURCE[0]}")
-ROOT_PATH=$(realpath "${SCRIPT_PATH}/../")
-
+SCRIPT_PATH=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
 source ${SCRIPT_PATH}/functions.inc.sh
+
+install_init
 
 JDK_VERSION="17.0.7"
 JDK_TAR="zulu17.42.19-ca-jdk${JDK_VERSION}-${OS}_x64.tar.gz"

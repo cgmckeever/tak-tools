@@ -1,8 +1,9 @@
 #!/bin/bash
 
-SCRIPT_PATH=$(dirname "${BASH_SOURCE[0]}")
+SCRIPT_PATH=$(realpath "$(dirname "${BASH_SOURCE[0]}")/..")
+source ${SCRIPT_PATH}/functions.inc.sh
 
-source ${SCRIPT_PATH}/../functions.inc.sh
+conf ${1}
 
 msg $danger "\nDocker clean up"
 
@@ -33,4 +34,12 @@ if [ -n "$(docker network ls -f name=${NETWORK} -q)" ]; then
 else
     msg $warn "\nNo network found: ${NETWORK}"
 fi
+
+if [ -d "${RELEASE_PATH}" ]; then
+    ${SCRIPT_PATH}/cert-bundler.sh ${TAK_ALIAS}
+
+    msg $danger "\nWiping ${RELEASE_PATH}"
+    rm -rf ${RELEASE_PATH}
+fi
+
 

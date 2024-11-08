@@ -1,6 +1,7 @@
 #!/bin/bash
 
-source /opt/tak/tak-tools/functions.inc.sh tak
+source /opt/tak/tak-tools/functions.inc.sh
+conf
 
 USERNAME=${1}
 CERT=files/${USERNAME}.p12

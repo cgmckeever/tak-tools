@@ -1,6 +1,8 @@
 #!/bin/bash
 
-source /opt/tak/tak-tools/functions.inc.sh tak
+source /opt/tak/tak-tools/functions.inc.sh
+conf
+
 TAK_CONF_PATH=/opt/tak/tak-tools/conf
 
 cd /opt/tak/certs
