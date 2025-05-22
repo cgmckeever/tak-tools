@@ -24,8 +24,10 @@ git checkout v2
 ### Prereq
 
 ```
-scripts/{docker|ubuntu}/prereq.sh 
+scripts/prereq.sh 
 ```
+
+When prompted, choose your installation type `ubuntu` or `docker`
 
 ### Environment Requirements 
 
