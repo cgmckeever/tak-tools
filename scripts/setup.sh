@@ -44,6 +44,7 @@ conf ${TAK_ALIAS}
 ## Tear-Down/Clean-up
 #
 scripts/${INSTALLER}/tear-down.sh ${TAK_ALIAS}
+mkdir -p ${RELEASE_PATH}
 
 info ${RELEASE_PATH} "---- TAK Info: ${TAK_ALIAS} ----" init
 info ${RELEASE_PATH} "Install: ${INSTALLER}"
