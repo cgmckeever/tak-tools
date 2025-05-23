@@ -22,23 +22,23 @@ RELEASE_DIR="${ROOT_PATH}/release"
 RELEASE=($(find "$RELEASE_DIR" -mindepth 1 -maxdepth 1 -type d | sort))
 
 if [ ${#RELEASE[@]} -eq 0 ]; then
-    msg $warn "No releases found under ${RELEASE_DIR}."
+    msg $warn "\nNo releases found under ${RELEASE_DIR}."
     msg $warn "Please run the configure script to set up the environment."
     exit 1
 fi
 
 # Prompt the user
-msg $warn "Select a release:"
+msg $warn "\n\nSelect a release:"
 for i in "${!RELEASE[@]}"; do
     msg $info "$((i+1)). ${RELEASE[$i]##*/}"
 done
-read -p "Enter a number [1-${#RELEASE[@]}]: " choice
+prompt -p "Enter a number [1-${#RELEASE[@]}]: " choice
 
 if [[ "$choice" =~ ^[0-9]+$ ]] && [ "$choice" -ge 1 ] && [ "$choice" -le "${#RELEASE[@]}" ]; then
-    TAK_ALIAS="${RELEASE[$((choice-1))]}"
-    msg $warn "${TAK_ALIAS} selected"
+    TAK_ALIAS="${RELEASE[$((choice-1))]##*/}"
+    msg $warn "\n${TAK_ALIAS} selected"
 else
-    msg $warn "Invalid selection. Exiting."
+    msg $warn "\nInvalid selection. Exiting."
     exit 1
 fi
 
