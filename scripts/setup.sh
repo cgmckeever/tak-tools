@@ -23,18 +23,20 @@ if [ ${#RELEASE[@]} -eq 0 ]; then
     exit 1
 fi
 
+FILTERED_RELEASE=()
+for DIR in "${RELEASE[@]}"; do
+    [[ "${DIR##*/}" != "cert-backup" ]] && FILTERED_RELEASE+=("$DIR")
+done
+
 # Prompt the user
 msg $warn "\n\nSelect a release:"
-for i in "${!RELEASE[@]}"; do
-    dir_name="${RELEASE[$i]##*/}"
-    if [[ "$dir_name" != "cert-backup" ]]; then
-        msg $info "$((i+1)). $dir_name"
-    fi
+for i in "${!FILTERED_RELEASE[@]}"; do
+    msg $info "$((i+1)). ${FILTERED_RELEASE[$i]##*/}"
 done
-prompt "Enter a number [1-${#RELEASE[@]}]: " choice
+prompt "Enter a number [1-${#FILTERED_RELEASE[@]}]: " choice
 
-if [[ "$choice" =~ ^[0-9]+$ ]] && [ "$choice" -ge 1 ] && [ "$choice" -le "${#RELEASE[@]}" ]; then
-    TAK_ALIAS="${RELEASE[$((choice-1))]##*/}"
+if [[ "$choice" =~ ^[0-9]+$ ]] && [ "$choice" -ge 1 ] && [ "$choice" -le "${#FILTERED_RELEASE[@]}" ]; then
+    TAK_ALIAS="${FILTERED_RELEASE[$((choice-1))]##*/}"
     msg $warn "\n${TAK_ALIAS} selected"
 else
     msg $warn "\nInvalid selection. Exiting."
