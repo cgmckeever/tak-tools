@@ -6,6 +6,10 @@ source ${SCRIPT_PATH}/inc/configure.sh
 
 install_init
 
+## TAK Package
+#
+source scripts/inc/package.sh
+
 ## Inputs
 #
 CONFIG_TMPL="config.inc.example.sh"
@@ -18,6 +22,7 @@ mkdir -p ${RELEASE_PATH}
 
 sed -e "s/__TAK_ALIAS/${TAK_ALIAS}/g" \
 	-e "s/__TAK_URI/${TAK_URI}/g" \
+	-e "s/__TAK_PACKAGE/${TAK_PACKAGE}/g" \
 	-e "s/__INSTALLER/${INSTALLER}/g" \
 	-e "s/__VERSION/$VERSION/g" \
 	-e "s/__TAK_DB_ALIAS/$TAK_DB_ALIAS/g" \

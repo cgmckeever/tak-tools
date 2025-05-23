@@ -12,10 +12,6 @@ install_init
 #
 ##
 
-## TAK Package
-#
-source scripts/inc/package.sh
-
 RELEASE_DIR="${ROOT_PATH}/release"
 
 # Find folders (not files) under the release directory
@@ -52,7 +48,7 @@ scripts/${INSTALLER}/tear-down.sh ${TAK_ALIAS}
 info ${RELEASE_PATH} "---- TAK Info: ${TAK_ALIAS} ----" init
 info ${RELEASE_PATH} "Install: ${INSTALLER}"
 info ${RELEASE_PATH} "TAK Version: ${VERSION}"
-info ${RELEASE_PATH} "TAK Pack: $(basename ${TAK_PACKAGE})"
+info ${RELEASE_PATH} "TAK Pack: ${TAK_PACKAGE}"
 info ${RELEASE_PATH} ""
 info ${RELEASE_PATH} "Hostname/URI: ${TAK_URI}" 
 info ${RELEASE_PATH} ""
@@ -71,7 +67,7 @@ if [[ "${INSTALLER}" == "docker" ]];then
 		${SCRIPT_PATH}/inc/jdk.sh
 	fi
 
-	${SCRIPT_PATH}/docker/unpack.sh ${TAK_PACKAGE} ${RELEASE_PATH}
+	${SCRIPT_PATH}/docker/unpack.sh ${ROOT_PATH}/tak-pack/${TAK_PACKAGE} ${RELEASE_PATH}
 
 	## Pull container
 	## Add layers
@@ -87,7 +83,7 @@ if [[ "${INSTALLER}" == "docker" ]];then
 	coreconfig
 else
 	coreconfig
-	apt install -y ${TAK_PACKAGE}
+	apt install -y ${ROOT_PATH}/tak-pack/${TAK_PACKAGE}
   	usermod --shell /bin/bash tak
 	ln -s /opt/tak ${RELEASE_PATH}/tak
   	echo

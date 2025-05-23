@@ -25,6 +25,7 @@ prompt "Which TAK install package number:" TAK_PACKAGE_SELECTION
 
 if [[ "${TAK_PACKAGE_SELECTION}" -gt 0 && "${TAK_PACKAGE_SELECTION}" -le "${#MATCHES[@]}" ]];then
  	TAK_PACKAGE="${MATCHES[$((TAK_PACKAGE_SELECTION - 1))]}"
+ 	TAK_PACKAGE=$(basename ${TAK_PACKAGE})
 
 	if [[ "${TAK_PACKAGE}" == *.zip ]];then
 		INSTALLER="docker"
@@ -36,7 +37,7 @@ if [[ "${TAK_PACKAGE_SELECTION}" -gt 0 && "${TAK_PACKAGE_SELECTION}" -le "${#MAT
 	fi
 
 	VERSION=$(echo "${TAK_PACKAGE}" | sed -E 's/.*[_-]([0-9]+\.[0-9]+)-RELEASE.*/\1/')
-	msg $success "Using TAK ${VERSION} ${INSTALLER} install: $(basename ${TAK_PACKAGE})"
+	msg $success "Using TAK ${VERSION} ${INSTALLER} install: ${TAK_PACKAGE}"
 	
 else
   	msg $danger "\n\n------------ No TAK Server Package found matching selection."

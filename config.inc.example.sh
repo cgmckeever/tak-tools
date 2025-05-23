@@ -42,6 +42,7 @@ export DOCKER_SUBNET="172.20.0.0/24"    			# Docker subnet
 export TAK_ALIAS=__TAK_ALIAS           				# Reference name and release pathname
 export TAK_URI=__TAK_URI               				# FQDN/Hostname
 export TAK_DB_PASS=__TAK_DB_PASS            		# Database password
+export TAK_PACKAGE=__TAK_PACKAGE					# TAK package
 export INSTALLER=__INSTALLER						# Installer type ("docker" or "ubuntu")
 export VERSION=__VERSION							# TAK release version; derived from TAK installer
 
