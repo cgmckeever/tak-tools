@@ -22,8 +22,8 @@ if [ -d "${RELEASE_PATH}" ];then
 		${SCRIPT_PATH}/cert-bundler.sh ${TAK_ALIAS}
 	fi 
 
-	msg $danger "\nWiping ${RELEASE_PATH}"
-	rm -rf ${RELEASE_PATH}
+	#msg $danger "\nWiping ${RELEASE_PATH}"
+	#rm -rf ${RELEASE_PATH}
 
 	msg $danger "\nWiping /opt/tak"
 	rm -rf /opt/tak
