@@ -6,6 +6,11 @@ source ${SCRIPT_PATH}/inc/configure.sh
 
 install_init
 
+## TAK-Tools Config
+#
+RELEASE_PATH=${ROOT_PATH}/release/${TAK_ALIAS}
+mkdir -p ${RELEASE_PATH}
+
 if [ -f "${RELEASE_PATH}/config.inc.sh" ]; then
     msg $warn "${RELEASE_PATH}/config.inc.sh exists"
     read -p "n\Do you want to overwrite it? (y/N): " confirm
@@ -16,11 +21,6 @@ if [ -f "${RELEASE_PATH}/config.inc.sh" ]; then
 		#
 		CONFIG_TMPL="config.inc.example.sh"
 		source ${SCRIPT_PATH}/inc/inputs.sh
-
-		## TAK-Tools Config
-		#
-		RELEASE_PATH=${ROOT_PATH}/release/${TAK_ALIAS}
-		mkdir -p ${RELEASE_PATH}
 
 		sed -e "s/__TAK_ALIAS/${TAK_ALIAS}/g" \
 			-e "s/__TAK_URI/${TAK_URI}/g" \
