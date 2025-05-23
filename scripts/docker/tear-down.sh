@@ -40,7 +40,7 @@ if [ -d "${RELEASE_PATH}" ];then
         ${SCRIPT_PATH}/cert-bundler.sh ${1}
     fi 
 
-    msg $danger "\nWiping ${RELEASE_PATH} install"
+    msg $danger "\nWiping install ${RELEASE_PATH}/tak"
     rm -rf ${RELEASE_PATH}/tak
 fi
 

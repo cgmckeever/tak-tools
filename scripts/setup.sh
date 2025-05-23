@@ -26,7 +26,10 @@ fi
 # Prompt the user
 msg $warn "\n\nSelect a release:"
 for i in "${!RELEASE[@]}"; do
-    msg $info "$((i+1)). ${RELEASE[$i]##*/}"
+    dir_name="${RELEASE[$i]##*/}"
+    if [[ "$dir_name" != "cert-backup" ]]; then
+        msg $info "$((i+1)). $dir_name"
+    fi
 done
 prompt "Enter a number [1-${#RELEASE[@]}]: " choice
 
