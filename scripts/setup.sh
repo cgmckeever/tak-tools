@@ -24,6 +24,19 @@ scripts/${INSTALLER}/tear-down.sh ${TAK_ALIAS}
 #
 source ${SCRIPT_PATH}/gen-conf.sh
 
+info ${RELEASE_PATH} "---- TAK Info: ${TAK_ALIAS} ----" init
+info ${RELEASE_PATH} "Install: ${INSTALLER}"
+info ${RELEASE_PATH} "TAK Version: ${VERSION}"
+info ${RELEASE_PATH} "TAK Pack: $(basename ${TAK_PACKAGE})"
+info ${RELEASE_PATH} ""
+info ${RELEASE_PATH} "Hostname/URI: ${TAK_URI}" 
+info ${RELEASE_PATH} ""
+info ${RELEASE_PATH} "Database Info:"
+info ${RELEASE_PATH} "  URI: ${TAK_DB_ALIAS}" 
+info ${RELEASE_PATH} "  User: martiuser" 
+info ${RELEASE_PATH} "  Password: ${TAK_DB_PASS}" 
+info ${RELEASE_PATH} ""
+
 conf ${TAK_ALIAS}
 letsencrypt
 
@@ -36,11 +49,18 @@ if [[ "${INSTALLER}" == "docker" ]];then
 
 	${SCRIPT_PATH}/docker/unpack.sh ${TAK_PACKAGE} ${RELEASE_PATH}
 
-	filesync
-	${SCRIPT_PATH}/inc/cert-gen.sh ${TAK_ALIAS}
-	coreconfig
+	## Pull container
+	## Add layers
+	## add scripts to image
 
 	${SCRIPT_PATH}/docker/compose.sh ${TAK_ALIAS}
+
+	## possibly handle in docker-build?
+	filesync
+	## run cert gen in the container
+	${SCRIPT_PATH}/inc/cert-gen.sh ${TAK_ALIAS}
+	## configure in docker
+	coreconfig
 else
 	coreconfig
 	apt install -y ${TAK_PACKAGE}

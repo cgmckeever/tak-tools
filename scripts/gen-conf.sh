@@ -35,19 +35,6 @@ sed -e "s/__TAK_ALIAS/${TAK_ALIAS}/g" \
 	-e "s/__LE_VALIDATOR/${LE_VALIDATOR}/g" \
 	${CONFIG_TMPL} > ${RELEASE_PATH}/config.inc.sh
 
-info ${RELEASE_PATH} "---- TAK Info: ${TAK_ALIAS} ----" init
-info ${RELEASE_PATH} "Install: ${INSTALLER}"
-info ${RELEASE_PATH} "TAK Version: ${VERSION}"
-info ${RELEASE_PATH} "TAK Pack: $(basename ${TAK_PACKAGE})"
-info ${RELEASE_PATH} ""
-info ${RELEASE_PATH} "Hostname/URI: ${TAK_URI}" 
-info ${RELEASE_PATH} ""
-info ${RELEASE_PATH} "Database Info:"
-info ${RELEASE_PATH} "  URI: ${TAK_DB_ALIAS}" 
-info ${RELEASE_PATH} "  User: martiuser" 
-info ${RELEASE_PATH} "  Password: ${TAK_DB_PASS}" 
-info ${RELEASE_PATH} ""
-
 msg $warn "\nUpdate the config: ${RELEASE_PATH}/config.inc.sh"
 
 prompt "Do you want to inline edit the conf with vi [y/N]?" EDIT_CONF

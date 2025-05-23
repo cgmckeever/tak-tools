@@ -18,7 +18,7 @@ sudo apt -y update; \
 sudo apt -y install curl git; \
 sudo git clone https://github.com/cgmckeever/tak-tools.git /opt/tak-tools; \
 cd /opt/tak-tools; \
-git checkout v2
+git checkout v3
 ```
 
 ### Prereq
