@@ -32,7 +32,7 @@ msg $warn "\n\nSelect a release:"
 for i in "${!RELEASE[@]}"; do
     msg $info "$((i+1)). ${RELEASE[$i]##*/}"
 done
-prompt -p "Enter a number [1-${#RELEASE[@]}]: " choice
+prompt "Enter a number [1-${#RELEASE[@]}]: " choice
 
 if [[ "$choice" =~ ^[0-9]+$ ]] && [ "$choice" -ge 1 ] && [ "$choice" -le "${#RELEASE[@]}" ]; then
     TAK_ALIAS="${RELEASE[$((choice-1))]##*/}"
